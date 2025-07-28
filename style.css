@@ -35,10 +35,8 @@ p {
 
 header {
   position: fixed;
-  top: 40px;
-  left: 0;
   width: 100%;
-  padding: 40px;
+  padding: 20px;
   display: flex;
   box-sizing: border-box;
   justify-content: space-between;
@@ -77,7 +75,7 @@ nav a {
 }
 
 .logo img {
-  height: 24px; /* or whatever works visually */
+  height: 32px; /* or whatever works visually */
 }
 
 
