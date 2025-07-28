@@ -75,12 +75,14 @@ header {
 
 
 nav a {
-  font-family: 'Geist Mono', monospace;
+  color: var(--Clean-Slate, #181818);
+  text-align: right;
+  font-family: "Geist Mono";
+  font-size: 16px;
+  font-style: normal;
   font-weight: 500;
-  font-size: 1.2rem;
-  text-decoration: none;
-  color: inherit;
-  letter-spacing: 0.5px;
+  line-height: 120%; /* 19.2px */
+  letter-spacing: 0.32px;
 }
 
 
@@ -94,6 +96,13 @@ canvas {
   }
 
   nav a {
-    font-size: 1rem;
+    color: var(--Clean-Slate, #181818);
+    text-align: right;
+    font-family: "Geist Mono";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 120%; /* 16.8px */
+    letter-spacing: 0.28px;
   }
 }
