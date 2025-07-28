@@ -86,7 +86,7 @@ canvas {
   }
 
   nav a {
-    font-size: 1rem; /* optional: scale nav text down a bit */
+    font-size: 0.875rem; /* optional: scale nav text down a bit */
   }
 
   html, body {
