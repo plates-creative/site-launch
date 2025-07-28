@@ -6,12 +6,22 @@
   font-style: normal;
 }
 
-html, body {
-  color: var(--Neutral-002, #A3A4A7);
-  font-family: owners, sans-serif;
-  font-size: 16px;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body, p, h1, h2, h3 {
   font-style: normal;
   font-weight: 400;
+}
+
+
+html, body {
+  color: var(--Neutral-002, #A3A4A7);
+  font-family: "owners", sans-serif;
+  font-size: 16px;
   line-height: 100%;
   letter-spacing: 0.3px;
   margin: 0;
@@ -21,16 +31,13 @@ html, body {
 }
 
 h1, h2, h3 {
-  font-family: owners, sans-serif;
-  font-weight: 400;
+  font-family: "owners", sans-serif;
   letter-spacing: 0.5px;
   margin: 0 0 1rem 0;
 }
 
 p {
-  font-family: owners-text, sans-serif;
-  font-weight: 400;
-  font-style: normal;
+  font-family: "owners", sans-serif;
   line-height: 100%;
   margin: 0 0 1rem 0;
 }
@@ -51,6 +58,7 @@ header {
   justify-content: space-between;
   align-items: center;
   margin: 0 auto;
+  padding: 0;
   width: 100%;
 }
 
@@ -61,16 +69,21 @@ header {
 }
 
 nav a {
-  color: var(--Clean-Slate, #181818);
-  text-align: right;
+  color: var(--Clean-Slate, #181818); /* default black */
+  text-decoration: none;
   font-family: "Geist Mono";
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
-  line-height: 120%; /* 19.2px */
+  line-height: 120%;
   letter-spacing: 0.32px;
   text-decoration: none;
 }
+
+.info-page nav a {
+  color: var(--plates-pink-digital, #FF3EB5); /* override to pink */
+}
+
 
 .logo img {
   height: 28px; /* Adjust as needed for your design */
@@ -91,18 +104,6 @@ nav a {
 .info-page {
   background-color: var(--Clean-Slate, #181818);
   color: var(--Neutral-002, #A3A4A7);
-}
-
-.close-link {
-  color: var(--plates-pink-digital, #FF3EB5);
-  text-align: right;
-  font-family: "Geist Mono";
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 120%; /* 19.2px */
-  letter-spacing: 0.32px;
-  text-decoration: none;
 }
 
 .info-content {
