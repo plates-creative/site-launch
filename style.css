@@ -94,11 +94,20 @@ nav a {
   letter-spacing: 0.32px;
   line-height: 120%;
   color: var(--Clean-Slate, #181818); /* black default */
+   transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: white;
 }
 
 /* Info page override */
 .info-page nav a {
   color: var(--plates-pink-digital, #FF3EB5);
+}
+
+.info-page nav a:hover {
+  color: white;
 }
 
 .logo img {
