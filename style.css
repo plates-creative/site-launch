@@ -83,9 +83,16 @@ nav a {
 }
 
 .info-content {
-  padding: 120px 40px 40px 40px; /* top padding allows for nav spacing */
-  max-width: 700px;
-  margin: 0 auto;
+  padding: 120px 40px 40px 40px; /* match nav spacing */
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.info-description {
+  width: 60%;
+  max-width: 800px;
+  text-align: left;
 }
 
 .info-description p {
@@ -105,16 +112,6 @@ nav a {
   color: var(--Neutral-002, #A3A4A7);
 }
 
-@media (min-width: 768px) {
-  .nav-container {
-  }
-}
-
-.logo img {
-  height: 30px; /* or whatever works visually */
-}
-
-
 canvas {
   display: block;
 }
@@ -130,6 +127,16 @@ canvas {
   html, body {
     font-size: 16px; /* optional: slightly smaller base font */
   }
+  
+    .info-description {
+    width: 100%;
+  }
+
+
+  .info-content {
+    padding: 100px 20px 20px 20px; /* tighter on mobile */
+  }
+  
   .logo img {
     height: 22px;
   }
