@@ -80,20 +80,19 @@ nav a {
 canvas {
   display: block;
 }
-
-@media (max-width: 600px) {
-  .logo img {
-    height: 22px;
+@media (max-width: 430px) {
+  header {
+    padding: 20px; /* reduces padding from 40px to 20px */
   }
 
   nav a {
-    color: var(--Clean-Slate, #181818);
-    text-align: right;
-    font-family: "Geist Mono";
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 120%; /* 16.8px */
-    letter-spacing: 0.28px;
+    font-size: 1rem; /* optional: scale nav text down a bit */
+  }
+
+  html, body {
+    font-size: 16px; /* optional: slightly smaller base font */
+  }
+  .logo img {
+    height: 22px;
   }
 }
