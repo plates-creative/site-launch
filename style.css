@@ -126,6 +126,11 @@ nav a:active {
   align-items: center;
 }
 
+.logo-invisible {
+  visibility: hidden;
+}
+
+
 
 /* -------------------------
    Info Page
