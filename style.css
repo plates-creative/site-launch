@@ -46,6 +46,11 @@ header {
   z-index: 1000;
 }
 
+.logo img {
+  height: 28px; /* Adjust as needed for your design */
+  display: block;
+}
+
 .nav-container {
   display: flex;
   justify-content: space-between;
