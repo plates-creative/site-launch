@@ -1,3 +1,11 @@
+
+.geist-mono-<uniquifier> {
+  font-family: "Geist Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+}
+
 html, body {
   margin: 0;
   padding: 0;
