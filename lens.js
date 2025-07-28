@@ -3,7 +3,7 @@ let pg;
 let ownersFont;
 
 function preload() {
-  ownersFont = loadFont('OwnersTRIAL-Medium.otf');
+  ownersFont = loadFont('owners-medium.otf');
   lensShader = loadShader('shader.vert', 'shader.frag');
 }
 
