@@ -70,6 +70,12 @@ nav a {
   display: block;
 }
 
+.logo-spacer {
+  width: 28px; /* Same as your logo image height or width if fixed */
+  height: 28px;
+  display: block;
+}
+
 /* Info Page Specific Styles */
 .info-page {
   background-color: var(--Clean-Slate, #181818);
