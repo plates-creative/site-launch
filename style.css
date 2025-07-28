@@ -2,14 +2,6 @@
    Global Typography
 -------------------------- */
 
-@font-face {
-  font-family: "Geist Mono";
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-  src: local("Geist Mono");
-}
-
 .geist-mono {
   font-family: "Geist Mono", monospace;
   font-optical-sizing: auto;
@@ -78,8 +70,9 @@ header {
 
 .nav-left,
 .nav-right {
-  display: flex;
-  align-items: center;
+   font-family: "Geist Mono", monospace;
+   display: flex;
+   align-items: center;
 }
 
 nav a {
