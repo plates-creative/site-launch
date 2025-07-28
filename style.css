@@ -75,6 +75,14 @@ header {
    align-items: center;
 }
 
+nav a,
+nav a:visited,
+nav a:hover,
+nav a:focus,
+nav a:active {
+  text-decoration: none;
+}
+
 nav a {
   font-family: "Geist Mono", monospace;
   font-size: 16px;
@@ -82,13 +90,11 @@ nav a {
   letter-spacing: 0.32px;
   line-height: 120%;
   color: var(--Clean-Slate, #181818); /* black default */
-  text-decoration: none;
 }
 
 /* Info page override */
 .info-page nav a {
   color: var(--plates-pink-digital, #FF3EB5);
-  text-decoration: none;
 }
 
 .logo img {
