@@ -69,8 +69,6 @@ nav a {
 
 @media (min-width: 768px) {
   .nav-container {
-    top: 40px;
-    padding: 0 40px;
   }
 }
 
