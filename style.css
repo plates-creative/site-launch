@@ -46,32 +46,13 @@ header {
   z-index: 1000;
 }
 
-.logo img {
-  height: 28px; /* Adjust as needed for your design */
-  display: block;
-}
-
 .nav-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1280px;
   margin: 0 auto;
   width: 100%
 }
-
-@media (min-width: 768px) {
-  .nav-container {
-    padding-left: 40px;
-    padding-right: 40px;
-  }
-}
-
-.logo img {
-  height: 24px; /* or whatever works visually */
-}
-
-
 
 nav a {
   color: var(--Clean-Slate, #181818);
@@ -83,6 +64,21 @@ nav a {
   line-height: 120%; /* 19.2px */
   letter-spacing: 0.32px;
   text-decoration: none;
+}
+.logo img {
+  height: 28px; /* Adjust as needed for your design */
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .nav-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+.logo img {
+  height: 24px; /* or whatever works visually */
 }
 
 
