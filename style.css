@@ -104,9 +104,6 @@ nav a {
 
 .logo,
 .logo-spacer {
-  position: absolute;
-  top: 0;
-  left: 0;
   height: 28px;
   display: flex;
   align-items: center;
