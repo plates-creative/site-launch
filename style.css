@@ -62,9 +62,47 @@ nav a {
   letter-spacing: 0.32px;
   text-decoration: none;
 }
+
 .logo img {
   height: 28px; /* Adjust as needed for your design */
   display: block;
+}
+
+/* Info Page Specific Styles */
+.info-page {
+  background-color: var(--Clean-Slate, #181818);
+  color: var(--Neutral-002, #A3A4A7);
+}
+
+.close-link {
+  color: var(--plates-pink-digital, #FF3EB5);
+  font-family: 'Geist Mono', monospace;
+  font-size: 1rem;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+}
+
+.info-content {
+  padding: 120px 40px 40px 40px; /* top padding allows for nav spacing */
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.info-description p {
+  font-size: 1.8rem;
+  line-height: 1.5;
+  margin-bottom: 2rem;
+}
+
+.info-inquiry-labels p {
+  font-family: "Geist Mono", monospace;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.info-email p {
+  font-size: 1.5rem;
+  color: var(--Neutral-002, #A3A4A7);
 }
 
 @media (min-width: 768px) {
