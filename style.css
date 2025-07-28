@@ -68,6 +68,10 @@ header {
   padding: 0;
 }
 
+.nav-container a{
+   text-decoration: none;
+}
+
 .nav-left,
 .nav-right {
    font-family: "Geist Mono", monospace;
