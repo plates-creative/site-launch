@@ -34,9 +34,16 @@ pg.pixelDensity(window.devicePixelRatio || 1);
 function draw() {
   background(255, 62, 181);
 
-  // Move text with mouse
-  let tx = map(mouseX, 0, width, -width / 4, width / 4);
-  let ty = map(mouseY, 0, height, -height / 4, height / 4);
+  // Move text with mouse or touch on mobile
+let tx, ty;
+
+if (touches.length > 0) {
+  tx = map(touchX, 0, width, -width / 4, width / 4);
+  ty = map(touchY, 0, height, -height / 4, height / 4);
+} else {
+  tx = map(mouseX, 0, width, -width / 4, width / 4);
+  ty = map(mouseY, 0, height, -height / 4, height / 4);
+}
 
   // Draw text to offscreen buffer
   pg.clear();
