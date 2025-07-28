@@ -74,3 +74,13 @@ nav a {
 canvas {
   display: block;
 }
+
+@media (max-width: 600px) {
+  .logo img {
+    height: 22px;
+  }
+
+  nav a {
+    font-size: 1rem;
+  }
+}
