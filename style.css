@@ -41,7 +41,6 @@ header {
   padding: 40px;
   display: flex;
   box-sizing: border-box;
-  justify-content: space-between;
   background: transparent;
   z-index: 1000;
 }
