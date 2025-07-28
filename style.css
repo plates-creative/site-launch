@@ -48,9 +48,9 @@ header {
 
 .nav-container {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   width: 100%
+  margin: 0 auto;
 }
 
 nav a {
@@ -70,10 +70,14 @@ nav a {
   display: block;
 }
 
+.logo,
 .logo-spacer {
-  width: 28px; /* Same as your logo image height or width if fixed */
+  position: absolute;
+  left: 0;
+  top: 0;
   height: 28px;
-  display: block;
+  display: flex;
+  align-items: center;
 }
 
 /* Info Page Specific Styles */
