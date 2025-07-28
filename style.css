@@ -88,6 +88,7 @@ nav a {
 /* Info page override */
 .info-page nav a {
   color: var(--plates-pink-digital, #FF3EB5);
+  text-decoration: none;
 }
 
 .logo img {
