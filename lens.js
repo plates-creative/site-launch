@@ -1,35 +1,50 @@
 let lensShader;
 let pg;
+let ownersFont;
 
 function preload() {
+  ownersFont = loadFont('OwnersTRIAL-Medium.otf');
   lensShader = loadShader('shader.vert', 'shader.frag');
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
-  pg = createGraphics(windowWidth, windowHeight); // Use default 2D renderer for text
-  pg.pixelDensity(1);
+
+  pg = createGraphics(windowWidth, windowHeight); // Use default 2D renderer
+ pg.pixelDensity(window.devicePixelRatio || 1);
   pg.textSize(32);
   pg.textAlign(CENTER, CENTER);
-  pg.textFont('monospace');
+  pg.textFont(ownersFont);
+  pg.smooth();
+
   noStroke();
   textureMode(NORMAL);
 }
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight, WEBGL);
+
+  pg = createGraphics(windowWidth, windowHeight);
+pg.pixelDensity(window.devicePixelRatio || 1);
+  pg.textSize(32);
+  pg.textAlign(CENTER, CENTER);
+  pg.textFont(ownersFont); // Fix: use loaded font here too
+  pg. smooth();
+}
 
 function draw() {
-  background(255, 62,  181);
+  background(255, 62, 181);
 
   // Move text with mouse
   let tx = map(mouseX, 0, width, -width / 4, width / 4);
   let ty = map(mouseY, 0, height, -height / 4, height / 4);
 
-  // Draw text into buffer
+  // Draw text to offscreen buffer
   pg.clear();
-  pg.background(255, 62,  181);
+  pg.background(255, 62, 181);
   pg.fill(0);
-  pg.text('PART STUDIO,', pg.width / 2 + tx, pg.height / 2 + ty - 20);
-  pg.text('PART THOUGHT', pg.width / 2 + tx, pg.height / 2 + ty + 20);
-  pg.text('EXPERIMENT', pg.width / 2 + tx, pg.height / 2 + ty + 60);
+pg.text('PART      STUDIO,', pg.width / 2 + tx, pg.height / 2 + ty - 15);
+  pg.text('PART THOUGHT', pg.width / 2 + tx, pg.height / 2 + ty + 15);
+  pg.text('EXPERIMENT', pg.width / 2 + tx, pg.height / 2 + ty + 45);
 
   // Apply shader
   shader(lensShader);
@@ -39,21 +54,11 @@ function draw() {
   lensShader.setUniform('uLensRadius', min(width, height) * 0.45);
   lensShader.setUniform('uAspect', width / height);
 
-  // Fullscreen quad in clip space
- beginShape(TRIANGLE_STRIP);
-vertex(-1, -1, 0, 1); // bottom-left
-vertex(1, -1, 1, 1);  // bottom-right
-vertex(-1, 1, 0, 0);  // top-left
-vertex(1, 1, 1, 0);   // top-right
-endShape();
-
-}
-
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight, WEBGL);
-  pg = createGraphics(windowWidth, windowHeight); // Stay in 2D mode
-  pg.pixelDensity(1);
-  pg.textSize(32);
-  pg.textAlign(CENTER, CENTER);
-  pg.textFont('monospace');
+  // Fullscreen quad
+  beginShape(TRIANGLE_STRIP);
+  vertex(-1, -1, 0, 1);
+  vertex(1, -1, 1, 1);
+  vertex(-1, 1, 0, 0);
+  vertex(1, 1, 1, 0);
+  endShape();
 }
