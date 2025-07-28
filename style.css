@@ -37,9 +37,9 @@ p {
 
 header {
   position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  padding: 40px;
-  display: flex;
   box-sizing: border-box;
   background: transparent;
   z-index: 1000;
@@ -47,9 +47,16 @@ header {
 
 .nav-container {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  width: 100%
   margin: 0 auto;
+  width: 100%;
+}
+
+.nav-left,
+.nav-right {
+  display: flex;
+  align-items: center;
 }
 
 nav a {
@@ -87,10 +94,14 @@ nav a {
 
 .close-link {
   color: var(--plates-pink-digital, #FF3EB5);
-  font-family: 'Geist Mono', monospace;
-  font-size: 1rem;
+  text-align: right;
+  font-family: "Geist Mono";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%; /* 19.2px */
+  letter-spacing: 0.32px;
   text-decoration: none;
-  letter-spacing: 0.5px;
 }
 
 .info-content {
