@@ -54,11 +54,24 @@ header {
 .nav-container {
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
   align-items: center;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
 }
+
+@media (min-width: 768px) {
+  .nav-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+.logo img {
+  height: 24px; /* or whatever works visually */
+}
+
 
 
 nav a {
