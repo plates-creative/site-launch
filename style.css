@@ -8,15 +8,35 @@
 
 html, body {
   color: var(--Neutral-002, #A3A4A7);
-  font-family: 'owners', sans-serif;
-  font-size: 30px;
+  font-family: Owners, sans-serif;
+  font-size: 18px;
   font-style: normal;
   font-weight: 400;
-  line-height: 100%; /* 30px */
-  letter-spacing: 0.6px;
+  line-height: 1.4;
+  letter-spacing: 0.3px;
   margin: 0;
   padding: 0;
 }
+
+h1, h2, h3 {
+  font-family: Owners, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin: 0 0 1rem 0;
+}
+
+p {
+  font-family: owners-text, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.6;
+  margin: 0 0 1rem 0;
+}
+
+.geist-mono {
+  font-family: "Geist Mono", monospace;
+}
+
 
 canvas {
   display: block;
