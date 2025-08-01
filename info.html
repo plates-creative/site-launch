@@ -19,6 +19,17 @@
     <script src="https://cdn.jsdelivr.net/npm/p5@1.11.0/lib/p5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.11.0/lib/addons/p5.dom.min.js"></script>
     <script src="suppress-links.js"></script>
+
+    <!-- Google tag (gtag.js) -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-2BK93H9RBS"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-2BK93H9RBS');
+      </script>
+
     <script>
       function getText(event, el) {
 
@@ -107,5 +118,20 @@
       <script src="time.js"></script>
     </footer>
     <script src="suppress-links.js"></script>
+
+<!-- COOKIE BANNER -->
+    <div id="cookiebanner" lang="en" dir="ltr" ng-non-bindable>
+      <div id="c-left">
+        <p class="c-header">We use cookies.</p>
+    </div>
+    <div id="c-right">
+      <a href="javascript:void(0)" onclick="onAcceptCookies()" class="c-button">(Cool)</a>
+    </div>
+    <div style="clear:both"></div>
+    </div>
+
+<!-- Load the external script -->
+    <script src="cookie-consent.js"></script>
+
   </body>
 </html>

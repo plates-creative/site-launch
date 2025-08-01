@@ -182,8 +182,7 @@ nav a:active {
   color: var(--Clean-Slate, #181818);
   text-decoration: none;
   font-family: "Geist Mono", monospace;
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 0.875rem;
   letter-spacing: 0.32px;
   transition: color 0.3s ease;
 }
@@ -193,7 +192,7 @@ nav a:active {
 }
 
 .nav-link:hover {
-  color: white;
+  color: #DBDBDB;
 }
 
 /* Info page override */
@@ -202,7 +201,7 @@ nav a:active {
 }
 
 .info-page nav a:hover {
-  color: white;
+  color: #DBDBDB;
 }
 
 .logo img {
@@ -232,6 +231,7 @@ nav a:active {
   background: transparent;
   color: var(--Neutral-002, #A3A4A7);
   font-family: 'Geist Mono', monospace;
+  font-size: 0.875rem;
   width: 100%;
   position: relative;
   bottom: 0;
@@ -322,7 +322,7 @@ canvas {
   }
 
   .nav-link{
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 
 }
@@ -341,7 +341,7 @@ canvas {
   }
 
   .nav-link{
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 
   .site-footer{
@@ -408,3 +408,139 @@ canvas {
   color: var(--Clean-Slate, #181818);
 }
 
+/* -------------------------
+   Cookie Banner
+-------------------------- */
+
+/* Base styles */
+#cookiebanner {
+  font-family: "Geist Mono", monospace;
+  font-size: 0.875rem;
+  box-sizing: border-box;
+  background-color: #181818;
+  position: fixed;
+  z-index: 2147483645;
+  bottom: -800px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 16px 40px;
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  border-radius: 0px;
+  transition: bottom 0.4s ease;
+}
+
+#cookiebanner.show {
+  bottom: 0;
+}
+
+#cookiebanner.hide {
+  bottom: -800px;
+}
+
+#c-left {
+  flex: 1 1 auto;
+  text-align: left;
+}
+
+#c-right {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 20px; /* replaces the old gap */
+}
+
+#cookiebanner p {
+  font-family: "Geist Mono", monospace;
+  color: #A3A4A7;
+  margin: 0;
+}
+
+#cookiebanner .c-header {
+
+}
+
+#cookiebanner p.c-message {
+
+}
+
+#cookiebanner a.c-button {
+  color: #FF3EB5;
+  border-radius: 0px;
+  background-color: transparent;
+  padding: 16px 0px 16px 0px;
+  text-decoration: none;
+  display: inline-block;
+  transition: 0.2s;
+}
+
+#cookiebanner a.c-button:hover {
+
+}
+
+/* Mobile styles */
+@media screen and (max-width: 720px) {
+  #cookiebanner {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  #c-left,
+  #c-right {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  #cookiebanner a.c-button {
+    width: 100%;
+    margin-top: 12px;
+    padding: 10px 0;
+  }
+}
+
+
+/* Mobile styles */
+@media screen and (max-width: 720px) {
+  #cookiebanner {
+    width: 100vw;
+    left: 0;
+    transform: none;
+    border-radius: 0;
+    padding: 16px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  #c-left,
+  #c-right {
+    width: auto;
+    margin: 0;
+    padding: 0;
+  }
+
+  #cookiebanner p.c-message {
+    margin: 0;
+    line-height: 1;
+    font-size: 0.875rem;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  #cookiebanner a.c-button {
+    padding: 4px 14px;
+    font-size: 0.875rem;
+    vertical-align: middle;
+    display: inline-block;
+    position: relative;
+    top: 1px;
+    margin-top: 0px;
+  }
+}

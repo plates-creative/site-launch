@@ -1,10 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+
+    <!-- Primary Meta Tags -->
+    <title>Plates Studio</title>
+    <meta name="title" content="Plates Studio">
+    <meta name="description" content="A multi-disciplinary creative practice that crafts with substance and delivers taste.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://plates.studio/">
+    <meta property="og:title" content="Plates Studio">
+    <meta property="og:description" content="A multi-disciplinary creative practice that crafts with substance and delivers taste.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/plates-creative/site-launch/refs/heads/main/assets/share.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://plates.studio/">
+    <meta property="twitter:title" content="Plates Studio">
+    <meta property="twitter:description" content="A multi-disciplinary creative practice that crafts with substance and delivers taste.">
+    <meta property="twitter:image" content="https://raw.githubusercontent.com/plates-creative/site-launch/refs/heads/main/assets/share.png">
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-    <title>Plates Studio</title>
+    <!-- Google tag (gtag.js) -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-2BK93H9RBS"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-2BK93H9RBS');
+      </script>
 
     <!-- Local Styles -->
     <link rel="stylesheet" href="style.css">
@@ -70,5 +98,19 @@
       <script src="time.js"></script>
     
     </footer>
+
+<!-- COOKIE BANNER -->
+    <div id="cookiebanner" lang="en" dir="ltr" ng-non-bindable>
+      <div id="c-left">
+        <p class="c-header">We use cookies.</p>
+    </div>
+    <div id="c-right">
+      <a href="javascript:void(0)" onclick="onAcceptCookies()" class="c-button">(Cool)</a>
+    </div>
+    <div style="clear:both"></div>
+    </div>
+
+<!-- Load the external script -->
+    <script src="cookie-consent.js"></script>
   </body>
 </html>
