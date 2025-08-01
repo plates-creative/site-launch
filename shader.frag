@@ -27,7 +27,7 @@ void main() {
     vec2 distortedUV = center + (uv - center) * distortion;
 
     // Chromatic aberration
-    float caOffset = 0.0005;
+    float caOffset = 0.0002;
     vec4 r = texture2D(uTex, distortedUV + vec2(caOffset, 0.0));
     vec4 g = texture2D(uTex, distortedUV);
     vec4 b = texture2D(uTex, distortedUV - vec2(caOffset, 0.0));
