@@ -338,7 +338,8 @@ canvas {
 
 @media screen and (max-width: 720px) {
   .footer-logo {
-    margin-top: 1.5rem;
+    margin-top: 1rem;
+    margin: 1rem 0 1rem 0;
   }
 
   .footer-logo svg,
@@ -369,7 +370,7 @@ canvas {
   }
 
   html, body {
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .nav-link{
@@ -377,16 +378,16 @@ canvas {
   }
 
   .site-footer{
-    font-size: 14px;
+    font-size: 0.875rem;
     padding: 1rem;
   }
 
   .index-page .site-footer{
-    padding: 1rem;
+    padding: 0.9rem;
   }
 
   .info-content {
-    padding: 100px 20px 20px 20px;
+    padding: 100px 0.9rem 0 0.9rem;
   }
 
   .info-description {
