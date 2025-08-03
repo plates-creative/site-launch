@@ -225,8 +225,8 @@ nav a:active {
 ---------------------*/
 .site-footer {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: center;
   padding: 2rem 2.5rem;
   background: transparent;
   color: var(--Neutral-002, #A3A4A7);
@@ -237,6 +237,13 @@ nav a:active {
   bottom: 0;
   left: 0;
   z-index: 10;
+}
+
+.footer-bottom-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
 }
 
 .index-page .site-footer {
@@ -251,6 +258,20 @@ nav a:active {
   align-items: flex-end;
 }
 
+.footer-logo {
+  width: 100%;
+  text-align: center;
+  margin: 8rem 0 2rem 0; /* top | right/left | bottom */
+}
+
+.footer-logo svg,
+.footer-logo img {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
 /* -------------------------
    Info Page
 -------------------------- */
@@ -261,7 +282,7 @@ nav a:active {
 }
 
 .info-content {
-  padding: 120px 40px 40px 40px;
+  padding: 6rem 2.5rem 2.5rem 2.5rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -312,6 +333,17 @@ canvas {
 
   body {
     cursor: default;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .footer-logo {
+    margin-top: 1.5rem;
+  }
+
+  .footer-logo svg,
+  .footer-logo img {
+    max-width: 90vw;
   }
 }
 
