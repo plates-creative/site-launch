@@ -72,13 +72,19 @@ body, p, h1, h2, h3 {
   font-weight: 400;
 }
 
-h1, h2, h3 {
+h1, h2, h3, ul {
   font-family: "owners", sans-serif;
   letter-spacing: 0.5px;
   margin: 0 0 1rem 0;
+  font-size: 4rem;
+  line-height: 100%;
 }
 
-p {
+h2{
+  opacity: 0.5;
+}
+
+p, {
   font-family: "owners", sans-serif;
   line-height: 100%;
   margin: 0 0 1rem 0;
@@ -293,6 +299,17 @@ nav a:active {
   text-align: left;
 }
 
+.info-description > * + * {
+  margin-top: 1.5rem;
+}
+
+
+.info-description h1 {
+  font-size: 4rem;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+
 .info-description p {
   font-family: "owners", sans-serif;
   font-size: 4rem;
@@ -346,11 +363,25 @@ canvas {
   .footer-logo img {
     max-width: 90vw;
   }
+
+    .footer-section.copyright {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .footer-section.copyright .divider {
+    display: none;
+  }
+
 }
 
 @media (min-width: 431px) and (max-width: 960px) {
  
  .info-description p {
+    font-size: 3.275rem;
+  }
+
+  h1 {
     font-size: 3.275rem;
   }
 
@@ -373,6 +404,10 @@ canvas {
     font-size: 16px;
   }
 
+  h1 {
+        font-size: 1.875rem;
+  }
+
   .nav-link{
     font-size: 0.875rem;
   }
@@ -392,6 +427,9 @@ canvas {
 
   .info-description {
     width: 100%;
+  }
+ .info-description h1, h2, h3, ul {
+    font-size: 1.875rem;
   }
 
   .info-description p {
