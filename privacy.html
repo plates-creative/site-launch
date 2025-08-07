@@ -46,11 +46,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
 
-    <!-- Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/addons/p5.sound.min.js"></script>
-
-
     <!-- Vercel Analytics -->
     <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
     <script defer src="/_vercel/insights/script.js"></script>
@@ -135,28 +130,26 @@
         }
       });
     </script>
-    <footer class="site-footer">
+<footer class="site-footer">
 
-      <div class="footer-logo">
-        <img src="/assets/plates-footer.svg" alt="Plates Studio Logo">
-      </div>
-      
-      <div class="footer-bottom-row">
-        <div class="footer-section timezones">
-          <span id="time-atx">ATX --:--</span>
-          <span>|</span>
-          <span id="time-sf">SF --:--</span>
-        </div>
+    <div class="footer-logo">
+    <img src="/assets/plates-footer.svg" alt="Plates Studio Logo">
+  </div>
+  
+  <div class="footer-left">
+    <span id="time-atx">ATX --:--</span>
+    <span class="divider">|</span>
+    <span id="time-sf">SF --:--</span>
+  </div>
 
-        <div class="footer-section copyright">
-          <a href="/privacy">Privacy</a>
-          <span class="divider">|</span>
-          <span>© Plates 2025</span>
-        </div>
-      </div>
-      
-      <script src="time.js"></script>
-    </footer>
+  <div class="footer-right">
+    <a href="/privacy" class="nav-link">Privacy</a>
+    <span class="divider">|</span>
+    <span>© Plates 2025</span>
+  </div>
+
+  <script src="time.js"></script>
+</footer>
     <script src="suppress-links.js"></script>
 
 <!-- COOKIE BANNER -->
