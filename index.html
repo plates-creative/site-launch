@@ -54,10 +54,12 @@
     <!-- Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/addons/p5.sound.min.js"></script>
+    <script src="typewriter.js" defer></script>
 
   </head>
 
   <body class="index-page">
+    <div class="page-wrap">
     <div id="custom-cursor"></div>
     <div id="canvas-container"></div>
     <header>
@@ -66,7 +68,7 @@
           <img src="assets/plates-logo.svg" alt="Plates Studio Logo">
         </div>
         <div class="nav-right">
-          <a href="/info" class="nav-link">(Info)</a>
+          <a href="/info" class="info-link">(Info)</a>
         </div>
       </div>
     </header>
@@ -91,26 +93,27 @@
       });
     </script>
 
-    <footer class="site-footer">
+<div class="footer-typewriter">
+  <span class="status-prefix">In the works: </span>
+  <span class="status-project" id="typewriter-text"></span><span class="cur">|</span>
+</div>
 
-      <div class="footer-bottom-row">
-        <div class="footer-section timezones">
-          <span id="time-atx">ATX --:--</span>
-          <span>|</span>
-          <span id="time-sf">SF --:--</span>
-        </div>
+<footer class="site-footer">
+  <div class="footer-left">
+    <span id="time-atx">ATX --:--</span>
+    <span class="divider">|</span>
+    <span id="time-sf">SF --:--</span>
+  </div>
 
-        <div class="footer-section copyright">
-          <a href="/privacy"class="nav-link">Privacy</a>
-          <span class="divider">|</span>
-          <span>© Plates 2025</span>
-        </div>
-      </div>
+  <div class="footer-right">
+    <a href="/privacy" class="nav-link">Privacy</a>
+    <span class="divider">|</span>
+    <span>© Plates 2025</span>
+  </div>
 
-      <script src="time.js"></script>
-    
-    </footer>
-
+  <script src="time.js"></script>
+</footer>
+</div>
 <!-- COOKIE BANNER -->
     <div id="cookiebanner" lang="en" dir="ltr" ng-non-bindable>
       <div id="c-left">

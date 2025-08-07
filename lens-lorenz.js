@@ -1,8 +1,3 @@
-if (!document.body.classList.contains('index-page')) {
-  console.log("Lens.js skipped (not index page)");
-  throw new Error("Not on index page"); // kills the sketch setup
-}
-
 let lensShader;
 let pg;
 let ownersFont;
@@ -15,10 +10,10 @@ let hasInteracted = false;
 
 // Lorenz system parameters
 let x = 0.1, y = 0, z = 0;
-const sigma = 7;     //X/Y reactivity
-const rho = 27;       //energy
-const beta = 0.5;   //vertical compression
-const dt = 0.01;      //overall speed
+const sigma = 7;      //reactivity to X/Y differences
+const rho = 25;       //energy
+const beta = 8 / 5;   //vertical compression, more = less
+const dt = 0.005;     //simulatino speed
 
 // Anchor position for mapping attractor
 let idleAnchorX = window.innerWidth / 2;
@@ -33,8 +28,6 @@ function setup() {
   let canvas = createCanvas(windowWidth, windowHeight, WEBGL);
   canvas.position(0, 0);
   canvas.style('z-index', '-1');
-  canvas.style('pointer-events', 'auto');
-  canvas.style('position', 'absolute');
 
   pg = createGraphics(windowWidth, windowHeight);
   pg.pixelDensity(window.devicePixelRatio || 1);
@@ -127,36 +120,22 @@ function mouseMoved() {
 
 function touchMoved() {
   if (touches.length > 0) {
-    const touch = touches[0];
-    if (touch.x >= 0 && touch.x <= width && touch.y >= 0 && touch.y <= height) {
-      activeX = touch.x;
-      activeY = touch.y;
-      lastInteractionTime = millis();
-      isIdle = false;
-      hasInteracted = true;
-      return false;  // only block when interacting
-    }
+    activeX = touches[0].x;
+    activeY = touches[0].y;
+    lastInteractionTime = millis();
+    isIdle = false;
+    hasInteracted = true;
   }
-  return true;
+  return false;
 }
 
 function touchStarted() {
   if (touches.length > 0) {
-    const touch = touches[0];
-    if (touch.x >= 0 && touch.x <= width && touch.y >= 0 && touch.y <= height) {
-      activeX = touch.x;
-      activeY = touch.y;
-      lastInteractionTime = millis();
-      isIdle = false;
-      hasInteracted = true;
-
-      const touchedElement = document.elementFromPoint(touch.x, touch.y);
-      if (touchedElement && touchedElement.tagName.toLowerCase() === 'a') {
-        return true; // allow link taps
-      }
-
-      return false; // only block interaction if not over a link
-    }
+    activeX = touches[0].x;
+    activeY = touches[0].y;
+    lastInteractionTime = millis();
+    isIdle = false;
+    hasInteracted = true;
   }
-  return true;
+  return false;
 }

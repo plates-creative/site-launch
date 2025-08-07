@@ -1,8 +1,3 @@
-if (!document.body.classList.contains('index-page')) {
-  console.log("Lens.js skipped (not index page)");
-  throw new Error("Not on index page"); // kills the sketch setup
-}
-
 let lensShader;
 let pg;
 let ownersFont;
@@ -10,19 +5,17 @@ let scaleFactor = 1;
 let activeX = window.innerWidth / 2;
 let activeY = window.innerHeight / 2;
 let isIdle = true;
+let idleStartX = window.innerWidth / 2;
+let idleStartY = window.innerHeight / 2;
+let idleStartTime = 0;
 let lastInteractionTime = 0;
 let hasInteracted = false;
 
-// Lorenz system parameters
-let x = 0.1, y = 0, z = 0;
-const sigma = 7;     //X/Y reactivity
-const rho = 27;       //energy
-const beta = 0.5;   //vertical compression
-const dt = 0.01;      //overall speed
-
-// Anchor position for mapping attractor
-let idleAnchorX = window.innerWidth / 2;
-let idleAnchorY = window.innerHeight / 2;
+// Ambient motion parameters locked per idle cycle
+let idleSpeedX = 0;
+let idleSpeedY = 0;
+let idleAmpX = 0;
+let idleAmpY = 0;
 
 function preload() {
   ownersFont = loadFont('assets/owners-medium.otf');
@@ -32,9 +25,7 @@ function preload() {
 function setup() {
   let canvas = createCanvas(windowWidth, windowHeight, WEBGL);
   canvas.position(0, 0);
-  canvas.style('z-index', '-1');
-  canvas.style('pointer-events', 'auto');
-  canvas.style('position', 'absolute');
+  canvas.style('z-index', '1');
 
   pg = createGraphics(windowWidth, windowHeight);
   pg.pixelDensity(window.devicePixelRatio || 1);
@@ -52,6 +43,15 @@ function setup() {
   textureMode(NORMAL);
 
   lastInteractionTime = millis();
+  idleStartTime = millis();
+
+  // Start ambient motion immediately
+  let t = idleStartTime * 0.001;
+  idleSpeedX = 0.7 + sin(t * 0.15) * 0.15;
+  idleSpeedY = 0.65 + cos(t * 0.11) * 0.15;
+  idleAmpX = 60 + sin(t * 0.07) * 20;
+  idleAmpY = 65 + cos(t * 0.09) * 25;
+
   setAttributes('antialias', true);
   frameRate(60);
 }
@@ -70,27 +70,28 @@ function draw() {
   background(255, 62, 181);
   let now = millis();
 
-  // Re-enter idle mode after short pause
-  if (!isIdle && now - lastInteractionTime > 300) {
-    isIdle = true;
-    idleAnchorX = activeX;
-    idleAnchorY = activeY;
-  }
-
   if (isIdle) {
-    // Lorenz attractor integration step
-    let dx = sigma * (y - x) * dt;
-    let dy = (x * (rho - z) - y) * dt;
-    let dz = (x * y - beta * z) * dt;
-
-    x += dx;
-    y += dy;
-    z += dz;
-
-    // Map Lorenz values to screen position around the last interaction anchor
-    activeX = idleAnchorX + map(x, -20, 20, -100, 100);
-    activeY = idleAnchorY + map(z, 0, 50, -75, 75);
+    let t = (now - idleStartTime) * 0.001;
+    activeX = idleStartX + sin(t * idleSpeedX) * idleAmpX;
+    activeY = idleStartY + cos(t * idleSpeedY) * idleAmpY;
   }
+
+  if (!isIdle && now - lastInteractionTime > 300) {
+  isIdle = true;
+  idleStartTime = now;
+
+  // Reset idle origin to current position
+  idleStartX = activeX;
+  idleStartY = activeY;
+
+  // Lock new motion parameters
+  let t = now * 0.001;
+  idleSpeedX = 0.7 + sin(t * 0.15) * 0.15;
+  idleSpeedY = 0.65 + cos(t * 0.11) * 0.15;
+  idleAmpX = 60 + sin(t * 0.07) * 20;
+  idleAmpY = 65 + cos(t * 0.09) * 25;
+}
+
 
   let tx = map(activeX, 0, width, -width / 4, width / 4);
   let ty = map(activeY, 0, height, -height / 4, height / 4);
@@ -127,36 +128,22 @@ function mouseMoved() {
 
 function touchMoved() {
   if (touches.length > 0) {
-    const touch = touches[0];
-    if (touch.x >= 0 && touch.x <= width && touch.y >= 0 && touch.y <= height) {
-      activeX = touch.x;
-      activeY = touch.y;
-      lastInteractionTime = millis();
-      isIdle = false;
-      hasInteracted = true;
-      return false;  // only block when interacting
-    }
+    activeX = touches[0].x;
+    activeY = touches[0].y;
+    lastInteractionTime = millis();
+    isIdle = false;
+    hasInteracted = true;
   }
-  return true;
+  return false;
 }
 
 function touchStarted() {
   if (touches.length > 0) {
-    const touch = touches[0];
-    if (touch.x >= 0 && touch.x <= width && touch.y >= 0 && touch.y <= height) {
-      activeX = touch.x;
-      activeY = touch.y;
-      lastInteractionTime = millis();
-      isIdle = false;
-      hasInteracted = true;
-
-      const touchedElement = document.elementFromPoint(touch.x, touch.y);
-      if (touchedElement && touchedElement.tagName.toLowerCase() === 'a') {
-        return true; // allow link taps
-      }
-
-      return false; // only block interaction if not over a link
-    }
+    activeX = touches[0].x;
+    activeY = touches[0].y;
+    lastInteractionTime = millis();
+    isIdle = false;
+    hasInteracted = true;
   }
-  return true;
+  return false;
 }
