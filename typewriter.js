@@ -1,5 +1,4 @@
 const phrases = [
-  "an AI-powered app for finding frequencies",
   "a mythical brand for engineered wonder",
   "a motion study of memory and meaning",
   "a new site shaped by what's next (soon)",
