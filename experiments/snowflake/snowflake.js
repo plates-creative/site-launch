@@ -43,9 +43,9 @@ let newSymmetry = NUM_SYMMETRY;
 
 // ---------- COLORS (tap-to-cycle) ----------
 const MODES = [
-  { key: "pink",  bg: "#FF3EB5", shape: "#181818" },
   { key: "black", bg: "#181818", shape: "#FF3EB5" },
-  { key: "white", bg: "#F8F7F3", shape: "#181818" },
+  { key: "pink",  bg: "#FF3EB5", shape: "#181818" },
+  { key: "white", bg: "#DBDBDB", shape: "#181818" },
 ];
 let modeIndex = 0;
 let bgColor = MODES[modeIndex].bg;
@@ -114,10 +114,17 @@ function cycleMode(){
 }
 
 function applyModeToPage(){
-  document.body.style.backgroundColor = bgColor;
+  const mode = MODES[modeIndex];
+
+  // CSS owns the background now; this keeps it in sync
+  document.body.style.backgroundColor = mode.bg;
+  document.body.dataset.theme = mode.key;
+
+  // Optional: remove if you’re not using these anywhere
   document.body.classList.remove("mode-pink","mode-black","mode-white");
-  document.body.classList.add(`mode-${MODES[modeIndex].key}`);
+  document.body.classList.add(`mode-${mode.key}`);
 }
+
 
 // ---------- RESIZE ----------
 function windowResized(){
@@ -210,7 +217,7 @@ function getOpaqueBounds(img, alphaThreshold=1){
 
 // ---------- DRAW ----------
 function draw(){
-  background(bgColor);
+  clear();
   translate(width/2, height/2);
   noStroke();
 

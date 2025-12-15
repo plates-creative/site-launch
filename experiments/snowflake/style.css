@@ -1,7 +1,7 @@
 :root{
   --pink:#FF3EB5;
   --black:#181818;
-  --white:#F8F7F3;
+  --white:#DBDBDB;
 
   --ui-gap: 14px;
   --pad: 24px;
@@ -14,7 +14,7 @@ html, body{
   width:100%;
   margin:0;
   overflow:hidden;
-  background: var(--pink); /* JS will keep this in sync too */
+  background: var(--black); /* JS will keep this in sync too */
   font-family: "owners", sans-serif;
 }
 
@@ -47,6 +47,10 @@ html, body{
   will-change: transform;
   animation: spin 28s linear infinite;
   pointer-events:auto; /* allow saveCanvas interactions if needed */
+}
+
+canvas {
+  background: transparent;
 }
 
 @keyframes spin{
@@ -99,19 +103,13 @@ html, body{
   appearance:none;
   border:0;
   background: transparent;
-  padding: 10px;
-  border-radius: 999px;
   cursor:pointer;
   line-height:0;
   display:flex;
   align-items:center;
   justify-content:center;
-  opacity:0.92;
-
-  /* optional subtle hit-area + glass */
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.18);
-  backdrop-filter: blur(12px);
+  opacity:1;
+  color: var(--black);
 }
 
 .icon-btn img{
@@ -140,3 +138,60 @@ body.mode-white .icon-btn{
   .logo img{ height: 22px; }
   .sketch-holder canvas{ max-width: 92vmin; max-height: 92vmin; }
 }
+
+/* ---------------- */
+/* BLACK BACKGROUND */
+/* ---------------- */
+body[data-theme="black"] {
+  background-color: #181818;
+}
+
+body[data-theme="black"] .icon-logo,
+body[data-theme="black"] .icon-randomize,
+body[data-theme="black"] .icon-color {
+  color: white;
+}
+
+body[data-theme="black"] .icon-save,
+body[data-theme="black"] .icon-info {
+  color: #FF3EB5;
+}
+
+
+/* ---------------- */
+/* PINK BACKGROUND */
+/* ---------------- */
+body[data-theme="pink"] {
+  background-color: #FF3EB5;
+}
+
+body[data-theme="pink"] .icon-logo,
+body[data-theme="pink"] .icon-randomize,
+body[data-theme="pink"] .icon-color {
+  color: #181818;
+}
+
+body[data-theme="pink"] .icon-save,
+body[data-theme="pink"] .icon-info {
+  color: white;
+}
+
+
+/* ---------------- */
+/* WHITE BACKGROUND */
+/* ---------------- */
+body[data-theme="white"] {
+  background-color: #DBDBDB;
+}
+
+body[data-theme="white"] .icon-logo,
+body[data-theme="white"] .icon-randomize,
+body[data-theme="white"] .icon-color {
+  color: #181818;
+}
+
+body[data-theme="white"] .icon-save,
+body[data-theme="white"] .icon-info {
+  color: #FF3EB5;
+}
+

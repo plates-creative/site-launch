@@ -22,16 +22,16 @@
     <link rel="icon" type="image/png" sizes="512x512" href="assets/android-chrome-512x512.png">
 
   <!-- p5 -->
+  <script src="./p5-pre.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
 </head>
 
 <body>
   <main class="stage">
     <!-- LEFT: Logo -->
-    <a class="logo" href="/" aria-label="Plates home">
-      <!-- Use your real SVG file if you want: <img src="assets/plates-logo.svg" alt="Plates" /> -->
-      <img src="snowflake/assets/plates-logo.svg" alt="Plates" />
-    </a>
+  <a class="logo icon-logo" href="/" aria-label="Plates home">
+    <img class="svg-icon" src="snowflake/assets/plates-logo.svg" alt="Plates" />
+  </a>
 
     <!-- CENTER: Canvas -->
     <div id="sketch-holder" class="sketch-holder"></div>
@@ -39,24 +39,24 @@
     <!-- RIGHT: Controls -->
     <nav class="controls" aria-label="Snowflake controls">
       <!-- top right -->
-      <a class="icon-btn top" href="" aria-label="Information">
-        <img src="snowflake/assets/icon-info.svg" alt="" />
-      </a>
+    <a class="icon-btn top icon-info" href="" aria-label="Information">
+      <img class="svg-icon" src="snowflake/assets/icon-info.svg" alt="" />
+    </a>
 
       <!-- middle right stack -->
       <div class="mid-stack">
-        <button class="icon-btn" id="btn-randomize" aria-label="Randomize">
-          <img src="snowflake/assets/icon-randomize.svg" alt="" />
+        <button class="icon-btn icon-randomize" id="btn-randomize" aria-label="Randomize">
+          <img class="svg-icon" src="snowflake/assets/icon-randomize.svg" alt="" />
         </button>
 
-        <button class="icon-btn" id="btn-color" aria-label="Toggle color mode">
-          <img src="snowflake/assets/icon-color.svg" alt="" />
+        <button class="icon-btn icon-color" id="btn-color" aria-label="Toggle color mode">
+          <img class="svg-icon" src="snowflake/assets/icon-color.svg" alt="" />
         </button>
       </div>
 
       <!-- bottom right -->
-      <button class="icon-btn bottom" id="btn-save" aria-label="Save snowflake">
-        <img src="snowflake/assets/icon-save.svg" alt="" />
+      <button class="icon-btn bottom icon-save" id="btn-save" aria-label="Save snowflake">
+        <img class="svg-icon" src="snowflake/assets/icon-save.svg" alt="" />
       </button>
     </nav>
   </main>
