@@ -578,42 +578,24 @@ function shuffledIndices(n){
 function saveHiResSnowflake(){
   const pg = createGraphics(EXPORT_SIZE, EXPORT_SIZE);
   pg.pixelDensity(1);
-
-  // If you want transparent export, use pg.clear() instead of background.
   pg.background(bgColor);
   pg.noStroke();
-
-  const scaleFactor = EXPORT_SIZE / CANVAS_SIZE;
+  pg.imageMode(CENTER);
 
   const tNow = millis() * 0.001;
   const rot = getCssRotationAngleRad();
+  const scaleFactor = EXPORT_SIZE / CANVAS_SIZE;
 
   pg.push();
   pg.translate(EXPORT_SIZE/2, EXPORT_SIZE/2);
   pg.rotate(rot);
-  pg.scale(scaleFactor);
 
   if (!IS_MOBILE && transitioning && oldPlacements && newPlacements){
     const fade = constrain(transitionProgress, 0, 1);
-
-    const armOld = createGraphics(EXPORT_SIZE, EXPORT_SIZE);
-    armOld.pixelDensity(1);
-    renderArmToExport(armOld, oldPlacements, tNow, 255*(1-fade), true);
-    stampArmExport(pg, armOld, oldSymmetry);
-    armOld.remove();
-
-    const armNew = createGraphics(EXPORT_SIZE, EXPORT_SIZE);
-    armNew.pixelDensity(1);
-    renderArmToExport(armNew, newPlacements, tNow, 255*fade, true);
-    stampArmExport(pg, armNew, newSymmetry);
-    armNew.remove();
-
+    drawSnowflakeToExport(pg, oldPlacements, tNow, 255*(1-fade), oldSymmetry, true, scaleFactor);
+    drawSnowflakeToExport(pg, newPlacements, tNow, 255*fade, newSymmetry, true, scaleFactor);
   } else {
-    const armOne = createGraphics(EXPORT_SIZE, EXPORT_SIZE);
-    armOne.pixelDensity(1);
-    renderArmToExport(armOne, placements, tNow, 255, !IS_MOBILE);
-    stampArmExport(pg, armOne, currentSymmetry);
-    armOne.remove();
+    drawSnowflakeToExport(pg, placements, tNow, 255, currentSymmetry, !IS_MOBILE, scaleFactor);
   }
 
   pg.pop();
@@ -621,6 +603,40 @@ function saveHiResSnowflake(){
   save(pg, "plates-snowflake-1080", "png");
   pg.remove();
 }
+
+function drawSnowflakeToExport(g, list, t, alphaValue, symmetry, includeBreath, scaleFactor){
+  if (!list) return;
+
+  // Use the same eased tint color if you have it; otherwise fall back to shapeColor.
+  const c = (typeof currentShapeCol !== "undefined" && currentShapeCol) ? currentShapeCol : color(shapeColor);
+  g.tint(red(c), green(c), blue(c), alphaValue);
+
+  for (let placement of list){
+    const shard = shards[placement.shardIndex];
+
+    const breath = includeBreath
+      ? (1 + placement.breathAmt * sin(t*0.7 + placement.phase))
+      : 1;
+
+    const px = placement.cx * breath * scaleFactor;
+    const py = placement.cy * breath * scaleFactor;
+
+    const w = shard.w * placement.scale * scaleFactor;
+    const h = shard.h * placement.scale * scaleFactor;
+
+    for (let k=0; k<symmetry; k++){
+      g.push();
+      g.rotate((TWO_PI/symmetry) * k);
+      g.translate(px, py);
+      g.rotate(placement.rotation);
+      g.image(shard.img, 0, 0, w, h);
+      g.pop();
+    }
+  }
+
+  g.noTint();
+}
+
 
 
 function getCssRotationAngleRad(){
