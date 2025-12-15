@@ -96,7 +96,6 @@ canvas {
 .controls{
   position:fixed;
   right: var(--pad);
-  top:0;
   height:100vh;
   width: auto;
   z-index:10;
@@ -145,10 +144,25 @@ canvas {
 .icon-btn:active{ transform: scale(0.98); }
 .icon-btn:hover{ opacity:1; }
 
+/* Smooth color changes for inline SVG icons */
+.logo,
+.icon-btn {
+  transition: color 200ms ease;
+}
+
+/* (Optional) subtle “feel” on hover without looking button-y */
+@media (hover: hover) and (pointer: fine) {
+  .icon-btn:hover,
+  .logo:hover {
+    transition: color 200ms ease;
+  }
+}
+
+
 /* Responsive: on narrow screens, tuck logo up a bit or shrink */
 @media (max-width: 640px){
   :root{ --pad: 16px; --icon: 24px; }
-  .logo img{ height: 22px; }
+  .logo .svg-icon{ height: 22px; }
   .sketch-holder canvas{ max-width: 92vmin; max-height: 92vmin; }
 }
 
@@ -162,7 +176,7 @@ body[data-theme="black"] {
 body[data-theme="black"] .icon-logo,
 body[data-theme="black"] .icon-randomize,
 body[data-theme="black"] .icon-color {
-  color: white;
+  color: #DBDBDB;
 }
 
 body[data-theme="black"] .icon-save,
@@ -170,6 +184,19 @@ body[data-theme="black"] .icon-info {
   color: #FF3EB5;
 }
 
+/* BLACK THEME HOVERS */
+@media (hover: hover) and (pointer: fine) {
+  body[data-theme="black"] .icon-logo:hover,
+  body[data-theme="black"] .icon-randomize:hover,
+  body[data-theme="black"] .icon-color:hover {
+    color: #FF3EB5; /* white -> pink */
+  }
+
+  body[data-theme="black"] .icon-save:hover,
+  body[data-theme="black"] .icon-info:hover {
+    color: #DBDBDB; /* pink -> white */
+  }
+}
 
 /* ---------------- */
 /* PINK BACKGROUND */
@@ -186,9 +213,16 @@ body[data-theme="pink"] .icon-color {
 
 body[data-theme="pink"] .icon-save,
 body[data-theme="pink"] .icon-info {
-  color: white;
+  color: #181818;
 }
 
+/* PINK THEME HOVERS */
+@media (hover: hover) and (pointer: fine) {
+  body[data-theme="pink"] .logo:hover,
+  body[data-theme="pink"] .icon-btn:hover {
+    color: #DBDBDB;
+  }
+}
 
 /* ---------------- */
 /* WHITE BACKGROUND */
@@ -205,6 +239,60 @@ body[data-theme="white"] .icon-color {
 
 body[data-theme="white"] .icon-save,
 body[data-theme="white"] .icon-info {
-  color: #FF3EB5;
+  color: #181818;
 }
+
+/* WHITE THEME HOVERS */
+@media (hover: hover) and (pointer: fine) {
+  body[data-theme="white"] .logo:hover,
+  body[data-theme="white"] .icon-btn:hover {
+    color: #FF3EB5;
+  }
+}
+
+/* Mobile + vertical tablet layout:
+   - Logo top center
+   - Controls become bottom nav (info left, randomize/color center, save right)
+*/
+@media (max-width: 1024px) and (orientation: portrait){
+  /* Logo -> top center */
+  .logo{
+    left: 50%;
+    top: var(--pad);
+    transform: translateX(-50%);
+  }
+
+  /* Controls -> bottom bar */
+  .controls{
+    right: auto;
+    left: 0;
+    bottom: 0;
+    top: auto;
+
+    height: auto;
+    width: 100vw;
+
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 12px var(--pad);
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+
+  /* Middle stack becomes horizontal */
+  .mid-stack{
+    flex-direction: row;
+    gap: var(--ui-gap);
+  }
+
+  /* Optional: keep the canvas clear of the bottom bar + top logo */
+  .sketch-holder canvas{
+    max-width: 92vmin;
+    max-height: calc(92vmin - 96px);
+  }
+}
+
+
+
 
