@@ -105,20 +105,23 @@ canvas {
 
 /* RIGHT controls */
 .controls{
-  position:fixed;
+  position: fixed;
   right: var(--edge-desktop);
-  height:100dvh;
-  width: auto;
-  z-index:10;
+  top: var(--edge-desktop);
+  bottom: var(--edge-desktop);
 
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:space-between;
+  z-index: 10;
 
-  padding-top: var(--edge-desktop);
-  padding-bottom: var(--edge-desktop);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  /* remove these if present */
+  height: auto;
+  padding: 0;
 }
+
 
 .controls .top{
   align-self: center;
@@ -175,9 +178,16 @@ canvas {
 
 /* Responsive: on narrow screens, tuck logo up a bit or shrink */
 @media (max-width: 640px){
-  :root{ --pad: 16px; --icon: 24px; }
-  .logo .svg-icon{ height: 22px; }
-  .sketch-holder canvas{ max-width: 92vmin; max-height: 92vmin; }
+  :root{
+    --icon: 24px;
+  }
+  .logo .svg-icon{
+    height: 22px;
+  }
+  .sketch-holder canvas{
+    max-width: 92vmin;
+    max-height: 92vmin;
+  }
 }
 
 /* ---------------- */
