@@ -128,16 +128,6 @@ canvas {
 .icon-btn:active{ transform: scale(0.98); }
 .icon-btn:hover{ opacity:1; }
 
-/* Color-mode adjustments for UI legibility */
-body.mode-black .icon-btn,
-body.mode-pink .icon-btn{
-  color:#fff;
-}
-
-body.mode-white .icon-btn{
-
-}
-
 /* Responsive: on narrow screens, tuck logo up a bit or shrink */
 @media (max-width: 640px){
   :root{ --pad: 16px; --icon: 24px; }

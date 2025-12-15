@@ -3,6 +3,10 @@
 // Rotation is CSS-only (canvas animation).
 
 // ---------- CONFIG ----------
+window.addEventListener("DOMContentLoaded", () => {
+  inlineSvgs();
+});
+
 const EXPORT_SIZE = 1080;
 const CSS_ROTATION_SECONDS = 28; // must match CSS spin duration
 const MOBILE_BREAKPOINT = 1024;  // phone + tablet treated as static
@@ -81,7 +85,6 @@ function preload(){
 
 // ---------- SETUP ----------
 function setup(){
-  inlineSvgs();
   IS_MOBILE = windowWidth < MOBILE_BREAKPOINT;
 
   const sizeFactor = IS_MOBILE ? 0.86 : 0.90;
