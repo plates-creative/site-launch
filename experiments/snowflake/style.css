@@ -15,7 +15,7 @@ html, body{
   margin:0;
   overflow:hidden;
   background: var(--pink); /* JS will keep this in sync too */
-  font-family: system-ui, -apple-system, Segoe UI, Inter, sans-serif;
+  font-family: "owners", sans-serif;
 }
 
 /* Main stage */

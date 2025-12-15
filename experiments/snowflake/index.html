@@ -7,7 +7,19 @@
  	<meta charset="utf-8" />
   	<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 	<title>Plates — Shard Snowflake</title>
-	<link rel="stylesheet" href="style.css" />
+	<link rel="stylesheet" href="experiments/snowflake/style.css" />
+
+    <!-- Favicon: Modern + Broad Support -->
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link rel="manifest" href="assets/site.webmanifest">
+    <link rel="shortcut icon" href="assets/favicon.ico">
+
+    <!-- Android-specific PNGs -->
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/android-chrome-512x512.png">
 
   <!-- p5 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
@@ -18,7 +30,7 @@
     <!-- LEFT: Logo -->
     <a class="logo" href="/" aria-label="Plates home">
       <!-- Use your real SVG file if you want: <img src="assets/plates-logo.svg" alt="Plates" /> -->
-      <img src="assets/plates-logo.svg" alt="Plates" />
+      <img src="experiments/snowflake/assets/plates-logo.svg" alt="Plates" />
     </a>
 
     <!-- CENTER: Canvas -->
@@ -28,28 +40,28 @@
     <nav class="controls" aria-label="Snowflake controls">
       <!-- top right -->
       <a class="icon-btn top" href="" aria-label="Information">
-        <img src="assets/icon-info.svg" alt="" />
+        <img src="experiments/snowflake/assets/icon-info.svg" alt="" />
       </a>
 
       <!-- middle right stack -->
       <div class="mid-stack">
         <button class="icon-btn" id="btn-randomize" aria-label="Randomize">
-          <img src="assets/icon-randomize.svg" alt="" />
+          <img src="experiments/snowflake/assets/icon-randomize.svg" alt="" />
         </button>
 
         <button class="icon-btn" id="btn-color" aria-label="Toggle color mode">
-          <img src="assets/icon-color.svg" alt="" />
+          <img src="experiments/snowflake/assets/icon-color.svg" alt="" />
         </button>
       </div>
 
       <!-- bottom right -->
       <button class="icon-btn bottom" id="btn-save" aria-label="Save snowflake">
-        <img src="assets/icon-save.svg" alt="" />
+        <img src="experiments/snowflake/assets/icon-save.svg" alt="" />
       </button>
     </nav>
   </main>
 
-  <script src="snowflake.js"></script>
+  <script src="experiments/snowflake/snowflake.js"></script>
 </body>
 </html>
 
