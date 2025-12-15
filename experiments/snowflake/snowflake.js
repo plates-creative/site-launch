@@ -7,6 +7,8 @@ window.addEventListener("DOMContentLoaded", () => {
   inlineSvgs();
 });
 
+let armBufOld, armBufNew;
+
 const EXPORT_SIZE = 1080;
 const CSS_ROTATION_SECONDS = 28; // must match CSS spin duration
 const MOBILE_BREAKPOINT = 1024;  // phone + tablet treated as static
@@ -102,6 +104,12 @@ function setup(){
   cnv.parent("sketch-holder");
   cnv.elt.style.transformOrigin = "50% 50%";
 
+  armBufOld = createGraphics(CANVAS_SIZE, CANVAS_SIZE);
+  armBufNew = createGraphics(CANVAS_SIZE, CANVAS_SIZE);
+  armBufOld.pixelDensity(1);
+  armBufNew.pixelDensity(1);
+
+
   // Mobile/tablet: static p5
   if (IS_MOBILE) noLoop();
   else loop();
@@ -178,6 +186,12 @@ function windowResized(){
   CANVAS_SIZE = min(windowWidth, windowHeight) * sizeFactor;
 
   resizeCanvas(CANVAS_SIZE, CANVAS_SIZE);
+
+  armBufOld = createGraphics(CANVAS_SIZE, CANVAS_SIZE);
+  armBufNew = createGraphics(CANVAS_SIZE, CANVAS_SIZE);
+  armBufOld.pixelDensity(1);
+  armBufNew.pixelDensity(1);
+
 
   // Reprocess because baseScale uses CANVAS_SIZE
   processShards();
@@ -269,19 +283,32 @@ function draw(){
 
   // Mobile/tablet: static draw only
   if (IS_MOBILE){
-    drawSnowflake(placements, t, 255, currentSymmetry, false);
+    // render current arm once
+    renderArmTo(armBufNew, placements, t, 255, false);
+    // stamp it
+    stampArm(armBufNew, currentSymmetry, 255);
     return;
   }
 
-  // Desktop: breathing + crossfade
+  // Desktop: update shard tint easing
+  currentShapeCol = lerpColor(currentShapeCol, targetShapeCol, SHARD_COLOR_LERP);
+
+  // Desktop: breathing + (optional) crossfade
   if (!transitioning){
-    drawSnowflake(placements, t, 255, currentSymmetry, true);
+    renderArmTo(armBufNew, placements, t, 255, true);
+    stampArm(armBufNew, currentSymmetry, 255);
     return;
   }
 
   const fade = transitionProgress;
-  drawSnowflake(oldPlacements, t, 255*(1-fade), oldSymmetry, true);
-  drawSnowflake(newPlacements, t, 255*fade, newSymmetry, true);
+
+  // render both arms (still much cheaper than full snowflake)
+  renderArmTo(armBufOld, oldPlacements, t, 255*(1-fade), true);
+  renderArmTo(armBufNew, newPlacements, t, 255*fade, true);
+
+  // stamp each with its symmetry
+  stampArm(armBufOld, oldSymmetry, 255*(1-fade));
+  stampArm(armBufNew, newSymmetry, 255*fade);
 
   transitionProgress += 0.03;
   if (transitionProgress >= 1){
@@ -291,43 +318,108 @@ function draw(){
   }
 }
 
-function drawSnowflake(list, t, alphaValue, symmetry, includeBreath){
+
+function renderArmTo(g, list, t, alphaValue, includeBreath){
   if (!list) return;
 
-  // Desktop: ease shard tint toward target
-  if (!IS_MOBILE) {
-  currentShapeCol = lerpColor(currentShapeCol, targetShapeCol, SHARD_COLOR_LERP);
+  g.clear();
+  g.push();
+  g.translate(g.width/2, g.height/2);
+  g.noStroke();
+  g.imageMode(CENTER);
+
+  // tint color: use eased color on desktop, snap on mobile
+  let c;
+  if (IS_MOBILE) {
+    c = color(shapeColor);
   } else {
-    currentShapeCol = targetShapeCol;
+    c = currentShapeCol;
   }
 
-  // Apply tint with alpha
-  tint(red(currentShapeCol), green(currentShapeCol), blue(currentShapeCol), alphaValue);
+  g.tint(red(c), green(c), blue(c), alphaValue);
 
+  for (let p of list){
+    const shard = shards[p.shardIndex];
 
-  for (let placement of list){
-    const shard = shards[placement.shardIndex];
-
-    const breath = (includeBreath)
-      ? (1 + placement.breathAmt * sin(t*0.7 + placement.phase))
+    const breath = includeBreath
+      ? (1 + p.breathAmt * sin(t*0.7 + p.phase))
       : 1;
 
-    const px = placement.cx * breath;
-    const py = placement.cy * breath;
+    const px = p.cx * breath;
+    const py = p.cy * breath;
 
-    for (let k=0; k<symmetry; k++){
-      push();
-      rotate((TWO_PI/symmetry) * k);
-      translate(px, py);
-      rotate(placement.rotation);
-      imageMode(CENTER);
-      image(shard.img, 0, 0, shard.w*placement.scale, shard.h*placement.scale);
-      pop();
-    }
+    g.push();
+    g.translate(px, py);
+    g.rotate(p.rotation);
+    g.image(shard.img, 0, 0, shard.w * p.scale, shard.h * p.scale);
+    g.pop();
   }
 
-  noTint();
+  g.noTint();
+  g.pop();
 }
+
+function stampArm(armGfx, symmetry, alphaValue){
+  // We’re already translated to main canvas center in draw()
+  // If you want alpha control here too, you can apply globalAlpha, but
+  // we already baked alpha into the arm render tint.
+  for (let k = 0; k < symmetry; k++){
+    push();
+    rotate((TWO_PI / symmetry) * k);
+    imageMode(CENTER);
+    image(armGfx, 0, 0);
+    pop();
+  }
+}
+
+function renderArmToExport(g, list, t, alphaValue, includeBreath){
+  if (!list) return;
+
+  g.clear();
+  g.push();
+  g.translate(g.width/2, g.height/2);
+  g.noStroke();
+  g.imageMode(CENTER);
+
+  const c = color(shapeColor);
+  g.tint(red(c), green(c), blue(c), alphaValue);
+
+  // Important: bring export buffer into the same “unit space” as your main canvas
+  const sf = EXPORT_SIZE / CANVAS_SIZE;
+  g.scale(sf);
+
+  for (let p of list){
+    const shard = shards[p.shardIndex];
+
+    const breath = includeBreath
+      ? (1 + p.breathAmt * sin(t*0.7 + p.phase))
+      : 1;
+
+    const px = p.cx * breath;
+    const py = p.cy * breath;
+
+    g.push();
+    g.translate(px, py);
+    g.rotate(p.rotation);
+    g.image(shard.img, 0, 0, shard.w * p.scale, shard.h * p.scale);
+    g.pop();
+  }
+
+  g.noTint();
+  g.pop();
+}
+
+function stampArmExport(pg, armGfx, symmetry){
+  for (let k = 0; k < symmetry; k++){
+    pg.push();
+    pg.rotate((TWO_PI / symmetry) * k);
+    pg.imageMode(CENTER);
+    pg.image(armGfx, 0, 0);
+    pg.pop();
+  }
+}
+
+
 
 // ---------- RANDOMIZE ----------
 function startTransition(){
@@ -473,9 +565,12 @@ function shuffledIndices(n){
 }
 
 // ---------- HI-RES EXPORT THAT MATCHES WHAT YOU SEE ----------
+// ---------- HI-RES EXPORT THAT MATCHES WHAT YOU SEE ----------
 function saveHiResSnowflake(){
   const pg = createGraphics(EXPORT_SIZE, EXPORT_SIZE);
   pg.pixelDensity(1);
+
+  // If you want transparent export, use pg.clear() instead of background.
   pg.background(bgColor);
   pg.noStroke();
 
@@ -491,48 +586,36 @@ function saveHiResSnowflake(){
 
   if (!IS_MOBILE && transitioning && oldPlacements && newPlacements){
     const fade = constrain(transitionProgress, 0, 1);
-    drawSnowflakeTo(pg, oldPlacements, tNow, 255*(1-fade), oldSymmetry, true);
-    drawSnowflakeTo(pg, newPlacements, tNow, 255*fade, newSymmetry, true);
+
+    const armOld = createGraphics(EXPORT_SIZE, EXPORT_SIZE);
+    armOld.pixelDensity(1);
+    renderArmToExport(armOld, oldPlacements, tNow, 255*(1-fade), true);
+    stampArmExport(pg, armOld, oldSymmetry);
+    armOld.remove();
+
+    const armNew = createGraphics(EXPORT_SIZE, EXPORT_SIZE);
+    armNew.pixelDensity(1);
+    renderArmToExport(armNew, newPlacements, tNow, 255*fade, true);
+    stampArmExport(pg, armNew, newSymmetry);
+    armNew.remove();
+
   } else {
-    drawSnowflakeTo(pg, placements, tNow, 255, currentSymmetry, !IS_MOBILE);
+    const armOne = createGraphics(EXPORT_SIZE, EXPORT_SIZE);
+    armOne.pixelDensity(1);
+    renderArmToExport(armOne, placements, tNow, 255, !IS_MOBILE);
+    stampArmExport(pg, armOne, currentSymmetry);
+    armOne.remove();
   }
 
   pg.pop();
+
   save(pg, "plates-snowflake-1080", "png");
   pg.remove();
 }
+
 
 function getCssRotationAngleRad(){
   const phase = (millis()/1000) / CSS_ROTATION_SECONDS;
   const frac = phase - Math.floor(phase);
   return frac * TWO_PI;
-}
-
-function drawSnowflakeTo(g, list, t, alphaValue, symmetry, includeBreath){
-  if (!list) return;
-  const c = color(shapeColor);
-  g.tint(red(c), green(c), blue(c), alphaValue);
-
-  for (let placement of list){
-    const shard = shards[placement.shardIndex];
-
-    const breath = includeBreath
-      ? (1 + placement.breathAmt * sin(t*0.7 + placement.phase))
-      : 1;
-
-    const px = placement.cx * breath;
-    const py = placement.cy * breath;
-
-    for (let k=0; k<symmetry; k++){
-      g.push();
-      g.rotate((TWO_PI/symmetry) * k);
-      g.translate(px, py);
-      g.rotate(placement.rotation);
-      g.imageMode(CENTER);
-      g.image(shard.img, 0, 0, shard.w*placement.scale, shard.h*placement.scale);
-      g.pop();
-    }
-  }
-
-  g.noTint();
 }
