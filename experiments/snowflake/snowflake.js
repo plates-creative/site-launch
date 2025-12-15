@@ -14,6 +14,26 @@ let IS_MOBILE = false;
 // (since mobile is static). I’m leaving them “desktop-equal” by default.
 const MOBILE_PLACEMENT_LIMIT = 9999; // effectively no cap
 
+async function inlineSvgs() {
+  const imgs = document.querySelectorAll('img[data-inline-svg]');
+  await Promise.all([...imgs].map(async (img) => {
+    const res = await fetch(img.src);
+    const text = await res.text();
+    const svg = new DOMParser()
+      .parseFromString(text, "image/svg+xml")
+      .querySelector("svg");
+
+    if (!svg) return;
+
+    // Carry over classes from <img> to <svg>
+    svg.classList.add("svg-icon");
+    img.classList.forEach(cls => svg.classList.add(cls));
+
+    img.replaceWith(svg);
+  }));
+}
+
+
 // ---------- ASSET PATHS ----------
 let shardPaths = [
   "snowflake/assets/s_01.png","snowflake/assets/s_02.png","snowflake/assets/s_03.png","snowflake/assets/s_04.png",
@@ -61,6 +81,7 @@ function preload(){
 
 // ---------- SETUP ----------
 function setup(){
+  inlineSvgs();
   IS_MOBILE = windowWidth < MOBILE_BREAKPOINT;
 
   const sizeFactor = IS_MOBILE ? 0.86 : 0.90;

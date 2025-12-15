@@ -58,6 +58,13 @@ canvas {
   to{ transform: rotate(360deg); }
 }
 
+.svg-icon {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+
 /* LEFT logo */
 .logo{
   position:fixed;
@@ -128,8 +135,7 @@ body.mode-pink .icon-btn{
 }
 
 body.mode-white .icon-btn{
-  background: rgba(0,0,0,0.06);
-  border: 1px solid rgba(0,0,0,0.16);
+
 }
 
 /* Responsive: on narrow screens, tuck logo up a bit or shrink */
