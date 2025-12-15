@@ -106,8 +106,15 @@ function setup(){
 
   armBufOld = createGraphics(CANVAS_SIZE, CANVAS_SIZE);
   armBufNew = createGraphics(CANVAS_SIZE, CANVAS_SIZE);
-  armBufOld.pixelDensity(1);
-  armBufNew.pixelDensity(1);
+  
+  const pd = pixelDensity();   // whatever you set above (2 currently)
+  armBufOld.pixelDensity(pd);
+  armBufNew.pixelDensity(pd);
+
+  armBufOld.drawingContext.imageSmoothingEnabled = true;
+  armBufNew.drawingContext.imageSmoothingEnabled = true;
+
+
 
 
   // Mobile/tablet: static p5
@@ -189,8 +196,10 @@ function windowResized(){
 
   armBufOld = createGraphics(CANVAS_SIZE, CANVAS_SIZE);
   armBufNew = createGraphics(CANVAS_SIZE, CANVAS_SIZE);
-  armBufOld.pixelDensity(1);
-  armBufNew.pixelDensity(1);
+  const pd = pixelDensity();   // whatever you set above (2 currently)
+  armBufOld.pixelDensity(pd);
+  armBufNew.pixelDensity(pd);
+
 
 
   // Reprocess because baseScale uses CANVAS_SIZE
