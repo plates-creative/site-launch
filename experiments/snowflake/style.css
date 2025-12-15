@@ -1,0 +1,142 @@
+:root{
+  --pink:#FF3EB5;
+  --black:#181818;
+  --white:#F8F7F3;
+
+  --ui-gap: 14px;
+  --pad: 24px;
+  --icon: 24px;
+}
+
+/* Page */
+html, body{
+  height:100%;
+  width:100%;
+  margin:0;
+  overflow:hidden;
+  background: var(--pink); /* JS will keep this in sync too */
+  font-family: system-ui, -apple-system, Segoe UI, Inter, sans-serif;
+}
+
+/* Main stage */
+.stage{
+  position:relative;
+  height:100vh;
+  width:100vw;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* Canvas holder is dead-center */
+.sketch-holder{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none; /* controls should be tappable */
+}
+
+/* Let the canvas be responsive */
+.sketch-holder canvas{
+  display:block;
+  max-width: 90vmin;
+  max-height: 90vmin;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  animation: spin 28s linear infinite;
+  pointer-events:auto; /* allow saveCanvas interactions if needed */
+}
+
+@keyframes spin{
+  from{ transform: rotate(0deg); }
+  to{ transform: rotate(360deg); }
+}
+
+/* LEFT logo */
+.logo{
+  position:fixed;
+  left: var(--pad);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index:10;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+}
+
+.logo img{
+  height: 26px; /* tweak to taste */
+  width:auto;
+  display:block;
+  opacity:0.95;
+}
+
+/* RIGHT controls */
+.controls{
+  position:fixed;
+  right: var(--pad);
+  top:0;
+  height:100vh;
+  width: auto;
+  z-index:10;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  justify-content:space-between;
+  padding: var(--pad) 0;
+}
+
+.mid-stack{
+  display:flex;
+  flex-direction:column;
+  gap: var(--ui-gap);
+}
+
+.icon-btn{
+  appearance:none;
+  border:0;
+  background: transparent;
+  padding: 10px;
+  border-radius: 999px;
+  cursor:pointer;
+  line-height:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0.92;
+
+  /* optional subtle hit-area + glass */
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  backdrop-filter: blur(12px);
+}
+
+.icon-btn img{
+  height: var(--icon);
+  width:auto;
+  display:block;
+}
+
+.icon-btn:active{ transform: scale(0.98); }
+.icon-btn:hover{ opacity:1; }
+
+/* Color-mode adjustments for UI legibility */
+body.mode-black .icon-btn,
+body.mode-pink .icon-btn{
+  color:#fff;
+}
+
+body.mode-white .icon-btn{
+  background: rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.16);
+}
+
+/* Responsive: on narrow screens, tuck logo up a bit or shrink */
+@media (max-width: 640px){
+  :root{ --pad: 16px; --icon: 24px; }
+  .logo img{ height: 22px; }
+  .sketch-holder canvas{ max-width: 92vmin; max-height: 92vmin; }
+}

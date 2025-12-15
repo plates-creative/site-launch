@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<!--remove next line after site launch-->
+	<meta name="robots" content="noindex, nofollow">
+ 	
+ 	<meta charset="utf-8" />
+  	<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+	<title>Plates — Shard Snowflake</title>
+	<link rel="stylesheet" href="style.css" />
+
+  <!-- p5 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+</head>
+
+<body>
+  <main class="stage">
+    <!-- LEFT: Logo -->
+    <a class="logo" href="/" aria-label="Plates home">
+      <!-- Use your real SVG file if you want: <img src="assets/plates-logo.svg" alt="Plates" /> -->
+      <img src="assets/plates-logo.svg" alt="Plates" />
+    </a>
+
+    <!-- CENTER: Canvas -->
+    <div id="sketch-holder" class="sketch-holder"></div>
+
+    <!-- RIGHT: Controls -->
+    <nav class="controls" aria-label="Snowflake controls">
+      <!-- top right -->
+      <a class="icon-btn top" href="info.html" aria-label="Information">
+        <img src="assets/icon-info.svg" alt="" />
+      </a>
+
+      <!-- middle right stack -->
+      <div class="mid-stack">
+        <button class="icon-btn" id="btn-randomize" aria-label="Randomize">
+          <img src="assets/icon-randomize.svg" alt="" />
+        </button>
+
+        <button class="icon-btn" id="btn-color" aria-label="Toggle color mode">
+          <img src="assets/icon-color.svg" alt="" />
+        </button>
+      </div>
+
+      <!-- bottom right -->
+      <button class="icon-btn bottom" id="btn-save" aria-label="Save snowflake">
+        <img src="assets/icon-save.svg" alt="" />
+      </button>
+    </nav>
+  </main>
+
+  <script src="sketch.js"></script>
+</body>
+</html>
+
