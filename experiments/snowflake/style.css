@@ -92,7 +92,7 @@ canvas {
 /* LEFT logo */
 .logo{
   position:fixed;
-  left: var(--pad);
+  left: var(--edge-desktop);
   top: 50%;
   transform: translateY(-50%);
   z-index:10;
@@ -110,11 +110,14 @@ canvas {
   height:100dvh;
   width: auto;
   z-index:10;
+
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:space-between;
-  padding: var(--edge-desktop) 0;
+
+  padding-top: var(--edge-desktop);
+  padding-bottom: var(--edge-desktop);
 }
 
 .controls .top{
@@ -288,7 +291,8 @@ body[data-theme="white"] .icon-info {
     justify-content: space-between;
     align-items: center;
 
-    padding: 0 var(--edge-mobile);
+    padding-left: max(var(--edge-mobile), env(safe-area-inset-left));
+    padding-right: max(var(--edge-mobile), env(safe-area-inset-right));
     padding-bottom: env(safe-area-inset-bottom);
 
   }
