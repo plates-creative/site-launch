@@ -16,13 +16,13 @@ const MOBILE_PLACEMENT_LIMIT = 9999; // effectively no cap
 
 // ---------- ASSET PATHS ----------
 let shardPaths = [
-  "Shards/s_01.png","Shards/s_02.png","Shards/s_03.png","Shards/s_04.png",
-  "Shards/s_05.png","Shards/s_06.png","Shards/s_07.png","Shards/s_08.png",
-  "Shards/s_09.png","Shards/s_10.png","Shards/s_11.png","Shards/s_12.png",
-  "Shards/a_01.png","Shards/a_02.png","Shards/a_03.png","Shards/a_04.png",
-  "Shards/a_05.png","Shards/a_06.png","Shards/a_07.png","Shards/a_08.png",
-  "Shards/a_09.png","Shards/a_10.png","Shards/a_11.png","Shards/a_12.png",
-  "Shards/a_13.png","Shards/a_14.png",
+  "snowflake/assets/s_01.png","snowflake/assets/s_02.png","snowflake/assets/s_03.png","snowflake/assets/s_04.png",
+  "snowflake/assets/s_05.png","snowflake/assets/s_06.png","snowflake/assets/s_07.png","snowflake/assets/_08.png",
+  "snowflake/assets/s_09.png","snowflake/assets/s_10.png","snowflake/assets/s_11.png","snowflake/assets/s_12.png",
+  "snowflake/assets/a_01.png","snowflake/assets/a_02.png","snowflake/assets/a_03.png","snowflake/assets/a_04.png",
+  "snowflake/assets/a_05.png","snowflake/assets/a_06.png","snowflake/assets/a_07.png","snowflake/assets/a_08.png",
+  "snowflake/assets/a_09.png","snowflake/assets/a_10.png","snowflake/assets/a_11.png","snowflake/assets/a_12.png",
+  "snowflake/assets/a_13.png","snowflake/assets/a_14.png",
 ];
 
 let cnv;
