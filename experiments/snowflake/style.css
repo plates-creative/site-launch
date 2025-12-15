@@ -58,11 +58,24 @@ canvas {
   to{ transform: rotate(360deg); }
 }
 
-.svg-icon {
-  width: 24px;
-  height: 24px;
-  display: block;
+/* Base inline SVG: no forced size */
+.svg-icon{
+  display:block;
 }
+
+/* Control icons are 24px */
+.controls .svg-icon{
+  width: var(--icon);
+  height: var(--icon);
+}
+
+/* Logo is independently sized */
+.logo .svg-icon{
+  height: 26px;   /* tweak to taste */
+  width: auto;
+  opacity: 0.95;
+}
+
 
 
 /* LEFT logo */
@@ -78,12 +91,6 @@ canvas {
   text-decoration:none;
 }
 
-.logo img{
-  height: 26px; /* tweak to taste */
-  width:auto;
-  display:block;
-  opacity:0.95;
-}
 
 /* RIGHT controls */
 .controls{
@@ -95,10 +102,24 @@ canvas {
   z-index:10;
   display:flex;
   flex-direction:column;
-  align-items:flex-end;
+  align-items:center;
   justify-content:space-between;
   padding: var(--pad) 0;
 }
+
+.controls .top{
+  align-self: center;
+}
+
+.controls .mid-stack{
+  align-self: center;
+}
+
+.controls .bottom{
+  align-self: center;
+}
+
+
 
 .mid-stack{
   display:flex;
@@ -117,12 +138,8 @@ canvas {
   justify-content:center;
   opacity:1;
   color: var(--black);
-}
-
-.icon-btn img{
-  height: var(--icon);
-  width:auto;
-  display:block;
+  width: 40px;
+  height: 40px;
 }
 
 .icon-btn:active{ transform: scale(0.98); }
