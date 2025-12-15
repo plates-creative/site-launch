@@ -75,6 +75,12 @@ let modeIndex = 0;
 let bgColor = MODES[modeIndex].bg;
 let shapeColor = MODES[modeIndex].shape;
 
+// --- shard color easing (desktop only) ---
+let currentShapeCol;  // p5.Color
+let targetShapeCol;   // p5.Color
+const SHARD_COLOR_LERP = 0.14; // higher = faster (0.08–0.2 feels nice)
+
+
 // ---------- CANVAS ----------
 let CANVAS_SIZE = 800;
 
@@ -114,6 +120,11 @@ function setup(){
 
   applyModeToPage();
 
+  // init shard tint easing colors
+  currentShapeCol = color(shapeColor);
+  targetShapeCol  = color(shapeColor);
+
+
   if (IS_MOBILE) redraw();
 }
 
@@ -132,6 +143,15 @@ function cycleMode(){
   modeIndex = (modeIndex + 1) % MODES.length;
   bgColor = MODES[modeIndex].bg;
   shapeColor = MODES[modeIndex].shape;
+
+  // set easing target for shards
+  targetShapeCol = color(shapeColor);
+
+  // on mobile we’re static, so just snap current to target
+  if (IS_MOBILE) {
+    currentShapeCol = targetShapeCol;
+  }
+
   applyModeToPage();
 
   if (IS_MOBILE) redraw();
@@ -274,8 +294,16 @@ function draw(){
 function drawSnowflake(list, t, alphaValue, symmetry, includeBreath){
   if (!list) return;
 
-  const alphaHex = hex(floor(alphaValue), 2);
-  tint(shapeColor + alphaHex);
+  // Desktop: ease shard tint toward target
+  if (!IS_MOBILE) {
+  currentShapeCol = lerpColor(currentShapeCol, targetShapeCol, SHARD_COLOR_LERP);
+  } else {
+    currentShapeCol = targetShapeCol;
+  }
+
+  // Apply tint with alpha
+  tint(red(currentShapeCol), green(currentShapeCol), blue(currentShapeCol), alphaValue);
+
 
   for (let placement of list){
     const shard = shards[placement.shardIndex];

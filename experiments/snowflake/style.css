@@ -4,8 +4,11 @@
   --white:#DBDBDB;
 
   --ui-gap: 14px;
-  --pad: 24px;
   --icon: 24px;
+
+    /* Margins */
+  --edge-desktop: 20px;
+  --edge-mobile: 16px;
 }
 
 /* Page */
@@ -18,10 +21,18 @@ html, body{
   font-family: "owners", sans-serif;
 }
 
+/* Smooth theme transitions */
+body{
+  transition: background-color 260ms ease;
+}
+.logo, .icon-btn{
+  transition: color 260ms ease;
+}
+
 /* Main stage */
 .stage{
   position:relative;
-  height:100vh;
+  height:100dvh;
   width:100vw;
   display:flex;
   align-items:center;
@@ -95,15 +106,15 @@ canvas {
 /* RIGHT controls */
 .controls{
   position:fixed;
-  right: var(--pad);
-  height:100vh;
+  right: var(--edge-desktop);
+  height:100dvh;
   width: auto;
   z-index:10;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:space-between;
-  padding: var(--pad) 0;
+  padding: var(--edge-desktop) 0;
 }
 
 .controls .top{
@@ -258,26 +269,28 @@ body[data-theme="white"] .icon-info {
   /* Logo -> top center */
   .logo{
     left: 50%;
-    top: var(--pad);
+    top: var(--edge-mobile);
     transform: translateX(-50%);
   }
 
   /* Controls -> bottom bar */
   .controls{
-    right: auto;
+    right: 0;
     left: 0;
-    bottom: 0;
+    bottom: var(--edge-mobile);
     top: auto;
 
     height: auto;
-    width: 100vw;
+    width: auto;
+    box-sizing: border-box;
 
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 
-    padding: 12px var(--pad);
-    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+    padding: 0 var(--edge-mobile);
+    padding-bottom: env(safe-area-inset-bottom);
+
   }
 
   /* Middle stack becomes horizontal */
@@ -288,8 +301,8 @@ body[data-theme="white"] .icon-info {
 
   /* Optional: keep the canvas clear of the bottom bar + top logo */
   .sketch-holder canvas{
-    max-width: 92vmin;
-    max-height: calc(92vmin - 96px);
+    max-width: min(92vw, calc(100dvh - 160px));
+    max-height: min(92vw, calc(100dvh - 160px));
   }
 }
 
