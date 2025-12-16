@@ -43,9 +43,10 @@
     <!-- RIGHT: Controls -->
     <nav class="controls" aria-label="Snowflake controls">
       <!-- top right -->
-    <a class="icon-btn top icon-info" href="" aria-label="Information">
+    <button class="icon-btn top icon-info" id="btn-info" aria-label="Information">
       <img class="svg-icon" data-inline-svg src="emergence/assets/icon-info.svg" alt="" />
-    </a>
+    </button>
+
 
       <!-- middle right stack -->
       <div class="mid-stack">
@@ -65,13 +66,34 @@
       </div>
 
       <!-- bottom right -->
-      <button class="icon-btn bottom icon-save" id="btn-save" aria-label="Save snowflake">
+      <button class="icon-btn bottom icon-save" id="btn-save" aria-label="Save iteration">
         <img class="svg-icon" data-inline-svg src="emergence/assets/icon-save.svg" alt="" />
       </button>
     </nav>
   </main>
 
   <script src="emergence/snowflake.js"></script>
+
+  <div class="info-overlay" id="info-overlay" aria-hidden="true">
+  <button class="icon-btn info-close" id="btn-info-close" aria-label="Close information">
+    <img class="svg-icon" data-inline-svg src="snowflake/assets/icon-close.svg" alt="" />
+  </button>
+
+  <div class="info-shell">
+    <div class="info-scroll" role="dialog" aria-modal="true" aria-label="Information">
+      <div class="info-text">
+        <!-- one long block of text -->
+        <p>…</p>
+        <p>…</p>
+      </div>
+    </div>
+
+    <!-- blur/gradient bands -->
+    <div class="info-fade info-fade-top"></div>
+    <div class="info-fade info-fade-bottom"></div>
+  </div>
+</div>
+
 </body>
 </html>
 

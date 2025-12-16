@@ -106,9 +106,6 @@ function setup(){
   armBufOld.drawingContext.imageSmoothingEnabled = true;
   armBufNew.drawingContext.imageSmoothingEnabled = true;
 
-
-
-
   // Mobile/tablet: static p5
   if (IS_MOBILE) noLoop();
   else loop();
@@ -349,9 +346,6 @@ function renderArmTo(g, list, t, alphaValue, includeBreath){
 }
 
 function stampArm(armGfx, symmetry, alphaValue){
-  // We’re already translated to main canvas center in draw()
-  // If you want alpha control here too, you can apply globalAlpha, but
-  // we already baked alpha into the arm render tint.
   for (let k = 0; k < symmetry; k++){
     push();
     rotate((TWO_PI / symmetry) * k);
@@ -492,7 +486,7 @@ function generateSnowflakeReturnPlacements(){
     }
   }
 
-  // frost accents
+  //accents
   const extraCount = 4;
   for (let i=0; i<extraCount; i++){
     const shardIndex = nextShardIndex();
@@ -531,7 +525,7 @@ function placeShard(list, shardIndex, r, angle, scaleJitterFactor){
 }
 
 function collidesWithExisting(existing, cx, cy, r){
-  const padding = 3;
+  const padding = 4;
   const step = existing.length > 80 ? 2 : 1;
 
   for (let i=0; i<existing.length; i+=step){

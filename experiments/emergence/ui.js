@@ -101,3 +101,31 @@ window.addEventListener("DOMContentLoaded", async () => {
   wireUI();
   setupAudioToggle();     // now the button can swap icons reliably
 });
+
+function setupInfoOverlay() {
+  const openBtn = document.getElementById("btn-info");
+  const closeBtn = document.getElementById("btn-info-close");
+  const overlay = document.getElementById("info-overlay");
+
+  if (!openBtn || !closeBtn || !overlay) return;
+
+  const open = () => {
+    document.body.classList.add("info-open");
+    overlay.setAttribute("aria-hidden", "false");
+  };
+
+  const close = () => {
+    document.body.classList.remove("info-open");
+    overlay.setAttribute("aria-hidden", "true");
+  };
+
+  openBtn.addEventListener("click", (e) => { e.preventDefault(); open(); });
+  closeBtn.addEventListener("click", (e) => { e.preventDefault(); close(); });
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) close();
+  });
+
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && document.body.classList.contains("info-open")) close();
+  });
+}
