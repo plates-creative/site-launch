@@ -34,13 +34,13 @@ async function inlineSvgs() {
 
 // ---------- ASSET PATHS ----------
 let shardPaths = [
-  "snowflake/assets/s_01.png","snowflake/assets/s_02.png","snowflake/assets/s_03.png","snowflake/assets/s_04.png",
-  "snowflake/assets/s_05.png","snowflake/assets/s_06.png","snowflake/assets/s_07.png","snowflake/assets/s_08.png",
-  "snowflake/assets/s_09.png","snowflake/assets/s_10.png","snowflake/assets/s_11.png","snowflake/assets/s_12.png",
-  "snowflake/assets/a_01.png","snowflake/assets/a_02.png","snowflake/assets/a_03.png","snowflake/assets/a_04.png",
-  "snowflake/assets/a_05.png","snowflake/assets/a_06.png","snowflake/assets/a_07.png","snowflake/assets/a_08.png",
-  "snowflake/assets/a_09.png","snowflake/assets/a_10.png","snowflake/assets/a_11.png","snowflake/assets/a_12.png",
-  "snowflake/assets/a_13.png","snowflake/assets/a_14.png",
+  "emergence/assets/s_01.png","emergence/assets/s_02.png","emergence/assets/s_03.png","emergence/assets/s_04.png",
+  "emergence/assets/s_05.png","emergence/assets/s_06.png","emergence/assets/s_07.png","emergence/assets/s_08.png",
+  "emergence/assets/s_09.png","emergence/assets/s_10.png","emergence/assets/s_11.png","emergence/assets/s_12.png",
+  "emergence/assets/a_01.png","emergence/assets/a_02.png","emergence/assets/a_03.png","emergence/assets/a_04.png",
+  "emergence/assets/a_05.png","emergence/assets/a_06.png","emergence/assets/a_07.png","emergence/assets/a_08.png",
+  "emergence/assets/a_09.png","emergence/assets/a_10.png","emergence/assets/a_11.png","emergence/assets/a_12.png",
+  "emergence/assets/a_13.png","emergence/assets/a_14.png",
 ];
 
 let cnv;
@@ -580,7 +580,7 @@ function saveHiResSnowflake(){
 
   pg.pop();
 
-  save(pg, "plates-snowflake-1080", "png");
+  save(pg, "plates-studio_emergence_2025", "png");
   pg.remove();
 }
 
