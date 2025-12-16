@@ -97,9 +97,10 @@ function setupAudioToggle() {
 }
 
 window.addEventListener("DOMContentLoaded", async () => {
-  await inlineSvgs();     // makes svg-on/svg-off actually work
+  await inlineSvgs();
   wireUI();
-  setupAudioToggle();     // now the button can swap icons reliably
+  setupAudioToggle();
+  setupInfoOverlay();
 });
 
 function setupInfoOverlay() {
