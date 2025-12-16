@@ -1,12 +1,4 @@
-// --- Plates Shard Snowflake (Microsite edition) ---
-// UI is HTML; p5 handles rendering + hi-res export.
-// Rotation is CSS-only (canvas animation).
-
 // ---------- CONFIG ----------
-window.addEventListener("DOMContentLoaded", () => {
-  inlineSvgs();
-});
-
 let armBufOld, armBufNew;
 
 const EXPORT_SIZE = 1080;
@@ -98,7 +90,7 @@ function setup(){
   const sizeFactor = IS_MOBILE ? 0.86 : 0.90;
   CANVAS_SIZE = min(windowWidth, windowHeight) * sizeFactor;
 
-  pixelDensity(IS_MOBILE ? 2 : 2); // you chose simple route: 2 everywhere
+  pixelDensity(2);
 
   cnv = createCanvas(CANVAS_SIZE, CANVAS_SIZE);
   cnv.parent("sketch-holder");
@@ -107,7 +99,7 @@ function setup(){
   armBufOld = createGraphics(CANVAS_SIZE, CANVAS_SIZE);
   armBufNew = createGraphics(CANVAS_SIZE, CANVAS_SIZE);
   
-  const pd = pixelDensity();   // whatever you set above (2 currently)
+  const pd = pixelDensity();
   armBufOld.pixelDensity(pd);
   armBufNew.pixelDensity(pd);
 
@@ -123,9 +115,6 @@ function setup(){
 
   smooth();
   drawingContext.imageSmoothingEnabled = true;
-
-  // Wire HTML UI
-  wireUI();
 
   processShards();
 
@@ -144,15 +133,6 @@ function setup(){
 }
 
 // ---------- UI ----------
-function wireUI(){
-  const btnRandom = document.getElementById("btn-randomize");
-  const btnColor  = document.getElementById("btn-color");
-  const btnSave   = document.getElementById("btn-save");
-
-  if (btnRandom) btnRandom.addEventListener("click", startTransition);
-  if (btnColor)  btnColor.addEventListener("click", cycleMode);
-  if (btnSave)   btnSave.addEventListener("click", saveHiResSnowflake);
-}
 
 function cycleMode(){
   modeIndex = (modeIndex + 1) % MODES.length;
@@ -577,7 +557,7 @@ function shuffledIndices(n){
 // ---------- HI-RES EXPORT THAT MATCHES WHAT YOU SEE ----------
 function saveHiResSnowflake(){
   const pg = createGraphics(EXPORT_SIZE, EXPORT_SIZE);
-  pg.pixelDensity(1);
+  pg.pixelDensity(2);
   pg.background(bgColor);
   pg.noStroke();
   pg.imageMode(CENTER);
