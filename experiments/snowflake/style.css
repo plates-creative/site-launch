@@ -57,7 +57,7 @@ body{
   transform-origin: 50% 50%;
   will-change: transform;
   animation: spin 28s linear infinite;
-  pointer-events:auto; /* allow saveCanvas interactions if needed */
+  pointer-events: none;
 }
 
 canvas {
@@ -161,11 +161,29 @@ canvas {
 .icon-btn:active{ transform: scale(0.98); }
 .icon-btn:hover{ opacity:1; }
 
-/* Smooth color changes for inline SVG icons */
-.logo,
-.icon-btn {
-  transition: color 200ms ease;
+/* Volume toggle: stack the two icons and only show one */
+.icon-volume{ position: relative;}
+
+/* Both icons occupy the same 24px space */
+.icon-volume .svg-on,
+.icon-volume .svg-off{
+  position: absolute;
+  inset: 0;
+  margin: auto;
 }
+
+/* Default: sound ON visible */
+.icon-volume .svg-off{ opacity: 0; }
+.icon-volume .svg-on { opacity: 1; }
+
+/* Muted state toggled by JS */
+.icon-volume.is-muted .svg-off{ opacity: 1; }
+.icon-volume.is-muted .svg-on { opacity: 0; }
+
+.icon-volume .svg-icon{
+  transition: opacity 200ms ease;
+}
+
 
 /* (Optional) subtle “feel” on hover without looking button-y */
 @media (hover: hover) and (pointer: fine) {
@@ -199,7 +217,8 @@ body[data-theme="black"] {
 
 body[data-theme="black"] .icon-logo,
 body[data-theme="black"] .icon-randomize,
-body[data-theme="black"] .icon-color {
+body[data-theme="black"] .icon-color,
+body[data-theme="black"] .icon-volume {
   color: #DBDBDB;
 }
 
@@ -212,7 +231,8 @@ body[data-theme="black"] .icon-info {
 @media (hover: hover) and (pointer: fine) {
   body[data-theme="black"] .icon-logo:hover,
   body[data-theme="black"] .icon-randomize:hover,
-  body[data-theme="black"] .icon-color:hover {
+  body[data-theme="black"] .icon-color:hover,
+  body[data-theme="black"] .icon-volume:hover {
     color: #FF3EB5; /* white -> pink */
   }
 
@@ -231,10 +251,8 @@ body[data-theme="pink"] {
 
 body[data-theme="pink"] .icon-logo,
 body[data-theme="pink"] .icon-randomize,
-body[data-theme="pink"] .icon-color {
-  color: #181818;
-}
-
+body[data-theme="pink"] .icon-color,
+body[data-theme="pink"] .icon-volume,
 body[data-theme="pink"] .icon-save,
 body[data-theme="pink"] .icon-info {
   color: #181818;
@@ -257,14 +275,13 @@ body[data-theme="white"] {
 
 body[data-theme="white"] .icon-logo,
 body[data-theme="white"] .icon-randomize,
-body[data-theme="white"] .icon-color {
-  color: #181818;
-}
-
+body[data-theme="white"] .icon-color,
+body[data-theme="white"] .icon-volume,
 body[data-theme="white"] .icon-save,
 body[data-theme="white"] .icon-info {
   color: #181818;
 }
+
 
 /* WHITE THEME HOVERS */
 @media (hover: hover) and (pointer: fine) {
