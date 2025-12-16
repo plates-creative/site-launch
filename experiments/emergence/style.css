@@ -349,7 +349,13 @@ body[data-theme="white"] .icon-close {
   }
 }
 
-  /* Infor overlay stuff */
+  /* Info overlay stuff */
+
+  .info-text {
+    font-size: 3rem;
+
+  }
+
 .info-overlay {
   position: fixed;
   inset: 0;
@@ -389,6 +395,21 @@ body.info-open .info-overlay {
     padding: 22px 18px 34px;
   }
 }
+
+.info-close {
+  position: fixed;          /* key change */
+  top: var(--edge-desktop);
+  right: var(--edge-desktop);
+  z-index: 1002;            /* above overlay content */
+}
+
+@media (max-width: 1024px) {
+  .info-close {
+    top: var(--edge-mobile);
+    right: var(--edge-mobile);
+  }
+}
+
 
 
 
