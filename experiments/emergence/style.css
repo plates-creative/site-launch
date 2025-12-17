@@ -289,7 +289,7 @@ body[data-theme="white"] .icon-close{
 body.info-open .stage{
   filter: blur(10px);
   transform: translateZ(0);
-  transform: scale(0.96);
+  transform: scale(0.98);
 }
 
 /* Make sure overlay + close button stay crisp above the blur */
@@ -300,8 +300,8 @@ body.info-open .stage{
 
 .stage{
   transition:
-    filter 220ms ease;
-    transform: 220ms ease;
+    filter 300ms ease;
+    transform: 300ms ease;
     transform-origin: center center;
 }
 
@@ -320,7 +320,7 @@ body.info-open .stage{
 
 /* blur the background behind overlay (your "option two" on .stage) */
 body.info-open .stage{
-  filter: blur(10px);
+  filter: blur(18px);
 }
 
 /* hide Info button while overlay is open (prevents overlap) */
@@ -377,7 +377,7 @@ body.info-open .icon-info{
   .info-scroll{
     width: 100%;
     height: calc(100dvh - (var(--edge-mobile) * 2));
-    padding: 28px 28px 40px
+    padding: 28px 16px 40px
   }
 }
 
@@ -393,14 +393,14 @@ body[data-theme="white"] { --info-text: #181818; }
 
 /* Keep your text styling in one place */
 .info-text{
-  font-size: clamp(36px, 3.2rem, 80px);
-  line-height: 0.93;
-  letter-spacing: 1px;
+  font-size: clamp(36px, 3.1rem, 80px);
+  line-height: 0.95;
+  letter-spacing: 1.5px;
 }
 
 @media (max-width: 640px){
   .info-text{
-    font-size: 2.1rem;
+    font-size: 2rem;
     line-height: 1;
   }
 }
