@@ -39,7 +39,7 @@ const bellDelay2 = new Tone.PingPongDelay({
 const limiter = new Tone.Limiter(-1);
 const fxBus = new Tone.Gain(1);
 
-const master = new Tone.Gain(1.25); // start at 1.15–1.35
+const master = new Tone.Gain(1.6); // start at 1.15–1.35
 fxBus.chain(tapeChorus, tapeVibrato, delay, reverb, limiter, master, Tone.Destination);
 
 
