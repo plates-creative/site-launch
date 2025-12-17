@@ -368,6 +368,52 @@ body[data-theme="white"] .icon-btn.top {
   margin-top: 10%;
 }
 
+@media (max-width: 640px){
+ .info-text{
+   font-size: 2.1rem;
+   line-height: 100%;
+ }
+
+
+}
+
+/* Sharpened layer stays “real” */
+.info-text--sharp{
+  position: relative;
+  z-index: 2;
+}
+
+/* Blurred duplicate sits behind + only appears near top/bottom */
+.info-text--blur{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  pointer-events: none;
+
+  filter: blur(1.25px);
+  opacity: 0.55;
+  transform: translateZ(0);
+
+  /* reveal blur only at top + bottom */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,0) 18%,
+    rgba(0,0,0,0) 82%,
+    rgba(0,0,0,1) 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,0) 18%,
+    rgba(0,0,0,0) 82%,
+    rgba(0,0,0,1) 100%
+  );
+}
+
+
 .info-overlay {
   position: fixed;
   inset: 0;

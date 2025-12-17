@@ -7,7 +7,31 @@ function wireUI(){
   if (btnRandom) btnRandom.addEventListener("click", startTransition);
   if (btnColor)  btnColor.addEventListener("click", cycleMode);
   if (btnSave)   btnSave.addEventListener("click", saveHiResSnowflake);
+
+  window.addEventListener("DOMContentLoaded", async () => {
+  await inlineSvgs();
+  wireUI();
+  setupAudioToggle();
+  setupInfoOverlay();     // if not already being called elsewhere :contentReference[oaicite:3]{index=3}
+  syncInfoBlurText();
+
+  if (document.fonts?.ready) document.fonts.ready.then(syncInfoBlurText);
+  window.addEventListener("resize", syncInfoBlurText);
+});
+
 }
+
+
+
+function syncInfoBlurText() {
+  const sharp = document.getElementById("info-text-sharp");
+  const blur  = document.getElementById("info-text-blur");
+  if (!sharp || !blur) return;
+
+  blur.innerHTML = sharp.innerHTML;
+  blur.style.height = sharp.scrollHeight + "px";
+}
+
 
 async function inlineSvgs() {
   const imgs = document.querySelectorAll('img[data-inline-svg]');
