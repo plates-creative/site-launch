@@ -299,7 +299,7 @@ body[data-theme="white"] .icon-close{
 }
 
 /* Optional: blur background behind overlay */
-.info-overlay.is-open ~ .stage{
+.info-overlay.is-open.stage{
   filter: blur(10px);
 }
 
@@ -442,8 +442,6 @@ body[data-theme="white"] .info-fade{
 }
 
 /* Top/bottom fades as elements (no pseudo-elements) */
-=======
->>>>>>> parent of daf75b0 (text overlay updates)
 .info-fade{
   position:absolute;
   left:0; right:0;
@@ -451,16 +449,14 @@ body[data-theme="white"] .info-fade{
   pointer-events:none;
   z-index: 5;
 
-<<<<<<< HEAD
   background: linear-gradient(to bottom, var(--info-fade), rgba(0,0,0,0));
-=======
+
   background: var(--info-fade);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
 
   -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
           mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
->>>>>>> parent of daf75b0 (text overlay updates)
 }
 
 .info-fade-top{ top:0; }
