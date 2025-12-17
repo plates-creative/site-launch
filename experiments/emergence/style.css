@@ -25,6 +25,13 @@ html, body{
   font-family: "owners", sans-serif;
 }
 
+a.logo,
+a.logo:link,
+a.logo:visited{
+  color: inherit;
+}
+
+
 body{
   transition: background-color 260ms ease;
 }
@@ -363,7 +370,7 @@ body.info-open .icon-info{
 /* Scroll container (60% width on desktop, full on mobile) */
 .info-scroll{
   width: min(70vw, 820px);
-  height: calc(120dvh - (var(--edge-desktop) * 2));
+  height: calc(100dvh - (var(--edge-desktop) * 2));
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   position: relative;
