@@ -285,6 +285,21 @@ body[data-theme="white"] .icon-close{
 }
 
 /* ---------- INFO OVERLAY (simple fades, no duplicated text) ---------- */
+/* Blur the background (snowflake + UI) while info overlay is open */
+body.info-open .stage{
+  filter: blur(10px);
+  transform: translateZ(0); /* helps some browsers render the blur cleaner */
+}
+
+/* Make sure overlay + close button stay crisp above the blur */
+.info-overlay,
+#btn-info-close{
+  filter: none;
+}
+
+.stage{
+  transition: filter 220ms ease;
+}
 
 .info-overlay{
   position: fixed;
