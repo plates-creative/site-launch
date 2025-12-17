@@ -8,7 +8,7 @@ function wireUI(){
 
   if (btnRandom) btnRandom.addEventListener("click", startTransition);
   if (btnColor)  btnColor.addEventListener("click", cycleMode);
-  if (btnSave)   btnSave.addEventListener("click", saveHiResSnowflake);
+  if (btnSave)   btnSave.addEventListener("click", saveHolidayCard); //updated to holiday card instead of just snowflake
 }
 
 function syncInfoBlurText() {

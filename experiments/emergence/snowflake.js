@@ -31,6 +31,19 @@ async function inlineSvgs() {
   }));
 }
 
+// ---------- HOLIDAY CARD EXPORT ----------
+const CARD_W = 1080;
+const CARD_H = 1350;
+
+// Use one bg, or swap by mode (recommended if you have 3 variants)
+const CARD_BG_BY_MODE = {
+  black: "emergence/assets/card_black.png",
+  pink:  "emergence/assets/card_pink.png",
+  white: "emergence/assets/card_white.png",
+};
+
+let cardBgImg = null;
+
 
 // ---------- ASSET PATHS ----------
 let shardPaths = [
@@ -81,6 +94,9 @@ let CANVAS_SIZE = 800;
 // ---------- PRELOAD ----------
 function preload(){
   for (let p of shardPaths) rawImages.push(loadImage(p));
+
+  const modeKey = MODES[modeIndex].key;
+  cardBgImg = loadImage(CARD_BG_BY_MODE[modeKey]);
 }
 
 // ---------- SETUP ----------
@@ -143,6 +159,10 @@ function cycleMode(){
   if (IS_MOBILE) {
     currentShapeCol = targetShapeCol;
   }
+
+  const modeKey = MODES[modeIndex].key;
+  const bgPath = CARD_BG_BY_MODE[modeKey];
+  if (bgPath) cardBgImg = loadImage(bgPath);
 
   applyModeToPage();
 
@@ -548,7 +568,6 @@ function shuffledIndices(n){
 }
 
 // ---------- HI-RES EXPORT THAT MATCHES WHAT YOU SEE ----------
-// ---------- HI-RES EXPORT THAT MATCHES WHAT YOU SEE ----------
 function saveHiResSnowflake(){
   const pg = createGraphics(EXPORT_SIZE, EXPORT_SIZE);
   pg.pixelDensity(2);
@@ -611,6 +630,57 @@ function drawSnowflakeToExport(g, list, t, alphaValue, symmetry, includeBreath, 
   g.noTint();
 }
 
+function saveHolidayCard(){
+  // 1) Render snowflake into a square buffer (transparent bg)
+  const pgSnow = createGraphics(EXPORT_SIZE, EXPORT_SIZE);
+  pgSnow.pixelDensity(2);
+  pgSnow.clear();               // transparent
+  pgSnow.noStroke();
+  pgSnow.imageMode(CENTER);
+
+  const tNow = millis() * 0.001;
+  const rot = getCssRotationAngleRad();
+  const scaleFactor = EXPORT_SIZE / CANVAS_SIZE;
+
+  pgSnow.push();
+  pgSnow.translate(EXPORT_SIZE/2, EXPORT_SIZE/2);
+  pgSnow.rotate(rot);
+
+  if (!IS_MOBILE && transitioning && oldPlacements && newPlacements){
+    const fade = constrain(transitionProgress, 0, 1);
+    drawSnowflakeToExport(pgSnow, oldPlacements, tNow, 255*(1-fade), oldSymmetry, true, scaleFactor);
+    drawSnowflakeToExport(pgSnow, newPlacements, tNow, 255*fade, newSymmetry, true, scaleFactor);
+  } else {
+    drawSnowflakeToExport(pgSnow, placements, tNow, 255, currentSymmetry, !IS_MOBILE, scaleFactor);
+  }
+
+  pgSnow.pop();
+
+  // 2) Create the final card buffer (1080x1350)
+  const pgCard = createGraphics(CARD_W, CARD_H);
+  pgCard.pixelDensity(2);
+  pgCard.noStroke();
+  pgCard.imageMode(CORNER);
+
+  // draw card background image if available; otherwise fallback to a flat bg
+  if (cardBgImg) {
+    pgCard.image(cardBgImg, 0, 0, CARD_W, CARD_H);
+  } else {
+    pgCard.background(bgColor);
+  }
+
+  // 3) Composite snowflake centered on the card
+  pgCard.push();
+  pgCard.imageMode(CENTER);
+  pgCard.image(pgSnow, CARD_W/2, CARD_H/2);
+  pgCard.pop();
+
+  // 4) Save
+  save(pgCard, "plates-studio_holiday2025", "png");
+
+  pgSnow.remove();
+  pgCard.remove();
+}
 
 
 function getCssRotationAngleRad(){
