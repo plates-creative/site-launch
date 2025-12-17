@@ -365,6 +365,7 @@ body[data-theme="white"] .icon-btn.top {
   line-height: 93%;
   letter-spacing: 1px;
   transition: color 260ms ease;
+  margin-top: 10%;
 }
 
 .info-overlay {
@@ -421,6 +422,9 @@ body[data-theme="white"] { --text-color: #181818; }
   overflow: auto;
   position: relative;
   padding: 28px 28px 40px;
+  z-index: 1;
+  margin-left: auto;
+  margin-right: 7%;
 }
 @media (max-width: 1024px) {
   .info-scroll {
@@ -444,6 +448,40 @@ body[data-theme="white"] { --text-color: #181818; }
   }
 }
 
+.info-fade{
+  position:absolute;
+  left:0; right:0;
+  height:110px;
+  pointer-events:none;
+  z-index:5;
+
+  background: var(--info-fade);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
+          mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
+}
+
+.info-fade-top{ top:0; }
+.info-fade-bottom{ bottom:0; transform: rotate(180deg); }
+
+.info-fade{
+  background: linear-gradient(to bottom, var(--info-fade), rgba(0,0,0,0));
+}
+body[data-theme="black"]{ --info-fade: rgba(0,0,0,0.55); }
+body[data-theme="pink"] { --info-fade: rgba(0,0,0,0.55); }
+body[data-theme="white"]{ --info-fade: rgba(248,247,243,0.80); } /* your DBDBDB-ish vibe */
+
+
+.info-fade-top{
+  top: 0;
+}
+
+.info-fade-bottom{
+  bottom: 0;
+  transform: rotate(180deg);
+}
 
 
 
