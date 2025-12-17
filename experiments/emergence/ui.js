@@ -1,3 +1,6 @@
+
+document.body.dataset.theme = "black";
+
 function wireUI(){
   const btnRandom = document.getElementById("btn-randomize");
   const btnColor  = document.getElementById("btn-color");
