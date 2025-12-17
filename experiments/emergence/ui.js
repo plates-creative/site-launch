@@ -114,16 +114,17 @@ function setupInfoOverlay() {
   const open = () => {
     overlay.classList.add("is-open");
     overlay.setAttribute("aria-hidden", "false");
-    btnInfo.setAttribute("aria-expanded", "true");
-    syncInfoBlurText();
-    sync();
+   btnInfo.setAttribute("aria-expanded", "true");
+    document.body.classList.add("info-open");
   };
 
   const close = () => {
     overlay.classList.remove("is-open");
     overlay.setAttribute("aria-hidden", "true");
-    btnInfo.setAttribute("aria-expanded", "false");
+   btnInfo.setAttribute("aria-expanded", "false");
+    document.body.classList.remove("info-open");
   };
+
 
   btnInfo.addEventListener("click", (e) => { e.preventDefault(); open(); });
   btnClose.addEventListener("click", (e) => { e.preventDefault(); close(); });
