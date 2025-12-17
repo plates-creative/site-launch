@@ -39,7 +39,9 @@ const bellDelay2 = new Tone.PingPongDelay({
 const limiter = new Tone.Limiter(-1);
 const fxBus = new Tone.Gain(1);
 
-fxBus.chain(tapeChorus, tapeVibrato, delay, reverb, limiter, Tone.Destination);
+const master = new Tone.Gain(1.25); // start at 1.15–1.35
+fxBus.chain(tapeChorus, tapeVibrato, delay, reverb, limiter, master, Tone.Destination);
+
 
 // --- VOICE A: Bell / Pluck ---
 const bell = new Tone.PolySynth(Tone.FMSynth, {
@@ -138,8 +140,7 @@ const airAmpLFO = new Tone.LFO({ frequency: 0.01, min: 0.0005, max: 0.004 });
 const airFilterLFO = new Tone.LFO({ frequency: 0.01, min: 600, max: 2200 });
 const airTrim = new Tone.Gain(0.35);
 
-airNoise.chain(airAmp, airTrim, airHP, airLP, airDucker, Tone.Destination);
-airTrim.gain.value = 0.55;
+airNoise.chain(airAmp, airTrim, airHP, airLP, airDucker, master);
 
 // --- Helpers ---
 const rng = (min, max) => min + Math.random() * (max - min);
