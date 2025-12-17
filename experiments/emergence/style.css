@@ -9,6 +9,8 @@
     /* Margins */
   --edge-desktop: 20px;
   --edge-mobile: 16px;
+
+  --text-color: #DBDBDB;
 }
 
 :root { --info-band: rgba(0,0,0,0.55); }
@@ -25,7 +27,7 @@ html, body{
   width:100%;
   margin:0;
   overflow:hidden;
-  background: var(--black); /* JS will keep this in sync too */
+  background-color: var(--black); /* JS will keep this in sync too */
   font-family: "owners", sans-serif;
 }
 
@@ -390,22 +392,10 @@ body.info-open .info-close {
   pointer-events: auto;
 }
 
-/* Black background */
-body.black {
-  --text-color: #ffffff;
-}
-
-/* Pink background */
-body.pink {
-  --text-color: #ffffff;
-}
-
-/* White background */
-body.white {
-  --text-color: #181818;
-}
-
-
+/* Text color by theme */
+body[data-theme="black"] { --text-color: #DBDBDB; } /* or #fff if you truly want white */
+body[data-theme="pink"]  { --text-color: #DBDBDB; } /* per your spec: white */
+body[data-theme="white"] { --text-color: #181818; }
 
 .info-shell {
   position: absolute;
