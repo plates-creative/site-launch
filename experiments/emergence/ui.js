@@ -120,37 +120,54 @@ function setupAudioToggle() {
   });
 }
 
-window.addEventListener("DOMContentLoaded", async () => {
-  await inlineSvgs();
-  wireUI();
-  setupAudioToggle();
-  setupInfoOverlay();
-});
-
 function setupInfoOverlay() {
-  const openBtn = document.getElementById("btn-info");
-  const closeBtn = document.getElementById("btn-info-close");
+  const btnInfo = document.getElementById("btn-info");
   const overlay = document.getElementById("info-overlay");
+  const btnClose = document.getElementById("btn-close");
+  const scrollEl = document.getElementById("info-scroll");
 
-  if (!openBtn || !closeBtn || !overlay) return;
+  const sharp = document.getElementById("info-text-sharp");
+  const blur  = document.getElementById("info-text-blur");
+
+  // duplicate text into blur layer
+  blur.innerHTML = sharp.innerHTML;
+
+  // keep blur aligned with scroll
+  const sync = () => {
+    blur.style.transform = `translateY(${-scrollEl.scrollTop}px)`;
+  };
+  scrollEl.addEventListener("scroll", sync, { passive: true });
+  sync();
 
   const open = () => {
-    document.body.classList.add("info-open");
+    overlay.classList.add("is-open");
     overlay.setAttribute("aria-hidden", "false");
+    btnInfo?.setAttribute("aria-expanded", "true");
   };
 
   const close = () => {
-    document.body.classList.remove("info-open");
+    overlay.classList.remove("is-open");
     overlay.setAttribute("aria-hidden", "true");
+    btnInfo?.setAttribute("aria-expanded", "false");
   };
 
-  openBtn.addEventListener("click", (e) => { e.preventDefault(); open(); });
-  closeBtn.addEventListener("click", (e) => { e.preventDefault(); close(); });
-  overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) close();
+  btnInfo?.addEventListener("click", (e) => {
+    e.preventDefault();
+    open();
+  });
+
+  btnClose?.addEventListener("click", (e) => {
+    e.preventDefault();
+    close();
   });
 
   window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && document.body.classList.contains("info-open")) close();
+    if (e.key === "Escape") close();
   });
 }
+
+window.addEventListener("DOMContentLoaded", async () => {
+  await inlineSvgs();
+  setupInfoOverlay();
+  setupAudioToggle();
+});
