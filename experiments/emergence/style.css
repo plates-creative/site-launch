@@ -448,6 +448,12 @@ body[data-theme="white"] { --text-color: #181818; }
   }
 }
 
+/* set per theme if you want, but start here */
+:root{
+  --fade-tint: rgba(0,0,0,0.18); /* was probably too strong */
+  --fade-blur: 10px;            /* 8–14 is the sweet spot */
+}
+
 .info-fade{
   position:absolute;
   left:0; right:0;
@@ -455,9 +461,9 @@ body[data-theme="white"] { --text-color: #181818; }
   pointer-events:none;
   z-index:5;
 
-  background: var(--info-fade);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  background: var(--fade-tint);
+  backdrop-filter: blur(var(--fade-blur));
+  -webkit-backdrop-filter: blur(var(--fade-blur));
 
   -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
           mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
