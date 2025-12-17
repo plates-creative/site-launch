@@ -351,10 +351,13 @@ body[data-theme="white"] .icon-close {
 
   /* Info overlay stuff */
 
-  .info-text {
-    font-size: 3rem;
-
-  }
+.info-text {
+  font-size: 3rem;
+  color: var(--text-color);
+  line-height: 93%;
+  letter-spacing: 1px;
+  transition: color 260ms ease;
+}
 
 .info-overlay {
   position: fixed;
@@ -368,6 +371,41 @@ body.info-open .info-overlay {
   display: block;
   pointer-events: auto;
 }
+
+/* When info overlay is open, hide the info icon (prevents overlap) */
+body.info-open .icon-info {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Default: close is hidden */
+.info-close {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* When open: close is visible/clickable */
+body.info-open .info-close {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Black background */
+body.black {
+  --text-color: #ffffff;
+}
+
+/* Pink background */
+body.pink {
+  --text-color: #ffffff;
+}
+
+/* White background */
+body.white {
+  --text-color: #181818;
+}
+
+
 
 .info-shell {
   position: absolute;
