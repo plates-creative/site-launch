@@ -50,11 +50,6 @@ body{
   transition: filter 400ms ease, transform 400ms ease;
 }
 
-body.info-open .stage {
-  filter: blur(16px);
-  transform: scale(0.98);
-}
-
 /* Canvas holder is dead-center */
 .sketch-holder{
   position:absolute;
@@ -413,11 +408,6 @@ body[data-theme="white"] .icon-btn.top {
   );
 }
 
-body.info-open .info-overlay {
-  display: block;
-  pointer-events: auto;
-}
-
 /* When info overlay is open, hide the info icon (prevents overlap) */
 body.info-open .icon-info {
   opacity: 0;
@@ -544,21 +534,6 @@ body[data-theme="white"]{ --info-fade: rgba(248,247,243,0.80); } /* your DBDBDB-
 /* dim + blur the stage underneath (optional, keep if you liked it) */
 .info-overlay.is-open ~ .stage{
   filter: blur(10px);
-}
-
-.info-scroll{
-  position: absolute;
-  inset: 0;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-  padding: var(--edge-desktop);
-}
-
-/* keep your mobile margins */
-@media (max-width: 1024px) {
-  .info-scroll{
-    padding: var(--edge-mobile);
-  }
 }
 
 /* duplicated layers */
