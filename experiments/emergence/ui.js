@@ -99,35 +99,24 @@ function setupAudioToggle() {
 function setupInfoOverlay() {
   const btnInfo  = document.getElementById("btn-info");
   const overlay  = document.getElementById("info-overlay");
-  const btnClose = document.getElementById("btn-info-close"); // ✅ matches your HTML 
-  const scrollEl = document.getElementById("info-scroll");     // ✅ add id in HTML
-  const sharp    = document.getElementById("info-text-sharp");
-  const blur     = document.getElementById("info-text-blur");
+  const btnClose = document.getElementById("btn-info-close");
 
-  if (!btnInfo || !overlay || !btnClose || !scrollEl || !sharp || !blur) return;
-
-  syncInfoBlurText();
-
-  const sync = () => {
-    blur.style.transform = `translateY(${-scrollEl.scrollTop}px)`;
-  };
-  scrollEl.addEventListener("scroll", sync, { passive: true });
-  sync();
+  // No duplicated-text requirements anymore
+  if (!btnInfo || !overlay || !btnClose) return;
 
   const open = () => {
     overlay.classList.add("is-open");
     overlay.setAttribute("aria-hidden", "false");
-   btnInfo.setAttribute("aria-expanded", "true");
+    btnInfo.setAttribute("aria-expanded", "true");
     document.body.classList.add("info-open");
   };
 
   const close = () => {
     overlay.classList.remove("is-open");
     overlay.setAttribute("aria-hidden", "true");
-   btnInfo.setAttribute("aria-expanded", "false");
+    btnInfo.setAttribute("aria-expanded", "false");
     document.body.classList.remove("info-open");
   };
-
 
   btnInfo.addEventListener("click", (e) => { e.preventDefault(); open(); });
   btnClose.addEventListener("click", (e) => { e.preventDefault(); close(); });
@@ -135,19 +124,8 @@ function setupInfoOverlay() {
   window.addEventListener("keydown", (e) => {
     if (e.key === "Escape") close();
   });
-
-  window.addEventListener("resize", () => {
-    syncInfoBlurText();
-    sync();
-  });
-
-  if (document.fonts?.ready) {
-    document.fonts.ready.then(() => {
-      syncInfoBlurText();
-      sync();
-    });
-  }
 }
+
 
 window.addEventListener("DOMContentLoaded", async () => {
   await inlineSvgs();

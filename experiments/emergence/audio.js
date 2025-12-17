@@ -32,7 +32,7 @@ const reverb = new Tone.Reverb({
 
 const bellDelay2 = new Tone.PingPongDelay({
   delayTime: "4n.",
-  feedback: 0.4,
+  feedback: 0.6,
   wet: 0.4
 });
 
