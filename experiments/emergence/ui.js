@@ -39,8 +39,13 @@ function setupAudioToggle() {
   const btn = document.getElementById("btn-volume");
   if (!btn) return;
 
-  const MOBILE_BREAKPOINT = 1024;
-  const mobile = window.matchMedia(`(max-width:${MOBILE_BREAKPOINT}px)`).matches;
+  const isMobileish = window.matchMedia("(pointer: coarse)").matches;
+
+  if (isMobileish) {
+    btn.style.display = "none"; // or: btn.disabled = true;
+    document.documentElement.classList.add("audio-disabled");
+    return; // do not bind handlers
+  }
 
   function setMutedUI(muted) {
     btn.classList.toggle("is-muted", muted);
@@ -65,36 +70,22 @@ function setupAudioToggle() {
 
   setMutedUI(true);
 
-  if (!mobile) {
-    startAudioUnmuted().then((ok) => {
-      if (ok) return setMutedUI(false);
-
-      const prime = async () => {
-        const ok2 = await startAudioUnmuted();
-        if (ok2) setMutedUI(false);
-        window.removeEventListener("pointerdown", prime);
-        window.removeEventListener("keydown", prime);
-        window.removeEventListener("scroll", prime);
-      };
-
-      window.addEventListener("pointerdown", prime);
-      window.addEventListener("keydown", prime);
-      window.addEventListener("scroll", prime, { passive: true });
-    });
-  }
-
+  // No auto-start. Button is the only gate.
   btn.addEventListener("click", async (e) => {
     e.preventDefault();
     const isMuted = btn.classList.contains("is-muted");
+
     if (!isMuted) {
       stopAudio();
       setMutedUI(true);
       return;
     }
+
     const ok = await startAudioUnmuted();
     setMutedUI(!ok);
   });
 }
+
 
 function setupInfoOverlay() {
   const btnInfo  = document.getElementById("btn-info");
