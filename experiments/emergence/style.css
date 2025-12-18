@@ -103,7 +103,7 @@ body{
 /* ---------- LOGO + CONTROLS (DESKTOP) ---------- */
 .logo{
   position:fixed;
-  left: var(--edge-desktop);
+  left: 20px;
   top: 50%;
   transform: translateY(-50%);
   z-index:10;
@@ -383,7 +383,7 @@ body.info-open .icon-info{
 }
 
 .info-scroll h1{
-  font-size: clamp(2.9rem, 3.1rem, 4rem);
+  font-size: 3.5rem;
   line-height: 0.95;
   letter-spacing: 1.5px;
   font-weight: inherit;
@@ -391,7 +391,8 @@ body.info-open .icon-info{
 }
 
 .info-scroll p{
-  font-size: clamp(0.95rem, 1.05rem, 1.25rem);
+  font-size: 1.75rem;
+  font-weight: 300;
   line-height: 1.1;
   letter-spacing: 1.5px;
   margin: 0 0 20px 0;
