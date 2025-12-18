@@ -371,7 +371,7 @@ body.info-open .icon-info{
 
 /* Scroll container (60% width on desktop, full on mobile) */
 .info-scroll{
-  width: min(70vw, 820px);
+  width: 38%;
   height: 100dvh;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
@@ -382,22 +382,23 @@ body.info-open .icon-info{
   padding-right: 3%;
   box-sizing: border-box;
   box-sizing: border-box;
+  margin-left: auto;
 }
 
 .info-scroll h1{
-  font-size: 3.5rem;
+  font-size: 2.2rem;
   font-weight: 500;
-  line-height: 110%; /* 61.6px */
+  line-height: 110%;
   letter-spacing: -1.12px;
   margin: 0 0 32px 0;
 }
 
 .info-scroll p{
   font-family: owners-text, sans-serif;
-  font-size: 1.75rem;
-  font-weight: 500;
-  line-height: 110%; /* 32.2px */
-  letter-spacing: -0.5px;
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 115%;
+  letter-spacing: -0.1px;
   margin: 0 0 20px 0;
 }
 
