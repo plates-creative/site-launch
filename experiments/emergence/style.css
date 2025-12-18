@@ -514,9 +514,102 @@ body[data-theme="white"] #btn-info-close:hover{ color: #181818; }
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 12px;
   filter: grayscale(1) contrast(1.05);
   opacity: 0.95;
+}
+
+/*  MAILCHIMP STYLING */
+.mc-signup{
+  margin-top: 56px;
+  padding-top: 36px;
+  border-top: 1px solid rgba(255,255,255,0.18);
+}
+
+.mc-signup h2{
+  margin-bottom: 8px;
+}
+
+.mc-form{
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  align-items: center;
+}
+
+.mc-form input{
+  flex: 1;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(0,0,0,0.35);
+  color: #fff;
+  font: inherit;
+  outline: none;
+}
+
+.mc-form input::placeholder{
+  color: rgba(255,255,255,0.55);
+}
+
+.mc-form button{
+  padding: 14px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.mc-form button:hover{
+  background: rgba(255,255,255,0.14);
+}
+
+.mc-fine{
+  margin-top: 10px;
+  font-size: 0.9em;
+  opacity: 0.65;
+}
+
+.mc-responses{
+  margin-top: 10px;
+  font-size: 0.95em;
+}
+
+.mc-error{
+  color: #ffb3c7;
+}
+
+.mc-success{
+  color: #b6ffd9;
+}
+
+.mc-honeypot{
+  position: absolute;
+  left: -5000px;
+}
+
+.sr-only{
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;
+  border:0;
+}
+
+@media (max-width: 640px){
+  .mc-form{
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .mc-form button{
+    width: 100%;
+  }
 }
 
 
