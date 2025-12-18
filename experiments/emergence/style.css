@@ -476,3 +476,17 @@ body[data-theme="pink"] #btn-info-close:hover{ color: #ffffff; opacity: 0.85; }
 body[data-theme="white"] #btn-info-close{ color: #FF3EB5; }
 body[data-theme="white"] #btn-info-close:hover{ color: #181818; }
 
+.info-media{
+  margin: 24px 0 28px;
+}
+
+.info-media img{
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  filter: grayscale(1) contrast(1.05);
+  opacity: 0.95;
+}
+
+
