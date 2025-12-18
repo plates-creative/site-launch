@@ -44,10 +44,15 @@ body{
 }
 
 @media (min-width: 1025px){
-  body.info-open .logo{
-    filter: none !important;
+  body.info-open .sketch-holder,
+  body.info-open .controls{
+    filter: blur(10px);
+    transform: scale(0.98);
+    transform-origin: center center;
+    transform: translateZ(0);
   }
 }
+
 
 
 /* ---------- STAGE + CANVAS ---------- */
@@ -300,13 +305,7 @@ body[data-theme="white"] .icon-close{
   }
 }
 
-/* ---------- INFO OVERLAY (simple fades, no duplicated text) ---------- */
-/* Blur the background (snowflake + UI) while info overlay is open */
-body.info-open .stage{
-  filter: blur(10px);
-  transform: translateZ(0);
-  transform: scale(0.98);
-}
+
 
 /* Make sure overlay + close button stay crisp above the blur */
 .info-overlay,
