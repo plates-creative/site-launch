@@ -43,6 +43,13 @@ body{
   transition: color 260ms ease, opacity 200ms ease, transform 120ms ease;
 }
 
+@media (min-width: 1025px){
+  body.info-open .logo{
+    filter: none !important;
+  }
+}
+
+
 /* ---------- STAGE + CANVAS ---------- */
 .stage{
   position:relative;
@@ -405,10 +412,19 @@ body.info-open .icon-info{
 @media (max-width: 1024px){
   .info-scroll{
     width: 100%;
-    height: calc(100dvh - (var(--edge-mobile) * 2));
-    padding: 28px 16px 40px;
+    height: 100dvh;            /* full viewport */
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+
+    padding-top: calc(max(var(--edge-mobile), env(safe-area-inset-top)) + 28px);
+    padding-right: max(16px, env(safe-area-inset-right));
+    padding-bottom: calc(max(var(--edge-mobile), env(safe-area-inset-bottom)) + 40px);
+    padding-left: max(16px, env(safe-area-inset-left));
+
+    box-sizing: border-box;
   }
 }
+
 
 /* Theme-aware text color (your rule: black/pink => white, white => black) */
 body[data-theme="black"] { --info-text: #ffffff; }
