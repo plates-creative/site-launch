@@ -27,6 +27,35 @@ html, body{
   -moz-osx-font-smoothing: grayscale;
 }
 
+a{
+  text-decoration: none;
+  color: inherit;
+  transition: color 260ms ease;
+}
+
+a:focus-visible{
+  outline: none;
+}
+
+@media (hover:hover) and (pointer:fine){
+  body[data-theme="black"] .info-scroll a:hover,
+  body[data-theme="black"] .info-scroll a:focus-visible{
+    color: var(--pink);
+  }
+
+  body[data-theme="pink"] .info-scroll a:hover,
+  body[data-theme="pink"] .info-scroll a:focus-visible{
+    color: var(--white);
+  }
+
+  body[data-theme="white"] .info-scroll a:hover,
+  body[data-theme="white"] .info-scroll a:focus-visible{
+    color: var(--pink);
+  }
+}
+
+
+
 a.logo,
 a.logo:link,
 a.logo:visited{
