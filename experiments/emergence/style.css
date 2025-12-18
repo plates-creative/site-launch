@@ -394,7 +394,7 @@ body.info-open .icon-info{
 }
 
 .info-scroll p{
-  font-family: owners-text, sans-serif;
+  font-family: "owners-text", sans-serif;
   font-size: 1.2rem;
   font-weight: 400;
   line-height: 115%;
@@ -406,7 +406,7 @@ body.info-open .icon-info{
   .info-scroll{
     width: 100%;
     height: calc(100dvh - (var(--edge-mobile) * 2));
-    padding: 28px 16px 40px
+    padding: 28px 16px 40px;
   }
 }
 
