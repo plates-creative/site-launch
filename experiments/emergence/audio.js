@@ -43,11 +43,12 @@ const delay = new Tone.FeedbackDelay({
   wet: 0.80
 });
 
-const reverb = new Tone.Reverb({
-  decay: 6,
-  preDelay: 0.02,
-  wet: 0.65
-});
+const isMobileish = matchMedia("(pointer: coarse)").matches;
+
+const reverb = isMobileish
+  ? new Tone.JCReverb({ roomSize: 0.6, wet: 0.45 })     // mobile: no impulse generation
+  : new Tone.Reverb({ decay: 6, preDelay: 0.02, wet: 0.65 }); // desktop: keep your sound
+
 
 const bellDelay2 = new Tone.PingPongDelay({
   delayTime: "4n.",
@@ -58,7 +59,7 @@ const bellDelay2 = new Tone.PingPongDelay({
 const limiter = new Tone.Limiter(-1);
 const fxBus = new Tone.Gain(1);
 
-const master = new Tone.Gain(6.0);
+const master = new Tone.Gain(10.0);
 fxBus.chain(tapeChorus, tapeVibrato, delay, reverb, limiter, master, Tone.Destination);
 
 
@@ -193,11 +194,12 @@ async function start() {
     airAmpLFO.connect(airAmp.gain).start();
     airFilterLFO.connect(airLP.frequency).start();
 
-    // one-time IR generation (keep your existing reverb)
-    if (!reverbReady) {
-      await reverb.generate();
-      reverbReady = true;
+  if (!reverbReady) {
+    if (typeof reverb.generate === "function") {
+      await reverb.generate(); // desktop only (Tone.Reverb)
     }
+    reverbReady = true;        // mobile JCReverb: skips generate cleanly
+  }
 
     Tone.Transport.bpm.value = 54;
 
