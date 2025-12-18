@@ -357,7 +357,7 @@ body.info-open .icon-info{
 .info-shell{
   position: absolute;
   inset: 0;
-  display: grid;
+  display: block;
   place-items: center;
   /*padding: var(--edge-desktop);*/
   box-sizing: border-box;
@@ -370,14 +370,16 @@ body.info-open .icon-info{
 /* Scroll container (60% width on desktop, full on mobile) */
 .info-scroll{
   width: min(70vw, 820px);
-  height: calc(100dvh - (var(--edge-desktop) * 2));
+  height: 100dvh;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   position: relative;
-  padding: 7% 3% 0 0;
+  padding-top: max(var(--edge-desktop), env(safe-area-inset-top));
+  padding-bottom: max(var(--edge-desktop), env(safe-area-inset-bottom));
+  padding-left: 3%;
+  padding-right: 3%;
   box-sizing: border-box;
-  margin-left: auto;
-  margin-right: 0;
+  box-sizing: border-box;
 }
 
 @media (max-width: 1024px){

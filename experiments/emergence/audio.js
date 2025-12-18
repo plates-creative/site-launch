@@ -1,7 +1,24 @@
+
+
 // Grab controls if they exist (safe for non-inline setups)
 const statusEl = document.getElementById("status");
 const startBtn = document.getElementById("start");
 const stopBtn  = document.getElementById("stop");
+
+let audioBooted = false;
+
+async function bootAudio() {
+  if (audioBooted) return;
+  audioBooted = true;
+
+  // Tone.js
+  if (window.Tone?.context?.state !== "running") {
+    await Tone.start(); // must be in a user gesture
+  }
+
+  ["pointerdown", "touchstart", "mousedown", "keydown"].forEach(evt => {
+  window.addEventListener(evt, bootAudio, { once: true, passive: true });
+});
 
 // --- FX BUS ---
 const tapeChorus = new Tone.Chorus({
