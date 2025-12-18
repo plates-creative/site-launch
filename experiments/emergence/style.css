@@ -519,66 +519,56 @@ body[data-theme="white"] #btn-info-close:hover{ color: #181818; }
 }
 
 /*  MAILCHIMP STYLING */
+/* MAILCHIMP STYLING */
 .mc-signup{
   margin-top: 48px;
   font-family: "owners-text", sans-serif;
   font-size: 1.2rem;
-  line-height: 0.95;
-  letter-spacing: 1.5px;
+  line-height: 110%;
+  letter-spacing: 0.95px;
+  color: var(--info-text);
 }
 
 .mc-form{
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 16px;
   width: 100%;
 }
 
-.mc-form input,
-.mc-form button{
-  line-height: 1.10;
-  padding: 6px 0;
-}
-
 .mc-field-group{
+  flex: 1;
   display: flex;
   flex-direction: column;
   width: 100%;
-  flex: 1;
 }
 
+/* Shared underline system */
 .mc-form input,
 .mc-form button{
-  color: var(--info-text);
-  border-style: solid;
-  border-width: 0 0 1px 0;
-  border-bottom: 1px solid color-mix(in srgb, var(--info-text) 45%, transparent);
+  padding: 6px 0;
+  line-height: 1.10;
   background: transparent;
+  border: none;
   border-radius: 0;
   font: inherit;
   outline: none;
+  color: var(--info-text);
+  border-bottom: 1px solid color-mix(in srgb, var(--info-text) 45%, transparent);
   transition: color 260ms ease, border-color 260ms ease, opacity 200ms ease;
+}
+
+.mc-form input{
+  width: 100%;
 }
 
 .mc-form input::placeholder{
   color: color-mix(in srgb, var(--info-text) 55%, transparent);
 }
 
-
-/* Button styling */
 .mc-form button{
-  padding: 6px 0;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid rgba(255,255,255,0.4);
-  color: #fff;
-  font: inherit;
   cursor: pointer;
-}
-
-/* Button hover feels intentional, not salesy */
-.mc-form button:hover{
-  border-bottom-color: rgba(255,255,255,0.9);
+  white-space: nowrap;
 }
 
 /* Mailchimp responses */
@@ -587,13 +577,8 @@ body[data-theme="white"] #btn-info-close:hover{ color: #181818; }
   font-size: 0.9em;
 }
 
-.mc-error{
-  color: #ffb3c7;
-}
-
-.mc-success{
-  color: #b6ffd9;
-}
+.mc-error{ color: #ffb3c7; }
+.mc-success{ color: #b6ffd9; }
 
 /* Hide honeypot */
 .mc-honeypot{
@@ -602,7 +587,6 @@ body[data-theme="white"] #btn-info-close:hover{ color: #181818; }
 }
 
 @media (hover:hover) and (pointer:fine){
-  /* BLACK BG: input/button hover -> pink (like left-side icons) */
   body[data-theme="black"] .mc-form input:focus,
   body[data-theme="black"] .mc-form input:hover,
   body[data-theme="black"] .mc-form button:hover{
@@ -610,7 +594,6 @@ body[data-theme="white"] #btn-info-close:hover{ color: #181818; }
     border-bottom-color: var(--pink);
   }
 
-  /* PINK BG: icons hover -> white (your rule), so do the same */
   body[data-theme="pink"] .mc-form input:focus,
   body[data-theme="pink"] .mc-form input:hover,
   body[data-theme="pink"] .mc-form button:hover{
@@ -618,7 +601,6 @@ body[data-theme="white"] #btn-info-close:hover{ color: #181818; }
     border-bottom-color: var(--white);
   }
 
-  /* WHITE BG: icons hover -> pink (your rule), so do the same */
   body[data-theme="white"] .mc-form input:focus,
   body[data-theme="white"] .mc-form input:hover,
   body[data-theme="white"] .mc-form button:hover{
@@ -626,5 +608,6 @@ body[data-theme="white"] #btn-info-close:hover{ color: #181818; }
     border-bottom-color: var(--pink);
   }
 }
+
 
 
