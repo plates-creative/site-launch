@@ -21,11 +21,6 @@ async function bootAudio() {
   }
 }
 
-// Register once (OUTSIDE the function)
-["pointerdown", "touchstart", "mousedown", "keydown"].forEach((evt) => {
-  window.addEventListener(evt, bootAudio, { once: true, passive: true });
-});
-
 
 // --- FX BUS ---
 const tapeChorus = new Tone.Chorus({
@@ -173,6 +168,7 @@ const choose = (arr) => arr[Math.floor(Math.random() * arr.length)];
 const scale = ["C4","D4","Eb5","F4","G4","Ab4","Bb4","C5"];
 
 let running = false;
+let starting = false;
 let bellLoop = null;
 let padLoop  = null;
 let bassLoop = null;
@@ -180,82 +176,111 @@ let bassLoop = null;
 let reverbReady = false;
 
 async function start() {
-  // Prevent accidental double-starts
-  if (running) return;
+  if (running || starting) return;
+  starting = true;
 
-  await Tone.start();
+  try {
+    await bootAudio();
 
-  airNoise.start();
-  airAmpLFO.connect(airAmp.gain).start();
-  airFilterLFO.connect(airLP.frequency).start();
+    // mark running early so UI + stop() behave sanely
+    running = true;
 
-  // Generate reverb impulse only once
-  if (!reverbReady) {
-    await reverb.generate();
-    reverbReady = true;
-  }
+    // unmute in case we previously muted
+    Tone.Destination.mute = false;
 
-  Tone.Transport.bpm.value = 54;
+    // noise wash + LFOs
+    airNoise.start();
+    airAmpLFO.connect(airAmp.gain).start();
+    airFilterLFO.connect(airLP.frequency).start();
 
-  // Bell loop
-  bellLoop = new Tone.Loop((time) => {
-    if (!running) return;
-    if (Math.random() < 0.25) return;
-
-    const note = choose(scale);
-    const vel = rng(0.2, 0.7);
-
-    bell.set({ detune: rng(-6, 6) });
-    bell.set({ modulationIndex: rng(6, 14) });
-
-    bell.triggerAttackRelease(note, rng(0.1, 0.35), time, vel);
-
-    if (Math.random() < 0.15) {
-      bell.triggerAttackRelease(
-        Tone.Frequency(note).transpose(12),
-        0.1,
-        time + 0.12,
-        vel * 0.55
-      );
+    // one-time IR generation (keep your existing reverb)
+    if (!reverbReady) {
+      await reverb.generate();
+      reverbReady = true;
     }
-  }, "2n").start(0);
 
-  // Pad loop
-  const chordPool = [
-    ["C3","Eb3","G3","Bb3"],
-    ["Ab2","C3","Eb3","G3"],
-    ["F2","C3","Eb3","Ab3"],
-    ["Bb2","D3","F3","Ab3"],
-  ];
+    Tone.Transport.bpm.value = 54;
 
-  padLoop = new Tone.Loop((time) => {
-    if (!running) return;
+    // If loops exist from a previous run, clean them up first (extra safety)
+    [bellLoop, padLoop, bassLoop].forEach((lp) => {
+      if (!lp) return;
+      try { lp.stop(); lp.dispose(); } catch {}
+    });
+    bellLoop = padLoop = bassLoop = null;
 
-    const chord = choose(chordPool);
-    padFilter.frequency.setValueAtTime(rng(350, 750), time);
-    pad.triggerAttackRelease(chord, "2m", time, rng(0.15, 0.35));
-  }, "2m").start(0);
+    // --- Bell loop ---
+    bellLoop = new Tone.Loop((time) => {
+      if (!running) return;
+      if (Math.random() < 0.25) return;
 
-  // Bass loop (now properly tracked so stop() can clean it up)
-  bassLoop = new Tone.Loop((time) => {
-    if (!running) return;
+      const note = choose(scale);
+      const vel = rng(0.2, 0.7);
 
-    const choices = ["C2", "C2", "Eb2", "G1", "Bb1"];
-    const note = choices[Math.floor(Math.random() * choices.length)];
+      bell.set({ detune: rng(-6, 6) });
+      bell.set({ modulationIndex: rng(6, 14) });
 
-    bass.triggerAttackRelease(note, "2n", time, rng(0.25, 0.45));
-  }, "1m").start(0);
+      bell.triggerAttackRelease(note, rng(0.1, 0.35), time, vel);
 
-  running = true;
-  Tone.Transport.start();
+      if (Math.random() < 0.15) {
+        bell.triggerAttackRelease(
+          Tone.Frequency(note).transpose(12),
+          0.1,
+          time + 0.12,
+          vel * 0.55
+        );
+      }
+    }, "2n").start(0);
 
-  if (statusEl) statusEl.textContent = "running";
-  if (startBtn) startBtn.disabled = true;
-  if (stopBtn) stopBtn.disabled = false;
+    // --- Pad loop ---
+    const chordPool = [
+      ["C3","Eb3","G3","Bb3"],
+      ["Ab2","C3","Eb3","G3"],
+      ["F2","C3","Eb3","Ab3"],
+      ["Bb2","D3","F3","Ab3"],
+    ];
+
+    padLoop = new Tone.Loop((time) => {
+      if (!running) return;
+
+      const chord = choose(chordPool);
+      padFilter.frequency.setValueAtTime(rng(350, 750), time);
+      pad.triggerAttackRelease(chord, "2m", time, rng(0.15, 0.35));
+    }, "2m").start(0);
+
+    // --- Bass loop ---
+    bassLoop = new Tone.Loop((time) => {
+      if (!running) return;
+
+      const choices = ["C2", "C2", "Eb2", "G1", "Bb1"];
+      const note = choices[Math.floor(Math.random() * choices.length)];
+
+      bass.triggerAttackRelease(note, "2n", time, rng(0.25, 0.45));
+    }, "1m").start(0);
+
+    // Start transport ONCE
+    Tone.Transport.start();
+
+    // UI state ONCE
+    if (statusEl) statusEl.textContent = "running";
+    if (startBtn) startBtn.disabled = true;
+    if (stopBtn) stopBtn.disabled = false;
+
+  } catch (e) {
+    running = false;
+    throw e;
+  } finally {
+    starting = false;
+  }
 }
 
+
+
 function stop() {
+  starting = false;
   running = false;
+
+  // stop audio immediately (tails can still exist otherwise)
+  Tone.Destination.mute = true;
 
   Tone.Transport.stop();
   Tone.Transport.cancel(0);
@@ -266,6 +291,11 @@ function stop() {
     lp.stop();
     lp.dispose();
   });
+
+  try { bell.releaseAll?.(); } catch {}
+  try { pad.releaseAll?.(); } catch {}
+  try { bass.triggerRelease?.(); } catch {}
+
   bellLoop = padLoop = bassLoop = null;
 
   airNoise.stop();
