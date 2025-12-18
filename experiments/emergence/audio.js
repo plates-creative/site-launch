@@ -233,10 +233,10 @@ async function start() {
 
       bell.triggerAttackRelease(note, rng(0.1, 0.35), time, vel);
 
-      if (Math.random() < 0.15) {
+      if (Math.random() < 0.20) {
         bell.triggerAttackRelease(
           Tone.Frequency(note).transpose(12),
-          0.1,
+          0.15,
           time + 0.12,
           vel * 0.55
         );
