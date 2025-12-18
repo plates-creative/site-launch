@@ -327,10 +327,6 @@ body.info-open .stage{
   pointer-events: auto;
 }
 
-/* blur the background behind overlay (your "option two" on .stage) */
-body.info-open .stage{
-  filter: blur(18px);
-}
 
 /* hide Info button while overlay is open (prevents overlap) */
 body.info-open .icon-info{
@@ -376,8 +372,8 @@ body.info-open .icon-info{
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   position: relative;
-  padding-top: calc(max(var(--edge-desktop), env(safe-area-inset-top)) + 40px);
-  padding-bottom: max(var(--edge-desktop), env(safe-area-inset-bottom));
+  padding-top: calc(max(var(--edge-desktop), env(safe-area-inset-top)) + 120px);
+  padding-bottom: calc(max(var(--edge-desktop), env(safe-area-inset-bottom)) + 140);
   padding-left: 3%;
   padding-right: 3%;
   box-sizing: border-box;
@@ -406,7 +402,10 @@ body.info-open .icon-info{
   .info-scroll{
     width: 100%;
     height: calc(100dvh - (var(--edge-mobile) * 2));
-    padding: 28px 16px 40px;
+    padding-top: calc(max(var(--edge-mobile), env(safe-area-inset-top)) + 110px);
+    padding-right: max(16px, env(safe-area-inset-right));
+    padding-bottom: calc(max(var(--edge-mobile), env(safe-area-inset-bottom)) + 140px);
+    padding-left: max(16px, env(safe-area-inset-left));
   }
 }
 
@@ -454,13 +453,30 @@ body[data-theme="white"] { --info-text: #181818; }
 
 /* Fade color matches current page background */
 body[data-theme="black"] .info-fade{
-  background: linear-gradient(to bottom, rgba(24,24,24,0.95), rgba(24,24,24,0));
+  background: linear-gradient(
+    to bottom,
+    rgba(24,24,24,1) 0%,
+    rgba(24,24,24,0.75) 45%,
+    rgba(24,24,24,0.0) 100%
+  );
 }
+
 body[data-theme="pink"] .info-fade{
-  background: linear-gradient(to bottom, rgba(255,62,181,0.95), rgba(255,62,181,0));
+  background: linear-gradient(
+    to bottom,
+    rgba(255,62,181,1) 0%,
+    rgba(255,62,181,0.75) 45%,
+    rgba(255,62,181,0.0) 100%
+  );
 }
+
 body[data-theme="white"] .info-fade{
-  background: linear-gradient(to bottom, rgba(219,219,219,0.95), rgba(219,219,219,0));
+  background: linear-gradient(
+    to bottom,
+    rgba(219,219,219,1) 0%,
+    rgba(219,219,219,0.75) 45%,
+    rgba(219,219,219,0.0) 100%
+  );
 }
 
 /* Close icon coloring + hover rules (same logic as your other top-right icon) */
