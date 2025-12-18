@@ -389,6 +389,14 @@ body.info-open .icon-info{
   margin: 0 0 32px 0;
 }
 
+info-scroll h2{
+  font-family: "owners-text", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: -0.1px;
+  margin: 0 0 20px 0;
+}
+
 .info-scroll p{
   font-family: "owners-text", sans-serif;
   font-size: 1.2rem;
