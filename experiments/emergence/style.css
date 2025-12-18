@@ -7,7 +7,7 @@
   --icon: 24px;
 
   /* Edge spacing */
-  --edge-desktop: 20px;
+  --edge-desktop: 8px;
   --edge-mobile: 16px;
 
   /* Theme-driven */
@@ -380,6 +380,21 @@ body.info-open .icon-info{
   padding-right: 3%;
   box-sizing: border-box;
   box-sizing: border-box;
+}
+
+.info-scroll h1{
+  font-size: clamp(2.9rem, 3.1rem, 4rem);
+  line-height: 0.95;
+  letter-spacing: 1.5px;
+  font-weight: inherit;
+  margin: 0 0 32px 0;
+}
+
+.info-scroll p{
+  font-size: clamp(0.95rem, 1.05rem, 1.25rem);
+  line-height: 1.1;
+  letter-spacing: 1.5px;
+  margin: 0 0 20px 0;
 }
 
 @media (max-width: 1024px){
