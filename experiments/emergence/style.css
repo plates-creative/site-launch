@@ -514,8 +514,6 @@ body[data-theme="white"] #btn-info-close:hover{ color: #181818; }
   display: block;
   width: 100%;
   height: auto;
-  filter: grayscale(1) contrast(1.05);
-  opacity: 0.95;
 }
 
 /*  MAILCHIMP STYLING */
@@ -525,7 +523,7 @@ body[data-theme="white"] #btn-info-close:hover{ color: #181818; }
   font-family: "owners-text", sans-serif;
   font-size: 1.2rem;
   line-height: 110%;
-  letter-spacing: 0.95px;
+  letter-spacing: -0.1px;
   color: var(--info-text);
 }
 
