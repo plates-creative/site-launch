@@ -672,7 +672,14 @@ function saveHolidayCard(){
   // 3) Composite snowflake centered on the card
   pgCard.push();
   pgCard.imageMode(CENTER);
-  pgCard.image(pgSnow, CARD_W/2, CARD_H/2);
+ const cardSnowScale = 0.90; // ← tweak this
+  pgCard.image(
+    pgSnow,
+    CARD_W/2,
+    CARD_H/2,
+    EXPORT_SIZE * cardSnowScale,
+    EXPORT_SIZE * cardSnowScale
+  );
   pgCard.pop();
 
   // 4) Save

@@ -116,7 +116,7 @@ body{
 /* Right controls column */
 .controls{
   position: fixed;
-  right: var(--edge-desktop);
+  right: 12px;
   top: var(--edge-desktop);
   bottom: var(--edge-desktop);
   z-index: 10;
@@ -341,7 +341,7 @@ body.info-open .icon-info{
 #btn-info-close{
   position: fixed;
   top: var(--edge-desktop);
-  right: var(--edge-desktop);
+  right: 12px;
   z-index: 60;
   pointer-events: auto;
 }
