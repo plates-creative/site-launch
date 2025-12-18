@@ -396,7 +396,7 @@ body.info-open .icon-info{
 
 /* Scroll container (60% width on desktop, full on mobile) */
 .info-scroll{
-  width: 38%;
+  width: 40%;
   height: 100dvh;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
@@ -411,7 +411,7 @@ body.info-open .icon-info{
 }
 
 .info-scroll h1{
-  font-size: 2.6rem;
+  font-size: 2.4rem;
   font-weight: 500;
   line-height: 110%;
   letter-spacing: -1.12px;
@@ -420,7 +420,7 @@ body.info-open .icon-info{
 
 .info-scroll h2{
   font-family: "owners", sans-serif;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 800;
   letter-spacing: 0.32px;
   margin: 0 0 6px 0;
@@ -428,10 +428,10 @@ body.info-open .icon-info{
 
 .info-scroll p{
   font-family: "owners-text", sans-serif;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 400;
   line-height: 116%;
-  letter-spacing: -0.2px;
+  letter-spacing: -0.1px;
   margin: 0 0 20px 0;
 }
 
@@ -446,7 +446,7 @@ body.info-open .icon-info{
   }
 }
 
-/* Theme-aware text color (your rule: black/pink => white, white => black) */
+/* Theme-aware text color */
 body[data-theme="black"] { --info-text: #DBDBDB; }
 body[data-theme="pink"]  { --info-text: #DBDBDB; }
 body[data-theme="white"] { --info-text: #181818; }
@@ -550,9 +550,9 @@ body[data-theme="white"] #btn-info-close:hover{ color: #181818; }
 .mc-signup{
   margin-top: 48px;
   font-family: "owners-text", sans-serif;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   line-height: 116%;
-  letter-spacing: -0.2px;
+  letter-spacing: -0.1px;
   color: var(--info-text);
 }
 
