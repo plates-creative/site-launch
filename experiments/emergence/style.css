@@ -521,6 +521,10 @@ body[data-theme="white"] #btn-info-close:hover{ color: #181818; }
 /*  MAILCHIMP STYLING */
 .mc-signup{
   margin-top: 48px;
+  font-family: "owners-text", sans-serif;
+  font-size: 1.2rem;
+  line-height: 0.95;
+  letter-spacing: 1.5px;
 }
 
 .mc-form{
@@ -537,6 +541,9 @@ body[data-theme="white"] #btn-info-close:hover{ color: #181818; }
 }
 
 .mc-field-group{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   flex: 1;
 }
 
