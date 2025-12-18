@@ -3,6 +3,7 @@ const statusEl = document.getElementById("status");
 const startBtn = document.getElementById("start");
 const stopBtn  = document.getElementById("stop");
 
+
 let audioBooted = false;
 
 async function bootAudio() {
@@ -58,6 +59,9 @@ const bellDelay2 = new Tone.PingPongDelay({
 
 const limiter = new Tone.Limiter(-1);
 const fxBus = new Tone.Gain(1);
+
+const FADE_IN = 1.2;
+const FADE_OUT = 0.8;
 
 const master = new Tone.Gain(8.0);
 fxBus.chain(tapeChorus, tapeVibrato, delay, reverb, limiter, master, Tone.Destination);
@@ -183,11 +187,17 @@ async function start() {
   try {
     await bootAudio();
 
+    const now = Tone.now();
+    master.gain.cancelAndHoldAtTime(now);
+    master.gain.setValueAtTime(0.0001, now); // never ramp from 0 with exponential
+    master.gain.exponentialRampToValueAtTime(8.0, now + FADE_IN);
+
+
     // mark running early so UI + stop() behave sanely
     running = true;
 
     // unmute in case we previously muted
-    Tone.Destination.mute = false;
+    //Tone.Destination.mute = false;
 
     // noise wash + LFOs
     airNoise.start();
@@ -279,43 +289,57 @@ async function start() {
 
 function stop() {
   starting = false;
+
+  // If we're already stopped, bail
+  if (!running) return;
   running = false;
 
-  // stop audio immediately (tails can still exist otherwise)
-  Tone.Destination.mute = true;
+  const now = Tone.now();
+  master.gain.cancelAndHoldAtTime(now);
+  master.gain.exponentialRampToValueAtTime(0.0001, now + FADE_OUT);
 
-  Tone.Transport.stop();
-  Tone.Transport.cancel(0);
+  // After fade-out, stop transport + cleanup
+  setTimeout(() => {
+    Tone.Transport.stop();
+    Tone.Transport.cancel(0);
 
-  // Stop/dispose loops so they don't stack on next start()
-  [bellLoop, padLoop, bassLoop].forEach((lp) => {
-    if (!lp) return;
-    lp.stop();
-    lp.dispose();
-  });
+    [bellLoop, padLoop, bassLoop].forEach((lp) => {
+      if (!lp) return;
+      try { lp.stop(); lp.dispose(); } catch {}
+    });
 
-  try { bell.releaseAll?.(); } catch {}
-  try { pad.releaseAll?.(); } catch {}
-  try { bass.triggerRelease?.(); } catch {}
+    try { bell.releaseAll?.(); } catch {}
+    try { pad.releaseAll?.(); } catch {}
+    try { bass.triggerRelease?.(); } catch {}
 
-  bellLoop = padLoop = bassLoop = null;
+    bellLoop = padLoop = bassLoop = null;
 
-  airNoise.stop();
-  airAmpLFO.stop();
-  airFilterLFO.stop();
+    try { airNoise.stop(); } catch {}
+    try { airAmpLFO.stop(); } catch {}
+    try { airFilterLFO.stop(); } catch {}
 
-  if (statusEl) statusEl.textContent = "stopped";
-  if (startBtn) startBtn.disabled = false;
-  if (stopBtn) stopBtn.disabled = true;
+    if (statusEl) statusEl.textContent = "stopped";
+    if (startBtn) startBtn.disabled = false;
+    if (stopBtn) stopBtn.disabled = true;
+  }, (FADE_OUT * 1000) + 50);
 }
+
 
 // Only bind if those buttons exist on the page
 if (startBtn) startBtn.addEventListener("click", start);
 if (stopBtn)  stopBtn.addEventListener("click", stop);
 
 function setMuted(m) {
-  Tone.Destination.mute = m;
+  const now = Tone.now();
+  master.gain.cancelAndHoldAtTime(now);
+
+  if (m) {
+    master.gain.exponentialRampToValueAtTime(0.0001, now + 0.25);
+  } else {
+    master.gain.exponentialRampToValueAtTime(8.0, now + 0.25);
+  }
 }
+
 
 window.PlatesAudio = {
   start,
