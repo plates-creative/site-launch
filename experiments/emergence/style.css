@@ -373,7 +373,7 @@ body.info-open .icon-info{
   -webkit-overflow-scrolling: touch;
   position: relative;
   padding-top: calc(max(var(--edge-desktop), env(safe-area-inset-top)) + 120px);
-  padding-bottom: calc(max(var(--edge-desktop), env(safe-area-inset-bottom)) + 140);
+  padding-bottom: calc(max(var(--edge-desktop), env(safe-area-inset-bottom)) + 140px);
   padding-left: 3%;
   padding-right: 3%;
   box-sizing: border-box;
@@ -401,7 +401,7 @@ body.info-open .icon-info{
 @media (max-width: 1024px){
   .info-scroll{
     width: 100%;
-    height: calc(100dvh - (var(--edge-mobile) * 2));
+    height: 100dvh;
     padding-top: calc(max(var(--edge-mobile), env(safe-area-inset-top)) + 110px);
     padding-right: max(16px, env(safe-area-inset-right));
     padding-bottom: calc(max(var(--edge-mobile), env(safe-area-inset-bottom)) + 140px);
