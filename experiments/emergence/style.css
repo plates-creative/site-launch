@@ -464,28 +464,34 @@ body[data-theme="black"] .info-fade{
   background: linear-gradient(
     to bottom,
     rgba(24,24,24,1) 0%,
-    rgba(24,24,24,0.75) 45%,
+    rgba(24,24,24,0.98) 18%,
+    rgba(24,24,24,0.65) 55%,
     rgba(24,24,24,0.0) 100%
   );
 }
+
 
 body[data-theme="pink"] .info-fade{
   background: linear-gradient(
     to bottom,
     rgba(255,62,181,1) 0%,
-    rgba(255,62,181,0.75) 45%,
+    rgba(255,62,181,0.98) 18%,
+    rgba(255,62,181,0.65) 55%,
     rgba(255,62,181,0.0) 100%
   );
 }
+
 
 body[data-theme="white"] .info-fade{
   background: linear-gradient(
     to bottom,
     rgba(219,219,219,1) 0%,
-    rgba(219,219,219,0.75) 45%,
+    rgba(219,219,219,0.98) 18%,
+    rgba(219,219,219,0.65) 55%,
     rgba(219,219,219,0.0) 100%
   );
 }
+
 
 /* Close icon coloring + hover rules (same logic as your other top-right icon) */
 /* Black BG: close default white, hover pink */
