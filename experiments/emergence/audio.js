@@ -60,8 +60,8 @@ const bellDelay2 = new Tone.PingPongDelay({
 const limiter = new Tone.Limiter(-1);
 const fxBus = new Tone.Gain(1);
 
-const FADE_IN = 1.2;
-const FADE_OUT = 0.8;
+const FADE_IN = 2.4;
+const FADE_OUT = 1.6;
 
 const master = new Tone.Gain(8.0);
 fxBus.chain(tapeChorus, tapeVibrato, delay, reverb, limiter, master, Tone.Destination);
