@@ -45,7 +45,7 @@ a:focus-visible{
 
   body[data-theme="pink"] .info-scroll a:hover,
   body[data-theme="pink"] .info-scroll a:focus-visible{
-    color: var(--white);
+    color: var(--black);
   }
 
   body[data-theme="white"] .info-scroll a:hover,
