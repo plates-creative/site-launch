@@ -376,7 +376,7 @@ body.info-open .icon-info{
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   position: relative;
-  padding-top: max(var(--edge-desktop), env(safe-area-inset-top));
+  padding-top: calc(max(var(--edge-desktop), env(safe-area-inset-top)) + 40px);
   padding-bottom: max(var(--edge-desktop), env(safe-area-inset-bottom));
   padding-left: 3%;
   padding-right: 3%;
@@ -395,9 +395,9 @@ body.info-open .icon-info{
 .info-scroll p{
   font-family: owners-text, sans-serif;
   font-size: 1.75rem;
-  font-weight: 400;
-  line-height: 115%; /* 32.2px */
-  letter-spacing: -0.28px;
+  font-weight: 500;
+  line-height: 110%; /* 32.2px */
+  letter-spacing: -0.5px;
   margin: 0 0 20px 0;
 }
 
