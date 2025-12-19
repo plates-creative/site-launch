@@ -636,5 +636,45 @@ body[data-theme="white"] #btn-info-close:hover{ color: #181818; }
   }
 }
 
+/* Social Icons */
+.socials{
+  margin-top: 24px;
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+
+.socials svg{
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.socials a{
+  color: var(--info-text);
+  transition: color 260ms ease, opacity 200ms ease;
+  margin-top: 24px;
+  display: inline-flex;
+  align-items: center;
+}
+
+@media (hover:hover) and (pointer:fine){
+  body[data-theme="black"] .socials a:hover,
+  body[data-theme="black"] .socials a:focus-visible{
+    color: var(--pink);
+  }
+
+  body[data-theme="pink"] .socials a:hover,
+  body[data-theme="pink"] .socials a:focus-visible{
+    color: var(--black);
+  }
+
+  body[data-theme="white"] .socials a:hover,
+  body[data-theme="white"] .socials a:focus-visible{
+    color: var(--pink);
+  }
+}
+
+
 
 
