@@ -653,7 +653,6 @@ body[data-theme="white"] #btn-info-close:hover{ color: #181818; }
 .socials a{
   color: var(--info-text);
   transition: color 260ms ease, opacity 200ms ease;
-  margin-top: 24px;
   display: inline-flex;
   align-items: center;
 }
