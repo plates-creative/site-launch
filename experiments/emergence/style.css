@@ -640,18 +640,18 @@ body[data-theme="white"] #btn-info-close:hover{ color: #181818; }
 .socials{
   margin-top: 24px;
   display: flex;
-  gap: 18px;
+  gap: 16px;
   align-items: center;
 }
 
 .socials svg{
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
   display: block;
 }
 
 .socials a{
-  color: var(--info-text);
+  color: inherit;
   transition: color 260ms ease, opacity 200ms ease;
   display: inline-flex;
   align-items: center;
