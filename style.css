@@ -192,6 +192,7 @@ header {
 }
 
 .nav-right {
+  display: flex;
   gap: 16px;
 }
 
