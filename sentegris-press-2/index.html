@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Required: this host serves the page at /sentegris-press-2 without a trailing
+     slash, so relative paths would otherwise resolve against the site root.
+     If the folder is ever renamed, this line must be renamed with it. -->
+<base href="/sentegris-press-2/">
+<title>Halftone Press</title>
+<meta name="description" content="A screening console: convert art to the house sepia, lay a halftone plate over it, and save a PNG.">
+<meta name="theme-color" content="#878380">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Halftone Press">
+<meta property="og:description" content="A screening console: convert art to the house sepia, lay a halftone plate over it, and save a PNG.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="assets/fonts/dm-mono-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/eb-garamond-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="shell" id="halftone-press">
+
+  <!-- ══ CONSOLE ══════════════════════════════════ -->
+  <div class="rail">
+    <div class="plate">
+      <h1><img class="title" src="assets/press-title.svg" alt="Halftone Press" width="1092" height="407"></h1>
+      <img class="mark" src="assets/spiralmark-small.svg" alt="Sentegris Law logo" width="86" height="94">
+    </div>
+
+    <div class="scroll">
+      <section>
+        <h2>Copy <em>drop, paste or pick</em></h2>
+        <div class="drop" id="drop" tabindex="0" role="button" aria-label="Choose a file">
+          <b>Drop art here</b>
+          <small>JPG, PNG, WEBP, AVIF. Or paste from the clipboard.</small>
+        </div>
+        <input type="file" id="file" accept="image/*" hidden>
+        <div class="btns btns-spaced">
+          <button id="pick" type="button">Choose file</button>
+          <button id="demo" type="button">Load test form</button>
+        </div>
+        <div class="meta" id="meta" aria-live="polite"></div>
+      </section>
+
+      <section>
+        <h2>Fit <em>how the art sits</em></h2>
+        <div id="srcControls"></div>
+      </section>
+
+      <section>
+        <h2>Plate <em>saved setups</em></h2>
+        <div class="presets" id="presets"></div>
+      </section>
+
+      <section>
+        <h2>Ink <em>ground and dot</em></h2>
+        <div id="inkControls"></div>
+      </section>
+
+      <section>
+        <h2>Vellum <em>a sheet laid over</em></h2>
+        <div id="vellumControls"></div>
+      </section>
+
+      <section>
+        <h2>Run <em>output</em></h2>
+        <div id="outControls"></div>
+        <div class="btns one btns-run">
+          <button id="savePng" class="primary" type="button">Save PNG</button>
+        </div>
+        <div class="btns one btns-stacked">
+          <button id="reset" type="button">Reset everything</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ══ STAGE ═══════════════════════════════════ -->
+  <div class="stage">
+    <div class="viewport">
+      <div class="frame" id="frame">
+        <i class="reg tl"></i><i class="reg tr"></i><i class="reg bl"></i><i class="reg br"></i>
+        <canvas id="out" width="900" height="1100" role="img" aria-label="Screened proof"></canvas>
+      </div>
+    </div>
+    <div class="bar">
+      <div class="colorbar" id="colorbar"></div>
+      <div class="readout">
+        <span><i>Ruling</i> <b id="rRuling">75 lpi</b></span>
+        <span><i>Screen</i> <b id="rAngle">-180&deg;</b></span>
+        <span><i>Sheet</i> <b id="rSize">900 &times; 1100</b></span>
+        <span><i>Mode</i> <b id="rMode">Newsprint mono</b></span>
+      </div>
+      <p class="sig">v1.0 a tool by <a href="https://plates.studio" target="_blank" rel="noopener noreferrer">Plates</a></p>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div>
+</div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
