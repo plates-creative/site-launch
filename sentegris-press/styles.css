@@ -98,7 +98,7 @@ body{
    and the alt text. 67px matches the ink height the Garamond setting had at
    46px/.8, so the wordmark-to-mark ratio (1.08) is unchanged. */
 .plate h1{line-height:0}
-.plate .title{display:block;height:60px;width:auto}
+.plate .title{display:block;height:56px;width:auto}
 .scroll{overflow-y:auto;flex:1 1 auto;scrollbar-width:thin;scrollbar-color:rgba(250,212,182,.14) var(--rail)}
 .scroll::-webkit-scrollbar{width:9px}
 .scroll::-webkit-scrollbar-thumb{background:rgba(250,212,182,.14)}
