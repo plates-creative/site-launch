@@ -39,7 +39,7 @@ $("vellumControls").append(
 
 $("outControls").append(
   select("aspect", "Aspect ratio", RATIOS, () => { fitCanvas(); readouts(); showAlpha(); }),
-  range("exportScale", "Export scale", 1, 4, 1, v => v + "\u00D7 | " + (SHEET_PX * v) + "px")
+  range("exportScale", "Export scale", 1, 4, 1, v => v + "\u00D7 . " + (SHEET_PX * v) + "px")
 );
 
 /* ── plates ───────────────────────────────────────────────────── */
