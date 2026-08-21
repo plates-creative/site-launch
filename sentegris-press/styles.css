@@ -1,0 +1,362 @@
+@font-face{
+  font-family:"Syncro";
+  src:url("assets/fonts/syncro-book.woff2") format("woff2");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:"WT Garamono";
+  src:url("assets/fonts/wt-garamono-regular.woff2") format("woff2");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:"Post Grotesk";
+  src:url("assets/fonts/post-grotesk-light.woff2") format("woff2");
+  font-weight:300;
+  font-style:normal;
+  font-display:swap;
+}
+:root{
+  /* The palette is four brand values. Everything else in this file is one of
+     them at an alpha, so no utility colour is ever invented. */
+  --root:#281e1e;
+  --shell:#fad4b6;
+  --stone:#dedad5;
+  --seafoam:#9cb29e;
+
+  /* Surfaces: Root, lifted toward Shell. */
+  --rail:var(--root);
+  --rail-2:rgba(250,212,182,.05);   /* raised: buttons */
+  --well:var(--root);               /* recessed: fields, toast — borders delineate */
+
+  /* Separators: Shell, barely there. */
+  --line:rgba(250,212,182,.12);
+  --line-soft:rgba(250,212,182,.05);
+
+  /* Type tiers: Stone, not Shell. Shell's b* is 19.8 against Stone's 2.9, so
+     Shell at the alpha these need lands on peach — a different hue family from
+     the Stone type sitting beside it. Stone keeps one warm-neutral family.
+     Both clear 4.5:1 on Root: --dimmer carries real content (plate notes, file
+     metadata, accepted formats), so it cannot sit below the AA floor. --dim is
+     held at L* 60 rather than pushed higher, so the preset ladder still rises:
+     rest L*60 -> selected Seafoam L*70 -> hover Stone L*87. */
+  --type:var(--stone);
+  --dim:rgba(222,218,213,.60);      /* 5.09:1 */
+  --dimmer:rgba(222,218,213,.56);   /* 4.59:1 */
+
+  /* The proofing surround stays deliberately outside the palette: it is what
+     you judge the proof against, so it has to be near neutral. Chroma 2.3,
+     nudged onto the brand's hue axis so it reads warm-neutral rather than
+     cool against Root and Shell. */
+  --stage:#878380;
+
+  --display:"Syncro",Georgia,serif;
+  --mono:"WT Garamono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:"Post Grotesk",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+/* Neutralise the browser's default stylesheet in one place. h1, h2, b and
+   strong are bold by default and em/i are italic; only Regular (and Light)
+   faces are loaded, so left alone the browser fakes the missing cuts. These
+   inherit rather than set a value, so nothing here alters a font's weight —
+   it only stops the UA from doing so. */
+h1,h2,b,strong{font-weight:inherit}
+em,i{font-style:inherit}
+html,body{height:100%}
+body{
+  background:var(--stage);
+  color:var(--type);
+  font-family:var(--mono);
+  font-size:12px;
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+}
+.shell{display:grid;grid-template-columns:352px 1fr;height:100vh}
+
+/* ── rail ─────────────────────────────────────────── */
+.rail{
+  background:var(--rail);
+  border-right:1px solid rgba(40,30,30,1);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+.plate{
+  padding:18px;
+  border-bottom:1px solid var(--line);
+  background:var(--well);
+  flex:0 0 auto;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+}
+.plate .mark{
+  height:62px;width:auto;flex:0 0 auto;
+}
+/* The wordmark is outlined artwork, not live type: the client's brand face has
+   no web licence, and outlines carry none. h1 is kept for the document outline
+   and the alt text. 67px matches the ink height the Garamond setting had at
+   46px/.8, so the wordmark-to-mark ratio (1.08) is unchanged. */
+.plate h1{line-height:0}
+.plate .title{display:block;height:60px;width:auto}
+.scroll{overflow-y:auto;flex:1 1 auto;scrollbar-width:thin;scrollbar-color:rgba(250,212,182,.14) var(--rail)}
+.scroll::-webkit-scrollbar{width:9px}
+.scroll::-webkit-scrollbar-thumb{background:rgba(250,212,182,.14)}
+.scroll::-webkit-scrollbar-track{background:var(--rail)}
+
+section{border-bottom:1px solid var(--line-soft);padding:14px 18px 16px}
+section > h2{
+  font-family:var(--display);
+  font-size:24px;
+  color:var(--type);
+  display:flex;align-items:baseline;gap:10px;margin-bottom:12px;
+}
+section > h2::after{content:"";flex:1;height:1px;background:var(--line);}
+section > h2 em{color:var(--dimmer);font-family:var(--mono);font-size:10px;letter-spacing:.08em}
+
+/* ── controls ─────────────────────────────────────── */
+.row{margin-bottom:11px}
+.row:last-child{margin-bottom:0}
+.lab{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;gap:8px}
+.lab span{color:var(--dim);letter-spacing:.05em;font-size:10px;white-space:nowrap}
+.lab b{color:var(--type);font-variant-numeric:tabular-nums;font-size:10px}
+input[type=range]{
+  -webkit-appearance:none;appearance:none;width:100%;height:14px;background:transparent;cursor:ew-resize;display:block;
+}
+input[type=range]::-webkit-slider-runnable-track{height:2px;background:var(--line);}
+input[type=range]::-moz-range-track{height:2px;background:var(--line);}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:3px;height:14px;background:var(--type);margin-top:-6px;border:0;border-radius:0;
+}
+input[type=range]::-moz-range-thumb{width:3px;height:14px;background:var(--type);border:0;border-radius:0}
+input[type=range]:focus-visible::-webkit-slider-thumb{background:var(--seafoam);box-shadow:0 0 0 2px rgba(156,178,158,.35)}
+input[type=range]:focus-visible::-moz-range-thumb{background:var(--seafoam)}
+
+select{
+  width:100%;background:var(--well);color:var(--type);border:1px solid var(--line);
+  font-family:var(--mono);font-size:11px;padding:6px 8px;border-radius:0;
+  -webkit-appearance:none;appearance:none;cursor:pointer;
+  background-image:linear-gradient(45deg,transparent 50%,var(--dim) 50%),linear-gradient(135deg,var(--dim) 50%,transparent 50%);
+  background-position:calc(100% - 13px) 12px,calc(100% - 9px) 12px;
+  background-size:4px 4px,4px 4px;background-repeat:no-repeat;
+}
+select:focus{outline:1px solid var(--seafoam);outline-offset:-1px}
+
+.chips{display:flex;gap:8px}
+/* Circles, not tiles — the halftone dot is the tool's own unit, and the mark
+   is a spiral. Square so the radius reads as a true circle; the diameter sits
+   between the old 34x26 so the row keeps its weight. */
+.chip{
+  width:28px;height:28px;padding:0;border:1px solid var(--line);cursor:pointer;
+  border-radius:50%;flex:0 0 auto;
+}
+.chip:hover{border-color:rgba(250,212,182,.22)}
+.chip.on{border-color:var(--type);box-shadow:inset 0 0 0 1px var(--well)}
+/* 6px tiles, not 8: a circle crops the corners off the pattern, so the smaller
+   grid keeps enough repeats visible to read as "transparent" */
+.chip.none{background:repeating-conic-gradient(rgba(250,212,182,.26) 0% 25%, rgba(250,212,182,.12) 0% 50%) 0 0/6px 6px}
+.chip:focus-visible{outline:1px solid var(--seafoam);outline-offset:1px}
+
+.toggles{display:flex;flex-wrap:wrap;gap:6px}
+.tg{
+  display:inline-flex;align-items:center;gap:6px;cursor:pointer;
+  border:1px solid var(--line);padding:5px 8px;color:var(--dim);font-size:10px;letter-spacing:.06em;
+  user-select:none;text-transform:uppercase;
+}
+.tg input{position:absolute;opacity:0;width:0;height:0}
+.tg i{width:8px;height:8px;background:var(--well);border:1px solid var(--line);font-style:normal;flex:0 0 auto}
+/* The toggle is a label wrapping a hidden checkbox, so the global button:hover
+   never reached it. Same subtle lift the plain buttons use — border and fill
+   only, leaving the label dim so that brightening still means "on". */
+.tg:hover{border-color:rgba(250,212,182,.22);background:rgba(250,212,182,.08)}
+.tg.on{color:var(--type);border-color:rgba(250,212,182,.18)}
+.tg.on i{background:var(--seafoam);border-color:var(--seafoam)}
+.tg:focus-within{outline:1px solid var(--seafoam);outline-offset:1px}
+
+button{
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--rail-2);color:var(--type);border:1px solid var(--line);
+  padding:8px 10px;cursor:pointer;border-radius:0;
+}
+button:hover{border-color:rgba(250,212,182,.22);background:rgba(250,212,182,.08)}
+button:active{background:var(--well)}
+button:focus-visible{outline:1px solid var(--seafoam);outline-offset:1px}
+/* the fill carries the emphasis; the mono face has no bold to ask for */
+button.primary{background:var(--shell);border-color:var(--shell);color:var(--rail)}
+button.primary:hover{background:var(--seafoam);border-color:var(--seafoam);color:var(--rail)}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.btns.one{grid-template-columns:1fr}
+/* spacing that used to live in style attributes in the markup */
+.btns-spaced{margin-top:8px}
+.btns-run{margin-top:10px}
+.btns-stacked{margin-top:6px}
+
+/* No fill at rest. The 1px gaps used to come from a Shell-tinted container
+   showing through opaque buttons — with transparent buttons that fill would
+   flood the whole block, so the rhythm comes from hairline borders instead. */
+.presets{display:grid;grid-template-columns:1fr}
+.presets button{
+  border:0;border-top:1px solid var(--line-soft);background:none;
+  padding:9px 8px;text-align:left;line-height:1.35;
+}
+.presets button:first-child{border-top:0}
+/* these set border:0, so the shared button outline had nothing to sit on */
+.presets button:focus-visible{outline:1px solid var(--seafoam);outline-offset:-2px}
+.presets button:hover{background:rgba(250,212,182,.04);border-color:var(--line-soft)}
+.presets button strong{display:block;font-size:11px;color:var(--dim);letter-spacing:.08em}
+.presets button em{display:block;color:var(--dimmer);font-size:10px;letter-spacing:.05em;margin-top:2px;text-transform:none}
+/* rest -> hover -> selected reads dim, bright, Seafoam. Seafoam means selected
+   and nothing else. */
+.presets button:hover strong{color:var(--type)}
+.presets button.on{box-shadow:inset 2px 0 0 var(--seafoam)}
+.presets button.on strong{color:var(--seafoam)}
+
+/* the vellum settings sit inert until the sheet is switched on */
+#vellumControls.off > .row:not(:first-child){opacity:.35;pointer-events:none}
+
+.drop{
+  border:1px dashed var(--line);padding:16px;text-align:center;color:var(--dim);
+  cursor:pointer;line-height:1.6;transition:border-color .12s,color .12s;
+}
+.drop:hover,.drop.hot{border-color:var(--seafoam);color:var(--type)}
+/* a div with role=button and tabindex, so button:focus-visible never applied */
+.drop:focus-visible{outline:1px solid var(--seafoam);outline-offset:2px}
+.drop b{display:block;font-size:11px;color:var(--type);letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+.drop small{font-size:10px;color:var(--dimmer);letter-spacing:.04em}
+.meta{margin-top:10px;color:var(--dimmer);font-size:10px;line-height:1.7;word-break:break-all}
+.meta b{color:var(--dim)}
+
+/* studio signature, right end of the status bar. Dark on the bar, not light on
+   the rail, so the colours are the readout's rather than the console's. */
+.sig{
+  flex:0 0 auto;padding:0 16px;
+  color:var(--dim);font-size:10px;letter-spacing:.1em;white-space:nowrap;
+}
+.sig a{color:var(--type);text-decoration:none;border-bottom:1px solid rgba(250,212,182,.3)}
+.sig a:hover{border-bottom-color:var(--type)}
+.sig a:focus-visible{outline:1px solid var(--seafoam);outline-offset:2px}
+
+/* ── stage ────────────────────────────────────────── */
+.stage{position:relative;display:flex;flex-direction:column;overflow:hidden;background:var(--stage)}
+.viewport{
+  flex:1 1 auto;display:flex;align-items:center;justify-content:center;
+  padding:38px;overflow:hidden;position:relative;
+}
+.frame{position:relative;line-height:0;max-width:100%;max-height:100%}
+.frame.alpha{background:repeating-conic-gradient(rgba(40,30,30,.10) 0% 25%, rgba(40,30,30,.22) 0% 50%) 0 0/18px 18px}
+.frame.round, .frame.round canvas{border-radius:50%}
+.frame.round{background:none}
+.frame.round canvas{box-shadow:0 1px 0 rgba(40,30,30,.3),0 14px 34px -16px rgba(40,30,30,.5)}
+canvas#out{
+  display:block;max-width:100%;max-height:calc(100vh - 150px);
+  box-shadow:0 1px 0 rgba(40,30,30,.35),0 18px 40px -18px rgba(40,30,30,.55);
+}
+/* registration marks mark the true output frame */
+.reg{position:absolute;width:26px;height:26px;pointer-events:none;opacity:.55}
+.reg::before,.reg::after{content:"";position:absolute;background:var(--root)}
+.reg::before{left:12px;top:0;width:1px;height:26px}
+.reg::after{top:12px;left:0;height:1px;width:26px}
+.reg.tl{left:-33px;top:-33px}.reg.tr{right:-33px;top:-33px}
+.reg.bl{left:-33px;bottom:-33px}.reg.br{right:-33px;bottom:-33px}
+
+.bar{
+  flex:0 0 auto;border-top:1px solid rgba(250,212,182,.12);
+  background:var(--rail);
+  display:flex;align-items:center;height:34px;
+}
+.colorbar{display:flex;height:100%;width:132px;flex:0 0 auto}
+.colorbar i{flex:1}
+.readout{
+  display:flex;gap:22px;padding:0 16px;flex:1;
+  font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--type);
+  white-space:nowrap;overflow:hidden;
+}
+.readout i{font-style:normal;color:var(--dim)}
+.readout b{font-variant-numeric:tabular-nums}
+
+.toast{
+  position:absolute;left:50%;bottom:52px;transform:translateX(-50%);
+  background:var(--well);color:var(--type);border:1px solid var(--line);
+  padding:9px 14px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.toast.show{opacity:1}
+
+@media (max-width:900px){
+  body{overflow:auto}
+  .shell{grid-template-columns:1fr;height:auto}
+  .rail{order:2;border-right:0;border-top:1px solid rgba(40,30,30,1)}
+  .scroll{overflow:visible}
+  .stage{order:1;height:62vh}
+  canvas#out{max-height:calc(62vh - 120px)}
+  .reg{display:none}
+}
+
+/* honour a reduced-motion preference: the only movement here is the drop-zone
+   border and the toast fade, but neither needs to animate if asked not to */
+@media (prefers-reduced-motion:reduce){
+  *{transition-duration:0.01ms !important;animation-duration:0.01ms !important}
+}
+
+/* Staged, not yet used by any rule. Declaring a face costs nothing —
+   a browser only fetches the file once something references the family. */
+/* Garamono's x-height is 0.458 em, where the layout was drawn against 0.496 — 7.7% smaller, so
+   at a nominal 10px it would read as 9.2px and drop under the floor the base
+   sheet sets. font-size-adjust normalises apparent size at the root instead of
+   overriding a dozen font-size rules, so every size in the base sheet keeps
+   working. Unsupported browsers fall back to the nominal size, which is a
+   little small rather than broken. */
+body{font-size-adjust:0.496}
+
+/* Syncro is a different animal: its x-height is 0.515, far larger than
+   Garamond's 0.400, so inheriting the adjustment above would shrink the
+   headings badly. Sized on cap height instead — Garamond's caps at 24px
+   measure 15.6px, and Syncro's 0.700 cap reaches that at 22px. */
+section > h2{font-size-adjust:none;font-size:22px}
+
+/* ─── Post Grotesk where Garamono was losing definition ───────────
+   Garamono's fixed pitch and low x-height read as recessive, which suits
+   labels and values but flattens anything meant to be pressed or chosen.
+   These five move to the grotesk; everything else stays in the mono. */
+
+/* every CTA: Choose file, Load test form, Save PNG, Reset everything */
+button{font-family:var(--sans)}
+/* the plate note stays mono — only the name moves */
+.presets button em{font-family:var(--mono)}
+/* dropdowns */
+select{font-family:var(--sans)}
+/* the vellum toggle */
+.tg{font-family:var(--sans)}
+/* the drop-zone headline; its formats line below stays mono */
+.drop b{font-family:var(--sans)}
+
+/* ─── tracking ────────────────────────────────────────────────────
+   Garamono is fixed pitch: every glyph already carries its own sidebearings
+   out to a uniform 0.585 em, so letter-spacing on top of that is spacing
+   applied twice. Removed wherever the mono is still the face. The tracking on
+   the grotesk above stays — uppercase micro-type in a sans genuinely needs it. */
+section > h2 em{letter-spacing:normal}
+.lab span{letter-spacing:normal}
+.presets button em{letter-spacing:normal}
+.drop small{letter-spacing:normal}
+.sig{letter-spacing:normal}
+.readout{letter-spacing:normal}
+.toast{letter-spacing:normal}
+
+/* ─── size ────────────────────────────────────────────────────────
+   Garamono's small x-height leaves it thin at 10px even with the root
+   adjustment above, so every element still set in the mono goes to 11px.
+   The Post Grotesk elements stay at 10 — a proportional grotesk holds up
+   at that size where a low-contrast mono does not. */
+section > h2 em{font-size:11px}
+.lab span{font-size:11px}
+.lab b{font-size:11px}
+.presets button em{font-size:11px}
+.drop small{font-size:11px}
+.meta{font-size:11px}
+.sig{font-size:11px}
+.readout{font-size:11px}
+.toast{font-size:11px}
+
+/* the dropdown carries the longest strings in the rail */
+select{font-size:12px}
