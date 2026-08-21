@@ -108,6 +108,7 @@ section{border-bottom:1px solid var(--line-soft);padding:14px 18px 16px}
 section > h2{
   font-family:var(--display);
   font-size:24px;
+  letter-spacing: -0.72px;
   color:var(--type);
   display:flex;align-items:baseline;gap:10px;margin-bottom:12px;
 }
@@ -173,8 +174,8 @@ select:focus{outline:1px solid var(--seafoam);outline-offset:-1px}
 .toggles{display:flex;flex-wrap:wrap;gap:6px}
 .tg{
   display:inline-flex;align-items:center;gap:6px;cursor:pointer;
-  border:1px solid var(--line);padding:5px 8px;color:var(--dim);font-size:10px;letter-spacing:.06em;
-  user-select:none;text-transform:uppercase;
+  border:1px solid var(--line);padding:5px 8px;color:var(--dim);font-size:12px;letter-spacing:.06em;
+  user-select:none;text-transform:capitalize;
 }
 .tg input{position:absolute;opacity:0;width:0;height:0}
 .tg i{width:8px;height:8px;background:var(--well);border:1px solid var(--line);font-style:normal;flex:0 0 auto}
@@ -187,7 +188,7 @@ select:focus{outline:1px solid var(--seafoam);outline-offset:-1px}
 .tg:focus-within{outline:1px solid var(--seafoam);outline-offset:1px}
 
 button{
-  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
   background:var(--rail-2);color:var(--type);border:1px solid var(--line);
   padding:8px 10px;cursor:pointer;border-radius:0;
 }
@@ -216,7 +217,7 @@ button.primary:hover{background:var(--seafoam);border-color:var(--seafoam);color
 /* these set border:0, so the shared button outline had nothing to sit on */
 .presets button:focus-visible{outline:1px solid var(--seafoam);outline-offset:-2px}
 .presets button:hover{background:rgba(250,212,182,.04);border-color:var(--line-soft)}
-.presets button strong{display:block;font-size:11px;color:var(--dim);letter-spacing:.08em}
+.presets button strong{display:block;font-size:14px;color:var(--dim);letter-spacing:.08em}
 .presets button em{display:block;color:var(--dimmer);font-size:10px;letter-spacing:.05em;margin-top:2px;text-transform:none}
 /* rest -> hover -> selected reads dim, bright, Seafoam. Seafoam means selected
    and nothing else. */
@@ -322,7 +323,7 @@ canvas#out{
   /* the header is pinned above the scroll area, so it is charged against the
      controls the whole time — trimmed here to give them the room back */
   .plate{padding:12px 14px}
-  .plate .title{height:44px}
+  .plate .title{height:56px}
   .plate .mark{height:45px}   /* both scaled by 0.73, so the 60:62 ratio holds */
 }
 
@@ -346,7 +347,7 @@ body{font-size-adjust:0.496}
    Garamond's 0.400, so inheriting the adjustment above would shrink the
    headings badly. Sized on cap height instead — Garamond's caps at 24px
    measure 15.6px, and Syncro's 0.700 cap reaches that at 22px. */
-section > h2{font-size-adjust:none;font-size:22px}
+section > h2{font-size-adjust:none;font-size:18px}
 
 /* ─── Post Grotesk where Garamono was losing definition ───────────
    Garamono's fixed pitch and low x-height read as recessive, which suits
