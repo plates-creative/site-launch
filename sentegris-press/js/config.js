@@ -29,17 +29,18 @@ export const DEFAULTS = {
   aspect: "source", exportScale: 2
 };
 
-/* the screen settings a plate carries, shared by every plate that has one */
+/* The screen settings a plate carries. Ink and Paper are deliberately absent:
+   they belong to the Ink section and survive a plate change. */
 const PLATE = {
   dotScale: 1.2, rotation: -180, centerX: 0, centerY: 0,
-  ink: "#fad4b6", paper: "#281e1e", highlights: 0, shadows: 0,
+  highlights: 0, shadows: 0,
   contrast: 0.5, clipToAlpha: true, invert: false
 };
 
 export const PRESETS = [
-  { name: "None",   note: "sepia only . no screen", v: { bypass: true } },
-  { name: "Fine",   note: "dot 6 . detailed",       v: { ...PLATE, dotSize: 6 } },
-  { name: "Coarse", note: "dot 12 . abstract",      v: { ...PLATE, dotSize: 12 } }
+  { name: "None",   note: "Sepia only, no screen", v: { bypass: true } },
+  { name: "Fine",   note: "Dot 6, detailed",       v: { ...PLATE, dotSize: 6 } },
+  { name: "Coarse", note: "Dot 12, abstract",      v: { ...PLATE, dotSize: 12 } }
 ];
 
 export const FIT_MODES = [["0", "Crop to fill"], ["1", "Fit inside"]];

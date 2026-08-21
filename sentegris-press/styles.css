@@ -1,14 +1,21 @@
 @font-face{
-  font-family:"EB Garamond";
-  src:url("assets/fonts/eb-garamond-regular.woff2") format("woff2");
+  font-family:"Syncro";
+  src:url("assets/fonts/syncro-book.woff2") format("woff2");
   font-weight:400;
   font-style:normal;
   font-display:swap;
 }
 @font-face{
-  font-family:"DM Mono";
-  src:url("assets/fonts/dm-mono-regular.woff2") format("woff2");
+  font-family:"WT Garamono";
+  src:url("assets/fonts/wt-garamono-regular.woff2") format("woff2");
   font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:"Post Grotesk";
+  src:url("assets/fonts/post-grotesk-light.woff2") format("woff2");
+  font-weight:300;
   font-style:normal;
   font-display:swap;
 }
@@ -46,8 +53,9 @@
      cool against Root and Shell. */
   --stage:#878380;
 
-  --display:"EB Garamond",Georgia,"Times New Roman",serif;
-  --mono:"DM Mono",ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --display:"Syncro",Georgia,serif;
+  --mono:"WT Garamono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:"Post Grotesk",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 /* Neutralise the browser's default stylesheet in one place. h1, h2, b and
@@ -124,6 +132,19 @@ input[type=range]::-moz-range-thumb{width:3px;height:14px;background:var(--type)
 input[type=range]:focus-visible::-webkit-slider-thumb{background:var(--seafoam);box-shadow:0 0 0 2px rgba(156,178,158,.35)}
 input[type=range]:focus-visible::-moz-range-thumb{background:var(--seafoam)}
 
+/* Touch. A 3px thumb is 7% of the 44px minimum touch target, so a finger almost
+   never lands on it — the touch falls on the track instead, which jumps the
+   value rather than starting a drag. On coarse pointers the thumb grows enough
+   to grab and the control gets a full-height hit area. Desktop is untouched.
+   touch-action:pan-y lets the page still scroll vertically off a slider while
+   handing horizontal movement to the slider itself, which is the gesture the
+   browser would otherwise claim for scrolling. */
+@media (pointer:coarse){
+  input[type=range]{height:44px;touch-action:pan-y}
+  input[type=range]::-webkit-slider-thumb{width:10px;height:26px;margin-top:-12px}
+  input[type=range]::-moz-range-thumb{width:10px;height:26px}
+}
+
 select{
   width:100%;background:var(--well);color:var(--type);border:1px solid var(--line);
   font-family:var(--mono);font-size:11px;padding:6px 8px;border-radius:0;
@@ -173,7 +194,7 @@ button{
 button:hover{border-color:rgba(250,212,182,.22);background:rgba(250,212,182,.08)}
 button:active{background:var(--well)}
 button:focus-visible{outline:1px solid var(--seafoam);outline-offset:1px}
-/* the fill carries the emphasis; DM Mono has no bold to ask for */
+/* the fill carries the emphasis; the mono face has no bold to ask for */
 button.primary{background:var(--shell);border-color:var(--shell);color:var(--rail)}
 button.primary:hover{background:var(--seafoam);border-color:var(--seafoam);color:var(--rail)}
 .btns{display:grid;grid-template-columns:1fr 1fr;gap:6px}
@@ -182,7 +203,6 @@ button.primary:hover{background:var(--seafoam);border-color:var(--seafoam);color
 .btns-spaced{margin-top:8px}
 .btns-run{margin-top:10px}
 .btns-stacked{margin-top:6px}
-.meta-tight{margin-top:2px}
 
 /* No fill at rest. The 1px gaps used to come from a Shell-tinted container
    showing through opaque buttons — with transparent buttons that fill would
@@ -276,19 +296,34 @@ canvas#out{
 .toast.show{opacity:1}
 
 @media (max-width:900px){
-  body{overflow:auto}
-  .shell{grid-template-columns:1fr;height:auto}
-  .rail{order:2;border-right:0;border-top:1px solid rgba(40,30,30,1)}
-  .scroll{overflow:visible}
-  .stage{order:1;height:62vh}
-  canvas#out{max-height:calc(62vh - 120px)}
+  /* Two independent panes, stacked — the same structure as desktop, rotated.
+     The page itself does not scroll; the preview stays put and the rail scrolls
+     under it, so an edit is always visible while you are making it.
+
+     dvh, not vh: mobile browser chrome resizes the viewport, and 100vh would
+     push the foot of the rail underneath it.
+
+     minmax(0,1fr) on the rail row: a grid item defaults to min-height:auto and
+     refuses to shrink below its content, which silently defeats the inner
+     scroll. The base sheet's body{overflow:hidden} and .scroll{overflow-y:auto}
+     are left alone — this layout wants both. */
+  :root{--stage-h:46dvh}
+  .shell{
+    grid-template-columns:1fr;
+    grid-template-rows:var(--stage-h) minmax(0,1fr);
+    height:100vh;height:100dvh;
+  }
+  .stage{order:1;min-height:0}
+  .viewport{padding:16px;min-height:0}
+  canvas#out{max-height:calc(var(--stage-h) - 66px)}   /* less the 34px bar and 32px padding */
+  .rail{order:2;border-right:0;border-top:1px solid var(--root);min-height:0}
   .reg{display:none}
-}
-/* fix touch targets on mobile */
-@media (pointer:coarse){
-  input[type=range]{height:44px;touch-action:pan-y}
-  input[type=range]::-webkit-slider-thumb{width:10px;height:26px;margin-top:-12px}
-  input[type=range]::-moz-range-thumb{width:10px;height:26px}
+
+  /* the header is pinned above the scroll area, so it is charged against the
+     controls the whole time — trimmed here to give them the room back */
+  .plate{padding:12px 14px}
+  .plate .title{height:44px}
+  .plate .mark{height:45px}   /* both scaled by 0.73, so the 60:62 ratio holds */
 }
 
 /* honour a reduced-motion preference: the only movement here is the drop-zone
@@ -296,3 +331,66 @@ canvas#out{
 @media (prefers-reduced-motion:reduce){
   *{transition-duration:0.01ms !important;animation-duration:0.01ms !important}
 }
+
+/* Staged, not yet used by any rule. Declaring a face costs nothing —
+   a browser only fetches the file once something references the family. */
+/* Garamono's x-height is 0.458 em, where the layout was drawn against 0.496 — 7.7% smaller, so
+   at a nominal 10px it would read as 9.2px and drop under the floor the base
+   sheet sets. font-size-adjust normalises apparent size at the root instead of
+   overriding a dozen font-size rules, so every size in the base sheet keeps
+   working. Unsupported browsers fall back to the nominal size, which is a
+   little small rather than broken. */
+body{font-size-adjust:0.496}
+
+/* Syncro is a different animal: its x-height is 0.515, far larger than
+   Garamond's 0.400, so inheriting the adjustment above would shrink the
+   headings badly. Sized on cap height instead — Garamond's caps at 24px
+   measure 15.6px, and Syncro's 0.700 cap reaches that at 22px. */
+section > h2{font-size-adjust:none;font-size:22px}
+
+/* ─── Post Grotesk where Garamono was losing definition ───────────
+   Garamono's fixed pitch and low x-height read as recessive, which suits
+   labels and values but flattens anything meant to be pressed or chosen.
+   These five move to the grotesk; everything else stays in the mono. */
+
+/* every CTA: Choose file, Load test form, Save PNG, Reset everything */
+button{font-family:var(--sans)}
+/* the plate note stays mono — only the name moves */
+.presets button em{font-family:var(--mono)}
+/* dropdowns */
+select{font-family:var(--sans)}
+/* the vellum toggle */
+.tg{font-family:var(--sans)}
+/* the drop-zone headline; its formats line below stays mono */
+.drop b{font-family:var(--sans)}
+
+/* ─── tracking ────────────────────────────────────────────────────
+   Garamono is fixed pitch: every glyph already carries its own sidebearings
+   out to a uniform 0.585 em, so letter-spacing on top of that is spacing
+   applied twice. Removed wherever the mono is still the face. The tracking on
+   the grotesk above stays — uppercase micro-type in a sans genuinely needs it. */
+section > h2 em{letter-spacing:normal}
+.lab span{letter-spacing:normal}
+.presets button em{letter-spacing:normal}
+.drop small{letter-spacing:normal}
+.sig{letter-spacing:normal}
+.readout{letter-spacing:normal}
+.toast{letter-spacing:normal}
+
+/* ─── size ────────────────────────────────────────────────────────
+   Garamono's small x-height leaves it thin at 10px even with the root
+   adjustment above, so every element still set in the mono goes to 11px.
+   The Post Grotesk elements stay at 10 — a proportional grotesk holds up
+   at that size where a low-contrast mono does not. */
+section > h2 em{font-size:11px}
+.lab span{font-size:11px}
+.lab b{font-size:11px}
+.presets button em{font-size:11px}
+.drop small{font-size:11px}
+.meta{font-size:11px}
+.sig{font-size:11px}
+.readout{font-size:11px}
+.toast{font-size:11px}
+
+/* the dropdown carries the longest strings in the rail */
+select{font-size:12px}
