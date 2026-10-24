@@ -1,7 +1,10 @@
 {
   "rewrites": [
     { "source": "/", "destination": "/index.html" },
-    { "source": "/info", "destination": "/info.html" },
     { "source": "/privacy", "destination": "/privacy.html" }
+  ],
+  "redirects": [
+    { "source": "/info", "destination": "/", "permanent": false },
+    { "source": "/info.html", "destination": "/", "permanent": false }
   ]
 }

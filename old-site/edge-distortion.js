@@ -19,8 +19,8 @@ async function init() {
   glTop = setupCanvas("top-distortion");
   glBottom = setupCanvas("bottom-distortion");
 
-  const vertSource = await fetch("/glass-distortion.vert").then(res => res.text());
-  const fragSource = await fetch("/glass-distortion.frag").then(res => res.text());
+  const vertSource = await fetch("glass-distortion.vert").then(res => res.text());
+  const fragSource = await fetch("glass-distortion.frag").then(res => res.text());
   shaderProgram = createShaderProgram(glTop, vertSource, fragSource);
 
   // Create a full raster of the page body

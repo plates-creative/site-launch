@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <!-- Archived copy of the previous plates.studio (unlisted). Relative links resolve inside /old-site/. -->
+    <base href="/old-site/">
+    <meta name="robots" content="noindex, nofollow">
+    <!-- Primary Meta Tags -->
+    <title>Privacy – Plates Studio</title>
+    <meta name="description" content="Plates is a design and technology studio based in Austin, Texas and San Francisco, California. Our work spans from book design to brand identity, digital platforms to experiential installations.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://plates.studio/info">
+    <meta property="og:title" content="Info – Plates Studio">
+    <meta property="og:description" content="A design and technology studio leading brands and categories into the future.">
+    <meta property="og:image" content="https://www.plates.studio/assets/share.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://plates.studio/info">
+    <meta property="twitter:title" content="Info – Plates Studio">
+    <meta property="twitter:description" content="A design and technology studio leading brands and categories into the future.">
+    <meta property="twitter:image" content="https://www.plates.studio/assets/share.png">
+
+    <!-- SEO -->
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Favicon: Modern + Broad Support -->
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link rel="manifest" href="assets/site.webmanifest">
+    <link rel="shortcut icon" href="assets/favicon.ico">
+
+    <!-- Android-specific PNGs -->
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/android-chrome-512x512.png">
+
+    <!-- Local Styles -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://use.typekit.net/jce7why.css"> <!-- Owners family -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+
+    <!-- Vercel Analytics -->
+    <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+    <script defer src="/_vercel/insights/script.js"></script>
+
+    <script>
+      function getText(event, el) {
+
+        event.preventDefault(); // <-- Ensure this always runs, even on iOS
+
+        // Define the custom string you want to copy
+        var customText = "hello@plates.studio";
+
+        // Copy the custom text to the clipboard
+        navigator.clipboard.writeText(customText);
+
+        // Save original text
+        var originalText = el.innerText;
+        
+        // Change the text of the clicked element
+        el.innerText = "(Cheers)";
+
+        // After 2 seconds, revert the text
+        setTimeout(function() {
+        el.innerText = originalText;
+        }, 1000);
+      }
+    </script>
+  </head>
+
+
+  <body class="info-page">
+    <div id="custom-cursor"></div>
+    <header>
+      <div class="nav-container">
+        <div class="logo logo-invisible">
+          <img src="assets/plates-logo.svg" alt="Plates Studio Logo">
+        </div>
+        <div class="nav-right">
+          <a href="./" class="nav-link">(Close)</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="info-content">
+      <div class="info-description">
+        <h1>Privacy Policy</h1>
+        <p>Hello, and thank you for visiting the studio site operated by Plates. We value your privacy and aim to be transparent about how data is handled. This page explains how we collect, use, and protect your personal information when you visit our website, plates.studio (the “Website”).</p> 
+        <h2>What we collect:</h2>
+        <p>We do not collect personal information unless you explicitly provide it. However, we do use analytics tools to understand general usage patterns.</p>
+        <h2>Cookies</h2>
+        <p>We use a cookie banner (via Cookiebot) to manage your preferences. No tracking cookies are set unless you consent.</p>
+        <ul>
+          <li>Vercel Analytics: Cookie-free, used for general traffic monitoring.</li>
+          <li>Google Analytics: Only activated after consent. Uses cookies to collect anonymous usage data.</li>
+        </ul>
+    <h2>How Your Data Is Used</h2>
+    <p>Analytics data is used solely to understand site traffic and improve the Website experience. We do not sell or share your data.</p>
+    <h2>We use no additional third party services.</h2>
+        <p>For further questions:
+          <br/>
+          <a href="mailto:hellp@plates.studio">hello@plates.studio </a><span class="nav-link" onclick="getText(event, this)">(Copy)</span>
+        </p>
+        <p>Follow us:
+          <br/>
+        <a href="https://www.linkedin.com/company/plates-studio" target="_blank">LinkedIn</a>, <a href="https://www.instagram.com/platescreative/" target="_blank">Instagram</a></p>
+      </div>
+    </main>
+
+        <!-- Cursor Script -->
+    <script>
+      const cursor = document.getElementById('custom-cursor');
+
+      document.addEventListener('mousemove', (e) => {
+        cursor.style.top = e.clientY + 'px';
+        cursor.style.left = e.clientX + 'px';
+      });
+
+      document.addEventListener('touchmove', (e) => {
+        if (e.touches.length > 0) {
+        cursor.style.top = e.touches[0].clientY + 'px';
+        cursor.style.left = e.touches[0].clientX + 'px';
+        }
+      });
+    </script>
+<footer class="site-footer">
+
+    <div class="footer-logo">
+    <img src="assets/plates-footer.svg" alt="Plates Studio Logo">
+  </div>
+  
+  <div class="footer-left">
+    <span id="time-atx">ATX --:--</span>
+    <span class="divider">|</span>
+    <span id="time-sf">SF --:--</span>
+  </div>
+
+  <div class="footer-right">
+    <a href="privacy.html" class="nav-link">Privacy</a>
+    <span class="divider">|</span>
+    <span>© Plates 2025</span>
+  </div>
+
+  <script src="time.js"></script>
+</footer>
+    <script src="suppress-links.js"></script>
+
+<!-- COOKIE BANNER -->
+    <div id="cookiebanner" lang="en" dir="ltr" ng-non-bindable>
+      <div id="c-left">
+        <p class="c-header">We use cookies.</p>
+    </div>
+    <div id="c-right">
+      <a href="javascript:void(0)" onclick="onAcceptCookies()" class="c-button">(Cool)</a>
+    </div>
+    <div style="clear:both"></div>
+    </div>
+
+<!-- Load the external script -->
+    <script src="cookie-consent.js"></script>
+
+  </body>
+</html>

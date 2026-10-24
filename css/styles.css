@@ -1,0 +1,865 @@
+/* =========================================================
+   Plates Studio — plates.studio
+   Design source: Figma "plates.web 🕸️ 1.5"
+     Desktop: WIP 10/22 - Desktop (1440)   ← source of truth, class names follow its layers
+     Mobile:  WIP 10/22 - Mobile  (402)
+   One layout breakpoint: 809px (mobile below).
+
+   Spacing note: every type style uses `text-box: trim-both cap alphabetic`,
+   the CSS twin of Figma's "Vertical trim: Cap height to baseline". That is
+   what lets the Figma gaps below be used as-is. (Chrome 133+, Safari 18.2+.
+   Firefox ignores it and gets slightly looser spacing.)
+
+   Behaviour carried over from the previous build: goo (js/goo-text.js),
+   scroll reveal, thumbnail hover, PS-mark theme easter egg.
+   ========================================================= */
+
+/* ---------- Color themes ----------
+   Registered as colors so the browser can animate them. Changing data-theme
+   on <html> cross-fades every color on the page at once; nothing about
+   layout or scroll position changes. Cycle (PS mark): dark → light → pink. */
+@property --bg          { syntax: "<color>"; inherits: true; initial-value: #181818; }
+@property --fg          { syntax: "<color>"; inherits: true; initial-value: #dbdbdb; }
+@property --fg-strong   { syntax: "<color>"; inherits: true; initial-value: #f8f7f3; }
+@property --placeholder { syntax: "<color>"; inherits: true; initial-value: #232323; }
+@property --cta-color   { syntax: "<color>"; inherits: true; initial-value: #ff3eb5; }
+@property --hover-color { syntax: "<color>"; inherits: true; initial-value: #ff3eb5; }
+@property --globe-dot   { syntax: "<color>"; inherits: true; initial-value: #ff3eb5; }
+/* Header + sticky footer colors for when the difference blend is OFF (pink).
+   Per theme they match what the blend shows, so switching it never pops. */
+@property --chrome-fg   { syntax: "<color>"; inherits: true; initial-value: #c3c3c3; }
+@property --chrome-logo { syntax: "<color>"; inherits: true; initial-value: #e0dfdb; }
+
+:root {
+  --theme-duration: 0.6s;
+  --theme-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    --bg var(--theme-duration) var(--theme-ease),
+    --fg var(--theme-duration) var(--theme-ease),
+    --fg-strong var(--theme-duration) var(--theme-ease),
+    --placeholder var(--theme-duration) var(--theme-ease),
+    --cta-color var(--theme-duration) var(--theme-ease),
+    --hover-color var(--theme-duration) var(--theme-ease),
+    --globe-dot var(--theme-duration) var(--theme-ease),
+    --chrome-fg var(--theme-duration) var(--theme-ease),
+    --chrome-logo var(--theme-duration) var(--theme-ease);
+}
+:root[data-theme="light"] {
+  --bg: var(--neutral-001);
+  --fg: var(--clean-slate);
+  --fg-strong: var(--clean-slate);
+  --placeholder: #cecece;
+  --cta-color: var(--plates-pink);
+  --chrome-fg: #000000;     /* = #dbdbdb differenced over #dbdbdb */
+  --chrome-logo: #1d1c18;   /* = #f8f7f3 differenced over #dbdbdb */
+}
+:root[data-theme="pink"] {
+  --bg: var(--plates-pink);
+  --fg: var(--clean-slate);
+  --fg-strong: var(--clean-slate);
+  --placeholder: #f135a8;
+  --cta-color: var(--clean-slate);
+  --hover-color: var(--neutral-001);   /* pink on pink would vanish */
+  --globe-dot: var(--neutral-001);
+  --cursor: var(--cursor-grey);
+  --cursor-fallback: var(--cursor-grey-svg);
+  --chrome-fg: var(--clean-slate);
+  --chrome-logo: var(--clean-slate);
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { transition: none; }
+}
+
+/* ---------- Tokens ---------- */
+:root {
+  /* Color (Figma variables) */
+  --neutral-001:  #dbdbdb;   /* "Neutral 001" */
+  --clean-slate:  #181818;   /* "Clean Slate" */
+  --blank-canvas: #f8f7f3;   /* "Blank Canvas" (eyebrows) */
+  --plates-pink:  #ff3eb5;   /* "Plates Pink [Digital]" */
+
+  --fg: var(--neutral-001);
+  --bg: var(--clean-slate);
+  --fg-strong: var(--blank-canvas);
+  --placeholder: #232323;            /* image slot while its image loads */
+  --cta-color: var(--plates-pink);
+  --hover-color: var(--plates-pink);   /* links, buttons */
+  --globe-dot: var(--plates-pink);     /* dots dropped on the globe */
+
+  /* Cursor: 20px dot (pink; grey on the pink theme) */
+  --cursor-pink-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Ccircle cx='10' cy='10' r='10' fill='%23ff3eb5'/%3E%3C/svg%3E");
+  --cursor-grey-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Ccircle cx='10' cy='10' r='10' fill='%23dbdbdb'/%3E%3C/svg%3E");
+  --cursor-pink: image-set(url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAB0ElEQVR42q2VMU9UQRSFvzOzzyUEJDTETjorE+wN1GIsdLOv4GeQQGdlx/4PirdBCqPWu7GXxMoOO0MDymaT59s3x2IXJQFdXTjVFDPfPXPvnTviktwuorp57Y1iAS23cMqhfoR9DwDpK8SPKBT49EC9fHBx5oKhq7D3bYivCPEBAKkCT/YrQsjG61R/hvqlek+6l6EyiHYR1M1rr7/dI1vcoS6hLtMkpECTwDbGAMRmIDahOu+o/3TX7SLSzZN+OXv8Zo/m8g4/vo3AASnwN9kJlLiz1KA87ejDs123iygAr797Trb4mup7BW78djRNNmhEdjejOn+h/uahvFEskOY/EZv3SaVhirOr0ERoirr8Qhg+bJAWWjTmVhkN09RrXisF6jLRmF9lFFoBpS1sj+szq2Rso7QVMGu4EnK4AS/gSpi1gLQy7rN/LcS1ROEapJXZXf1BAfsExUkLzCobRbBPAuIIZcZKs/OUUGbEUcBhH0ngG+TQQhIO+4EwOGA0PCY2BZ7BpROxKUbDY8LgIKiXD1DYJs4JVP9fLm1QTZwTCtvq5YPgdhHV3zykPOuQLWVY9fjhT2UlrJpsKaM866i/eeh2EW9/fN36gL3tL+AnAQQdq7Q1gyIAAAAASUVORK5CYII=") 1x, url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAEN0lEQVR42tWZz2tUVxTHP+fcNz8aQ1KhkuKuYCzF7kwpFMeYgsUKklaYgCh04S7xPygyivQvsHaXRaGrGbAVxZYKmmSkUKq4qZQawZ00pqCRMJ157917ungT06hB22Lm5eze4t77ed/7PW/OOSO8RBgmVBsqjQkPYNVfiyzer2D2Ifj3MHYC24C+7pIWsIhwB9wviFxl2/amNN6Ns/V1R6MaBLEXnS0vhKvW3ROwvT8OI/YZ2GHgHbQEeAgezAO2uq04UAc4CB2A30DOY/K1zH00//Te/xrQQKjWVRoT3j74bjuFvs+B40TlEr6THWriwQRBQJ7aywzDQAwxh5bAlSBtd4BpktYX8tMn9zM1J4Ksvt2a0HWvtFYTaUx4q1w+SnHLLVx5EktKxI9TQhwylXCI6LNwACKIKIIDgRAH4scplpRw5UmKW25Z5fJRaUx4ajUxTF5KQcNkxRu294cvicpT+DaENEXEvYwtXmxp82gU4cqQts/J3IETT5/9XMAnb7H74mv0F78h6v+UeMkjto5K/4vTMAkUBx3p8rcsx8e4eeivDGoVUtbAjc449s0Err1/nuLgOJ1HMUKRVxlGTOn1IvHSBcZ+PszMPmV2n1+BXPXg6IyT2bGUqyNnKQxsDFwmUZHOo5jCwDhXR87K7FjK6IxbkyRWrTuZHUttz6UjFAYmSZaSDYH7J2SylFAYmLQ9l47I7Fhq1boDEKOmcMrY8/0bOP0dZBBL183wVxgBiQBbwoe3uf7xn3BKlOquLHPUn8H1bSUkoQdwmSAhCbi+rag/I4hlbIBVLryFFO+AKVkmC72J7MOOBCzeKc3xe12louMU+iMshB7CZW60ECj0RxAdzzy4+0aBvj9u48rDhE6vrnetF7Wk+PY8rTd3KX0LFTTaQWhbDuC6XmwbGu2gb6GiSNiPlgSTQF7CJKAlQcJ+xXQE82QVSU5CEMyD6YgCw91aLj+AWAYIwwo2lD1IjgClC2hDimh5nVqx1yqCaFnJeSgW2uQoP9aUqhbaCrKAuKyAzM/1WsYkCwrMdx9yBChdQOYVCTcQR9aB5SY/MkAJNxTTK4SOZX1HbgRUQscwvaK0hpqE9C5aFiAPP3cBLQshvUtrqKlycyQBqeNKYBZykB8BVwKkLjdHku61ptMkyymiSm+/2oaokiynkE4DqFXrTprj9yCdJupXzHwP1fNE/QrptDTH71m17pTGbTNMCO4kvvUQLWiPvBjQguJbDwnupGFC47apcDpQbahcP7iIT6dwZc1GVhseHldWfDol1w8uUm2ocDqsThZGr0UyO5Za5eI5ilsniZfiDeuNjZjiYJH44VfSPDS1wrIpRh+bZ3iU1/GbPqcdMMPEajWVuQMnSFrHEPeAwkCU9a2W/scsD921QmEgQtwDktYxmTtwwmo1fR7cphgBb94h+jPJ06O/If4GFJpw4uksG9IAAAAASUVORK5CYII=") 2x);
+  --cursor-grey: image-set(url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAACH0lEQVR42q2VsU7cQBCG5x8vlm1tYd1JUbpQ2ErjSORREpQreAwk6FKlg/egcER4lCDlGu4oSBchcdrCkhfH3j8FvgghocCFv9ktdr6df2a0C7mnuq6j2Ww2zOdzm+f5bt/3s2EY3ocQXouIqOqvKIq+G2Nq59xpVVXNOmbNwEPYcrn8FMfxF2PMW5LSdZ0Mw935KIokjmMBIH3fX3Rd97ksy6/3oRARkFQAw3K5PMrz/KBtW2nbNgAQEQHGDUmulzRNNU1Tcc4dl2V5SDICEMwatlgsjqbT6cHNzU1PUlVV5YFGMACI9z7c3t6G6XR6sFgsBMAdVETk8vLyQ57n35xzv0MIZp3Rv8S7m/s8z7eccx+LojjDfD63cRz/SJLkjfeeAFSeIZIhSRJ47392XfdOkyTZtdZut237bNhYBm3bltba7SRJdpXk3pg6ZUOpKkftKcmdrutAUjcFktSRsaMAXvV9L09txCO2MTJebZzVo/ZJXhtj1kO7qWWOjGsFcB7HMQGE/7AcRsa5AjgBgBDCxjUMIWDUiXrvT5umuUrTFCTDBnZDmqZomubKe3+qVVU1qrqfZRlUdXhOLcf5HcbY/aqqGiUZFUVxtlqtjieTyRaA4SmZkgwAhslksrVarY6LojhbPw4v+nypiBDAUNd1VJbloXNuRvLCWqtZlqkx5m+zjDHIskyttUrywjk3K8vysK7rCMAgIsRLfwF/APBcfKhcBgDMAAAAAElFTkSuQmCC") 1x, url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAEU0lEQVR42tWZTWgbRxTH/+/NrLS7kHUkuw0WhNAYWzK9pseCHZpzcA6BfkAPOaanXnsMvfaSNjcfCm0COaT0nFILemyuxbaME0zAIbVsZMXsrnZn5vWQVZoIlzgftTYPdBD7MT+9j3lv/iIcwUSEADAR2eJ7ZWtr62MA551zHznn5gC8ByAsHokB7DBzh5n/BPD7mTNn/iCirHheAXBEJC9bm44Ap4ZgDx8+nLXWfumcu0RE877vw1oLYwyMMRB5uh4RQWsNrTWUUkjTFCKyysx3lFI/nj59emP03a8DSCLCRGRXV1cbYRh+A+BKGIbVNE2RJAkA2OIdREQ08sMEwPCjgiCA7/uI43gAYDmO42/n5+e3C0hX3Hc0wCKkRERuc3Pzc8/zvvN9//1+vw/nnCnCzXgFExEHwDGzjqIIaZr+nef51zMzMz+LCAOQw0JOh8ENb7x///73YRheTZIEeZ4bIlJHSYuXs4r1PE8HQYA4jn84e/bsV6NrHwpYeA7b29vBYDD4aWJiYml3d9eKCDPzm4K9YM45ISI3OTmp9vf3f6lWq180Go2kyOFnkPw8XLvdVgAoSZKbtVptaW9vLyMi9bbhAICZiYjU3t5eVqvVlpIkuQmA2u22GjrqBcB2u60WFxdNp9O5Xq/XL3a73QxABf+/Vbrdblav1y92Op3ri4uLpnDUvyEelvv6+vqnJ0+evPnkyZNcRDwcoxFRfuLECa/X633WbDZvDZloWEGPHj2aSpJkXSk1kWUZXrVK8eaV4yqVCqy1+0EQNKenp7sAiIvtRA4ODq5FUVTLsswdN1zhQc6yzEVRVDs4OLhWFMrTzXVtbe2DSqXSERF2ztFb2Epe25HMLETksiyba7VaDxgAtNZXoijS1lo3RjgAIGuti6JIa62vAACLiGetvVy0Lsb4jZMkgbX2soh4tLa2dr5arf6W5zlG++m4TETE8zwMBoNPmIgu+L5PABzKY873fSKiC8zM56y1GHPuHZaLYOZzDGDWGFM6wIJplkXklDGmNPlX7IlUDMCnmJn94SRcJhMRMLPPKLmxcy4tUXSfDzOccykT0WOt9fAMUZbwitYaRPSYAWxorfFfh5ZxMRZMG+ycu6eUKh2gUgrOuXssInfTNJWS9OFntZGmqYjIXRIRr9Pp/BWG4WySJGOZBUcH1yAIOI7jjbm5uQ+ZiHKl1O0gCFCSfuyCIIBS6jYR5QwAxpjlfr9vlFI85lwUpRT3+31jjFkezoOq1Wo9MMYsR1HEImLHGF4bRREbY5ZbrdYDEVHlPzQVwg03Go0dY8zVIAiYmY/di8xsgyBgY8zVRqOxU+g/jou2YldWVnSz2bzV6/Vu1Ot1D0B2jHxZvV73er3ejWazeWtlZUUPZTkalT4WFhbc5ubmncnJyeNSF7KpqanK7u7urzMzM5fa7TYvLCzYoT5TevHo3ZLf3gkB8/lrpZWARxYqrYg+GvKx/A3xDxpECu+g/5ijAAAAAElFTkSuQmCC") 2x);
+  --cursor: var(--cursor-pink);
+  --cursor-fallback: var(--cursor-pink-svg);
+
+  /* Font stacks */
+  --font-xxwide: "owners-xxwide", sans-serif;  /* 500 */
+  --font-wide:   "owners-wide", sans-serif;    /* 700 */
+  --font-text:   owners-text, sans-serif;      /* 300 / 500 */
+  --font-mono:   "Geist Mono", monospace;      /* 400 default */
+
+  /* Units. 1440 design px → screen px.
+     --uw scales with the window (horizontal layout).
+     --u  is the same but stops growing past 1440 (type + vertical spacing). */
+  --uw: calc(100vw / 1440);
+  --u:  min(var(--uw), 1px);
+
+  --gutter: 16px;
+  --gap: 8px;
+
+  /* Type scale (desktop @ 1440, fluid down to the 810 breakpoint) */
+  --fs-display: clamp(38px, calc(60 * var(--u)), 60px);
+  --fs-heading: clamp(26px, calc(32 * var(--u)), 32px);
+  --fs-body:    clamp(18px, calc(22 * var(--u)), 22px);
+  --fs-small:   clamp(16px, calc(18 * var(--u)), 18px);
+  --fs-mono:    10px;
+
+  /* Vertical rhythm (desktop @ 1440) */
+  --space-hero-projects:  calc(328 * var(--u));   /* viewport bottom → first project */
+  --space-projects:       calc(260 * var(--u));   /* between project items */
+  --space-projects-about: calc(288 * var(--u));
+  --space-about:          38px;                   /* inside About Us */
+  --space-about-cta:      calc(272 * var(--u));
+  --space-cta-divider:    calc(297 * var(--u));
+  --space-divider-footer: 20px;
+  --space-page-end:       129px;                  /* footer → page bottom (clears the PS mark) */
+}
+
+/* ---------- Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body, h1, h2, h3, p, ul, figure { margin: 0; }
+ul { padding: 0; list-style: none; }
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button, input { font: inherit; color: inherit; letter-spacing: inherit; }
+
+html { background: var(--bg); }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-text);
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+/* Goo canvases on full-width headlines reach ~30px past the screen edge.
+   `clip` (not `hidden`) trims that sideways only, without creating a scroll
+   container, so vertical goo spill, hover growth and fixed bits are unaffected. */
+main { overflow-x: clip; }
+
+:focus-visible { outline: 1px solid currentColor; outline-offset: 4px; }
+
+/* ---------- Cursor ----------
+   A 20px dot replaces the system cursor everywhere (mouse/trackpad only).
+   Native cursor, so it never lags. Sharp 1x/2x PNGs where image-set()
+   cursors are supported, an SVG dot everywhere else. */
+@media (hover: hover) and (pointer: fine) {
+  html, html * { cursor: var(--cursor-fallback) 10 10, auto !important; }
+  @supports (cursor: image-set(url("data:,") 1x) 10 10, auto) {
+    html, html * { cursor: var(--cursor) 10 10, auto !important; }
+  }
+}
+
+/* ---------- Hover ----------
+   Everything interactive just fades to pink: no underline, no movement. */
+:root { --hover-duration: 0.3s; --hover-ease: ease; }
+.contact a,
+.links a,
+.policy__body a,
+.form-field__submit {
+  transition: color var(--hover-duration) var(--hover-ease);
+}
+@media (hover: hover) {
+  .contact a:hover,
+  .links a:hover,
+  .policy__body a:hover,
+  .form-field__submit:hover { color: var(--hover-color); }
+}
+
+/* Text arrows: typed as "->" and swapped for Owners' own arrow glyph by the
+   font's OpenType substitution. Tracking is reset so Chrome doesn't switch
+   the substitution off, and the features are switched on explicitly. */
+.arrow {
+  letter-spacing: 0;
+  font-feature-settings: "liga" 1, "calt" 1, "dlig" 1;
+}
+.form-field .arrow { font-feature-settings: "ss06" 1, "liga" 1, "calt" 1, "dlig" 1; }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.skip-link {
+  position: fixed; left: var(--gutter); top: var(--gutter); z-index: 100;
+  padding: 8px 12px; background: var(--fg); color: var(--bg);
+  font: 400 var(--fs-mono)/1.2 var(--font-mono);
+  transform: translateY(-200%);
+}
+.skip-link:focus { transform: none; }
+
+/* ---------- Type styles ----------
+   Display   Owners XXWide Medium  60 / 100% / −2%   (mobile 38)   XL text
+   Heading   Owners Wide Bold      32 / 100% / −2%   (mobile 28)   project titles, CTA link
+   Body      Owners Text Light     22 / 120% / −2%                 descriptions, About copy
+   Small     Owners Text Light     18 / 120% / −2%                 descriptor line
+   Small/Tight                     18 / 110% / −2%                 footer
+   Mono      Geist Mono Regular    10 / 120% / +2%                 labels, eyebrows, lists
+   Mono/List                       10 / 132% / +2%                 project capabilities
+   Mono/Medium (header clock: Geist Mono Medium on desktop)
+   ---------------------------------------------------------- */
+.t-display, .t-heading, .t-body, .t-small, .t-mono {
+  text-box: trim-both cap alphabetic;
+}
+.t-display {
+  font-family: var(--font-xxwide);
+  font-weight: 500;
+  font-size: var(--fs-display);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.t-heading {
+  font-family: var(--font-wide);
+  font-weight: 700;
+  font-size: var(--fs-heading);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.t-body {
+  font-family: var(--font-text);
+  font-weight: 300;
+  font-size: var(--fs-body);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.t-small {
+  font-family: var(--font-text);
+  font-weight: 300;
+  font-size: var(--fs-small);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.t-small--tight { line-height: 1.1; }
+.t-mono {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: var(--fs-mono);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+.t-mono--list   { line-height: 1.32; }
+.t-mono--medium { font-weight: 500; }
+.t-mono--caps   { text-transform: uppercase; }
+
+/* goo-text.js sizes its WebGL layer from the element's box, so goo headings
+   keep a full (untrimmed) box. The negative margins pull the box back to
+   roughly cap height so the Figma spacing around it still holds. */
+[data-goo] { text-box: normal; }
+[data-goo].t-display { margin-block: calc((1cap - 1lh) / 2); }
+/* Parts of a goo element left out of the effect stay as normal visible text */
+[data-goo-skip] { -webkit-text-fill-color: currentColor; }
+
+/* ---------- Header (fixed) ---------- */
+.site-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: var(--gutter);
+  pointer-events: none;
+  mix-blend-mode: difference;
+  color: var(--neutral-001);      /* always light: the difference blend inverts it per theme */
+}
+.site-header > * { pointer-events: auto; }
+.plates-web { color: var(--blank-canvas); }  /* logo artwork color */
+
+/* Pink theme: blend off, plain #181818 (class managed by js/main.js so it
+   switches at the right moment of the fade) */
+:root.chrome-plain .site-header,
+:root.chrome-plain .sticky-footer { mix-blend-mode: normal; color: var(--chrome-fg); }
+:root.chrome-plain .plates-web { color: var(--chrome-logo); }
+.plates-web svg { width: 110px; height: auto; }
+.clock { text-align: right; white-space: nowrap; }
+.clock time { font-variant-numeric: tabular-nums; }
+
+/* ---------- Sticky Footer (fixed): PS Mark + © ---------- */
+.sticky-footer {
+  position: fixed;
+  inset: auto var(--gutter) var(--gutter) var(--gutter);
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  color: var(--neutral-001);
+}
+.sticky-footer > * { pointer-events: auto; }
+/* PS Mark: theme easter egg (js/main.js). Two independent rotations so each
+   keeps its own timing: `rotate` = hover tilt, `transform` = 360° spin per
+   click (--spin grows by 360deg on every click). */
+:root {
+  --mark-w: 59px;
+  --mark-tilt: 14deg;
+  --mark-tilt-duration: 0.6s;
+  --mark-tilt-ease: cubic-bezier(0.25, 1, 0.5, 1);      /* ease-out quart */
+  --mark-spin-duration: 1.1s;
+  --mark-spin-ease: cubic-bezier(0.65, 0, 0.35, 1);     /* ease-in-out cubic */
+}
+.ps-mark {
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  line-height: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.ps-mark__svg {
+  display: block;
+  width: var(--mark-w);
+  height: calc(var(--mark-w) * 56 / 60);
+  rotate: 0deg;
+  transform: rotate(var(--spin, 0deg));
+  transition:
+    rotate var(--mark-tilt-duration) var(--mark-tilt-ease),
+    transform var(--mark-spin-duration) var(--mark-spin-ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  .ps-mark:hover .ps-mark__svg { rotate: var(--mark-tilt); }
+}
+.ps-mark:focus-visible .ps-mark__svg { rotate: var(--mark-tilt); }
+.ps-mark::before { content: ""; position: absolute; inset: -10px; }  /* bigger tap area */
+.ps-mark:focus { outline: none; }
+.ps-mark:focus-visible { outline: 1px solid currentColor; outline-offset: 6px; }
+@media (prefers-reduced-motion: reduce) {
+  .ps-mark__svg { transition: none; }
+}
+.copyright { white-space: nowrap; }
+
+/* ---------- Hero ----------
+   Fills the first screen. Descriptor Line sits on the bottom edge of the
+   viewport (baseline lines up with the PS mark and ©), then scrolls away. */
+.hero {
+  position: relative;
+  min-height: max(100vh, 560px);
+  min-height: max(100svh, 560px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.xl-text {
+  width: 100%;
+  padding-inline: calc(170 * var(--uw));
+  text-align: center;
+}
+.hero .xl-text { padding-bottom: calc(15 * var(--u)); } /* Figma sits it 7.5px above centre */
+.descriptor-line {
+  position: absolute;
+  inset: auto 0 var(--gutter) 0;
+  padding-inline: var(--gutter);
+  text-align: center;
+}
+
+/* ---------- Projects ---------- */
+.projects {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-projects);
+  margin-top: var(--space-hero-projects);
+}
+.project-item {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* Project Info: Capabilities | Project Title | Project Description (258 / 442 / 700) */
+.project-info {
+  display: grid;
+  grid-template-columns: minmax(0, 258fr) minmax(0, 442fr) minmax(0, 700fr);
+  column-gap: var(--gap);
+  align-items: start;
+  padding-inline: var(--gutter);
+}
+/* The row is also the goo layer for title + description; goo spread/radius
+   are in em of this element, so its own size is pinned (children set theirs). */
+.project-info { font-size: 16px; }
+.context { display: contents; }
+.project-title { padding-right: var(--gap); }
+.project-description { padding-top: 9px; }
+
+/* Capabilities: two per line on desktop, one per line on mobile */
+.capabilities li { display: inline; }
+.capabilities li:nth-child(odd)::after  { content: " "; }
+.capabilities li:nth-child(even)::after { content: "\A"; white-space: pre; }
+
+/* Thumbnail Stack: 16:9 = 700, 4:5 = 345, 3:4 = 345 */
+.thumbnail-stack {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap);
+  padding-inline: var(--gutter);
+  /* Locked to the row's resting height (js/main.js), so a hovered image
+     grows down into the gap below instead of pushing the page. */
+  height: var(--rest-h, auto);
+  contain: layout;
+}
+.thumb {
+  --grow: 345;
+  flex: var(--grow) 1 0;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--placeholder);
+  transition: flex-grow var(--thumb-duration) var(--thumb-ease) var(--thumb-delay);
+}
+.thumb:not(:has(img)) { background: var(--fg); }   /* FPO slot, like the Figma grey boxes */
+.thumb--16x9 { --grow: 700; aspect-ratio: 16 / 9; }
+.thumb--4x5  { aspect-ratio: 4 / 5; }
+.thumb--3x4  { aspect-ratio: 3 / 4; }
+
+/* Hover motion — tweak here */
+:root {
+  --thumb-duration: 0.88s;
+  --thumb-ease: cubic-bezier(0.25, 1, 0.5, 1);   /* ease-out quart */
+  --thumb-delay: 0.1s;                            /* so scrolling past doesn't trigger it */
+}
+/* The hovered thumbnail grows 1.5×, the others give way. Mouse/trackpad only. */
+@media (hover: hover) and (pointer: fine) {
+  .thumb:hover { flex-grow: calc(var(--grow) * 1.5); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .thumb { transition: none; }
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* shown exactly as cropped: no zoom, no drift */
+}
+
+/* ---------- About Us ---------- */
+.about-us {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-about);
+  margin-top: var(--space-projects-about);
+}
+.eyebrow { color: var(--fg-strong); }
+
+/* Sub-Section: Who We Are */
+.who-we-are { padding-inline: calc(311 * var(--uw)); }
+.text-lockup {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.copy p + p { margin-top: 12px; }
+
+/* Wireframe globe (1119.565 × 514.703 @ 1440) */
+.wireframe-globe {
+  display: flex;
+  justify-content: center;
+  padding-inline: var(--gutter);
+}
+.wireframe-globe__stage {
+  position: relative;
+  width: calc(1119.565 * var(--uw));
+  max-width: 100%;
+  aspect-ratio: 1119.565 / 514.703;
+}
+.wireframe-globe [data-globe] {
+  position: absolute;
+  inset: 0;
+  color: var(--fg);
+}
+/* Dot paths sit directly in the globe's <svg> (lines are inside its <g>).
+   CSS beats globe.js's stroke attribute, so dots follow the theme. */
+.wireframe-globe [data-globe] > svg > path { stroke: var(--globe-dot); }
+
+/* Sub-Section: Partnerships & Capabilities */
+.partnerships-capabilities {
+  display: flex;
+  gap: var(--gap);
+  padding-inline: calc(311 * var(--uw));
+}
+.list-capabilities {
+  flex: 0 0 calc(523 * var(--uw));
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.list-partnerships {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.columns {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap);
+}
+.list-capabilities .column:nth-child(1) { width: calc(168 * var(--uw)); }
+.list-capabilities .column:nth-child(2) { width: calc(170 * var(--uw)); }
+.list-capabilities .column:nth-child(3) { width: calc(167 * var(--uw)); }
+.list-partnerships .column:nth-child(1) { width: calc(168 * var(--uw)); flex-shrink: 0; }
+.list-partnerships .column:nth-child(2) { width: calc(169 * var(--uw)); flex-shrink: 0; }
+
+/* ---------- XL Text (CTA) ---------- */
+.xl-text--cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 64px;
+  margin-top: var(--space-about-cta);
+}
+.cta {
+  color: var(--cta-color);
+  mix-blend-mode: difference;     /* as in Figma; dark theme only */
+}
+:root[data-theme="light"] .cta,
+:root[data-theme="pink"] .cta { mix-blend-mode: normal; }
+
+/* ---------- Goo Divider (plain rule for now) ---------- */
+.goo-divider {
+  height: 1px;
+  margin: var(--space-cta-divider) var(--gutter) 0;
+  border: 0;
+  background: var(--fg);
+}
+
+/* ---------- Footer ----------
+   Contact (287) · Email (346) · Links, 185 apart, starting at x 134 */
+.footer {
+  display: grid;
+  grid-template-columns: calc(287 * var(--uw)) calc(346 * var(--uw)) minmax(0, 1fr);
+  grid-template-areas: "contact email links";
+  column-gap: calc(185 * var(--uw));
+  align-items: start;
+  margin-top: var(--space-divider-footer);
+  padding: 0 calc(67 * var(--uw)) var(--space-page-end) calc(134 * var(--uw));
+}
+.contact { grid-area: contact; }
+.email   { grid-area: email; }
+.links   { grid-area: links; }
+
+.contact,
+.links .group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding-block: 8px;
+}
+.contact > *,
+.links li { text-box: trim-both cap alphabetic; white-space: nowrap; }
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.email {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-block: 8px;
+}
+.email__copy { display: block; text-box: trim-both cap alphabetic; }
+.form-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-block: 8px;
+  font-feature-settings: "ss06" 1;
+}
+/* Inputs and buttons can't be cap-trimmed, so their boxes are pulled in to
+   cap height with negative margins; the row then measures like Figma's 29px. */
+.form-field__input,
+.form-field__submit {
+  height: 1.2em;
+  margin-block: calc((1cap - 1.2em) / 2);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  line-height: 1.2;
+  font-feature-settings: inherit;
+}
+.form-field__input {
+  width: 7.4em;            /* fits the placeholder in Owners Text */
+  min-width: 6.7em;
+  outline: none;
+}
+@supports (field-sizing: content) {
+  /* Grows with what's typed (Chrome). */
+  .form-field__input { field-sizing: content; width: auto; }
+}
+.form-field__input::placeholder { color: currentColor; opacity: 0.5; }
+.form-field__input:focus-visible { box-shadow: 0 1px 0 currentColor; }
+.form-field__submit { white-space: nowrap; }
+
+.email__status:empty { display: none; }
+
+
+/* ---------- Privacy page ----------
+   Not in the WIP 10/22 Figma: uses the same type styles, gutters and
+   project-info grid as the home page. */
+.policy-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-projects);
+  padding-top: calc(296 * var(--u));
+}
+.policy-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(120 * var(--u));
+}
+.m-text {
+  max-width: 700px;
+  padding-inline: var(--gutter);
+  box-sizing: content-box;
+  text-align: center;
+}
+.policy__sections {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(56px, calc(80 * var(--u)), 80px);
+}
+.policy__row {
+  display: grid;
+  grid-template-columns: minmax(0, 258fr) minmax(0, 442fr) minmax(0, 700fr);
+  column-gap: var(--gap);
+  align-items: start;
+  padding-inline: var(--gutter);
+}
+.policy__heading { padding-right: var(--gap); }
+.policy__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+  padding-top: 9px;
+}
+.policy__body strong { font-weight: 500; }
+.policy__body a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+.policy__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  padding-left: 1.1em;
+}
+.policy__list li { position: relative; }
+.policy__list li::before {      /* drawn bullet so it can fade in with its line */
+  content: "";
+  position: absolute;
+  left: -0.85em;
+  top: 0.5em;
+  width: 0.24em;
+  height: 0.24em;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* ---------- Scroll reveal ----------
+   A quiet opacity fade, nothing moves. Markup API (js/main.js):
+     data-reveal          → the element fades in when it scrolls into view
+     data-reveal-group    → its direct children fade in one after another
+     data-reveal-lines    → body text fades in line by line
+   Reveals happen once. Content is only hidden once the early script in
+   <head> has run, so no-JS visitors see everything. */
+:root {
+  --reveal-duration: 1.32s;
+  --reveal-ease: cubic-bezier(0.37, 0, 0.63, 1);   /* ease-in-out sine */
+  --reveal-stagger: 99ms;
+  --reveal-line-stagger: 120ms;
+}
+.reveal :where([data-reveal], [data-reveal-group] > :not([data-reveal-lines])) {
+  opacity: 0;
+  transition: opacity var(--reveal-duration) var(--reveal-ease) var(--reveal-delay, 0ms);
+}
+/* Thumbnails keep their hover transition alongside the fade */
+.reveal .thumbnail-stack[data-reveal-group] > .thumb {
+  transition:
+    flex-grow var(--thumb-duration) var(--thumb-ease) var(--thumb-delay),
+    opacity var(--reveal-duration) var(--reveal-ease) var(--reveal-delay, 0ms);
+}
+.reveal :where([data-reveal-lines]:not(.rl-split)) {
+  opacity: 0;
+  transition: opacity var(--reveal-duration) var(--reveal-ease) var(--reveal-delay, 0ms);
+}
+.reveal .rl-w {
+  opacity: 0;
+  transition: opacity var(--reveal-duration) var(--reveal-ease)
+    calc(var(--reveal-delay, 0ms) + var(--line, 0) * var(--reveal-line-stagger));
+}
+.reveal [data-reveal-lines] li::before {
+  opacity: 0;
+  transition: opacity var(--reveal-duration) var(--reveal-ease)
+    calc(var(--reveal-delay, 0ms) + var(--line, 0) * var(--reveal-line-stagger));
+}
+.reveal .is-in,
+.reveal .is-in .rl-w,
+.reveal .is-in li::before { opacity: 1; }
+@media (prefers-reduced-motion: reduce), print {
+  .reveal [data-reveal],
+  .reveal [data-reveal-group] > *,
+  .reveal [data-reveal-lines],
+  .reveal .rl-w,
+  .reveal [data-reveal-lines] li::before { opacity: 1 !important; transition: none !important; }
+}
+
+/* =========================================================
+   Mobile (≤ 809px) — WIP 10/22 - Mobile (402)
+   ========================================================= */
+@media (max-width: 809px) {
+  :root {
+    --fs-display: 38px;
+    --fs-heading: 28px;
+    --fs-body:    22px;
+    --fs-small:   18px;
+
+    --space-projects:       162px;
+    --space-projects-about: 215px;
+    --space-about-cta:      404px;
+    --space-cta-divider:    258px;
+    --space-divider-footer: 16px;
+    --space-page-end:       86px;
+  }
+
+  /* Header: clock stacks ATX / SF, regular weight */
+  .site-header {
+    padding-top: calc(var(--gutter) + env(safe-area-inset-top));
+  }
+  .clock { font-weight: 400; }
+  .clock__city { display: block; }
+  .clock__sep { display: none; }
+
+  .sticky-footer {
+    bottom: calc(var(--gutter) + env(safe-area-inset-bottom));
+  }
+
+  /* Hero: headline fills the first screen; Descriptor Line joins the flow below it */
+  .hero {
+    display: block;
+    min-height: 0;
+  }
+  .hero .xl-text {
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 var(--gutter);
+  }
+  .descriptor-line {
+    position: static;
+    padding: 366px var(--gutter) 0;   /* text starts 1240 in the 874-tall Figma frame */
+  }
+  .projects { margin-top: 401px; }
+
+  /* Project Item - Mobile */
+  .project-item { gap: 80px; }
+  .project-info {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 80px;
+  }
+  .context {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--gap);
+  }
+  .capabilities { flex: none; white-space: nowrap; }
+  .capabilities li { display: block; }
+  .capabilities li::after { content: none !important; }
+  .project-title {
+    flex: 1 1 0;
+    min-width: 0;
+    padding-right: 0;
+    text-align: right;
+  }
+
+  /* Thumbnails become a sideways swipe row */
+  .thumbnail-stack {
+    height: auto;             /* no hover on touch, so no height lock */
+    gap: var(--gap);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+  .thumbnail-stack::-webkit-scrollbar { display: none; }
+  .thumb { scroll-snap-align: start; transition: none; }
+  .thumb--16x9 { flex: 0 0 calc(100vw * 362.106 / 402); }
+  .thumb--4x5,
+  .thumb--3x4  { flex: 0 0 calc(100vw * 178.466 / 402); }
+
+  /* About Us - Mobile */
+  .who-we-are { padding-inline: var(--gap); }
+  .copy p + p { margin-top: 16px; }
+  .wireframe-globe__stage {
+    width: calc(100vw * 382 / 402);
+    aspect-ratio: 382 / 175;
+  }
+  .wireframe-globe { padding-inline: 0; }
+
+  /* Partnerships & Capabilities: two equal columns, lists stack */
+  .partnerships-capabilities { padding-inline: var(--gap); }
+  .list-capabilities,
+  .list-partnerships { flex: 1 1 0; min-width: 0; }
+  .columns {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .columns .column { width: auto !important; }
+
+  /* CTA */
+  .xl-text--cta {
+    gap: 46px;
+    padding-inline: var(--gutter);
+  }
+
+  .goo-divider { margin-inline: var(--gap); }
+
+  /* Footer - Mobile: Email on top, Contact + Links below */
+  .footer {
+    grid-template-columns: minmax(0, 287fr) minmax(0, 91fr);
+    grid-template-areas:
+      "email   email"
+      "contact links";
+    column-gap: var(--gap);
+    row-gap: var(--gap);
+    padding: 0 var(--gap) calc(var(--space-page-end) + env(safe-area-inset-bottom));
+  }
+  .email { max-width: 346px; }
+
+  .policy-page { padding-top: 160px; }
+  .policy-intro { gap: 80px; }
+  .policy__row { grid-template-columns: 1fr; row-gap: 10px; }
+  .policy__heading { padding-right: 0; }
+  .policy__body { padding-top: 6px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; }
+}

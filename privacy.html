@@ -1,170 +1,183 @@
-<!DOCTYPE html>
-<html lang="en">
- <head>
-    <!-- Primary Meta Tags -->
-    <title>Privacy – Plates Studio</title>
-    <meta name="description" content="Plates is a design and technology studio based in Austin, Texas and San Francisco, California. Our work spans from book design to brand identity, digital platforms to experiential installations.">
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Privacy – Plates Studio</title>
+  <meta name="description" content="How Plates Studio handles data, cookies and analytics on plates.studio.">
+  <meta name="theme-color" content="#181818">
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://plates.studio/info">
-    <meta property="og:title" content="Info – Plates Studio">
-    <meta property="og:description" content="A design and technology studio leading brands and categories into the future.">
-    <meta property="og:image" content="https://www.plates.studio/assets/share.png">
+  <!-- Sharing -->
+  <link rel="canonical" href="https://plates.studio/privacy">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://plates.studio/privacy">
+  <meta property="og:title" content="Privacy – Plates Studio">
+  <meta property="og:description" content="How Plates Studio handles data, cookies and analytics on plates.studio.">
+  <meta property="og:image" content="https://www.plates.studio/assets/share.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://www.plates.studio/assets/share.png">
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://plates.studio/info">
-    <meta property="twitter:title" content="Info – Plates Studio">
-    <meta property="twitter:description" content="A design and technology studio leading brands and categories into the future.">
-    <meta property="twitter:image" content="https://www.plates.studio/assets/share.png">
+  <!-- Favicons (assets/ from the current site) -->
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+  <link rel="manifest" href="/assets/site.webmanifest">
 
-    <!-- SEO -->
-    <link rel="canonical" href="https://plates.studio/privacy">
+  <!-- Vercel Analytics (cookie-free, same as the current site) -->
+  <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+  <script defer src="/_vercel/insights/script.js"></script>
 
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- Favicon: Modern + Broad Support -->
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
-    <link rel="manifest" href="assets/site.webmanifest">
-    <link rel="shortcut icon" href="assets/favicon.ico">
+  <!-- Owners (Adobe Fonts) -->
+  <link rel="stylesheet" href="https://use.typekit.net/dyf7qmw.css">
+  <!-- Geist Mono (Google Fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-    <!-- Android-specific PNGs -->
-    <link rel="icon" type="image/png" sizes="192x192" href="assets/android-chrome-192x192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="assets/android-chrome-512x512.png">
+  <!-- Scroll reveal: hide revealable content only once we know JS is running.
+       Safety net: if main.js never starts, show everything after 3s. -->
+  <script>
+    document.documentElement.classList.add('reveal');
+    setTimeout(function () {
+      if (!document.documentElement.classList.contains('reveal-ready')) document.documentElement.classList.remove('reveal');
+    }, 3000);
+  </script>
+  <link rel="stylesheet" href="/css/styles.css">
+  <script src="/js/main.js" defer></script>
+  <script src="/js/goo-text.js" defer></script>
+</head>
+<body>
 
-    <!-- Local Styles -->
-    <link rel="stylesheet" href="style.css">
+  <a class="skip-link" href="#main">Skip to content</a>
 
-    <!-- Fonts -->
-    <link rel="stylesheet" href="https://use.typekit.net/jce7why.css"> <!-- Owners family -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+  <!-- Header (fixed): "Plates™ Web" + "ATX 00:00 | SF 00:00" -->
+  <header class="site-header">
+    <a class="plates-web" href="/" aria-label="Plates Studio, home">
+      <svg width="110" height="24" viewBox="0 0 110 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M11.4678 3.67936C16.7587 3.67936 20.4115 6.84774 20.4116 11.386C20.4116 15.8975 16.7051 19.1468 11.4678 19.1468C8.48694 19.1467 5.96278 17.9923 4.45879 16.0322L4.48501 23.7126H0V4.02815H4.45879V6.8211C5.96276 4.83405 8.48686 3.67946 11.4678 3.67936ZM10.2867 6.63316C6.84891 6.63316 4.48501 8.56653 4.48501 11.4131C4.48501 14.2596 6.84891 16.193 10.2867 16.193C13.6438 16.1929 15.9799 14.2596 15.9799 11.4131C15.9799 8.53973 13.6438 6.63324 10.2867 6.63316Z" fill="currentColor"/>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M73.034 3.54474C78.4592 3.54474 82.9175 6.6866 82.9177 11.7619V12.0311H67.5016C67.7973 14.6089 69.9724 16.2734 73.034 16.2734C75.5049 16.2734 77.3852 15.2266 78.2447 13.4543H82.6764C81.5215 16.8915 77.8686 19.2813 72.9807 19.2814C67.3407 19.2814 63.0701 16.059 63.07 11.4402C63.07 6.82125 67.4745 3.54474 73.034 3.54474ZM72.9807 6.49854C70.4024 6.49854 68.4412 7.78769 67.7429 9.7749H78.298C77.5729 7.76098 75.5857 6.49866 72.9807 6.49854Z" fill="currentColor"/>
+        <path d="M92.3537 3.59806C97.4835 3.59806 101.19 5.53206 102.237 9.02312H97.9936C97.1879 7.27766 95.3351 6.44521 92.3808 6.44521C89.695 6.44521 88.4055 7.14349 88.4055 8.0834C88.4058 9.39903 90.6889 9.61403 93.4282 9.802C97.43 10.0974 102.372 10.3927 102.372 14.206C102.372 17.1331 99.0415 19.2281 93.6432 19.2281C88.4866 19.2281 84.834 17.2404 83.8671 13.6151H88.1913C88.8359 15.4142 90.7692 16.4351 93.589 16.4352C96.6508 16.4352 98.0207 15.6557 98.0207 14.6353C98.0203 13.2392 95.6037 13.051 92.8109 12.8362C88.836 12.514 84.0551 12.1917 84.0551 8.51261C84.0553 5.5588 87.1973 3.59812 92.3537 3.59806Z" fill="currentColor"/>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M37.7318 3.62516C42.9689 3.62522 46.0042 5.69324 46.0042 9.69448V18.798H41.5987V16.6231C39.8799 18.3146 37.4093 19.1468 34.4822 19.1468C30.2924 19.1468 27.6865 17.4285 27.6864 14.8774C27.6864 10.9298 33.0315 10.6345 37.2212 10.0975C39.7996 9.77522 41.5454 9.42569 41.5454 8.32467C41.5452 7.30428 40.1751 6.47231 37.5701 6.47231C34.7502 6.47242 32.924 7.65394 32.3332 9.34569H28.1166C29.0029 6.06946 32.6557 3.62516 37.7318 3.62516ZM41.5987 11.4664C40.5781 12.1109 38.8325 12.3259 37.1137 12.5408C34.4549 12.8899 32.0648 13.1318 32.0648 14.7699C32.0648 15.8709 33.3005 16.5427 35.4491 16.5427C37.7049 16.5426 40.2021 15.7634 41.5987 14.3136V11.4664Z" fill="currentColor"/>
+        <path d="M26.3068 18.798H21.8752V0H26.3068V18.798Z" fill="currentColor"/>
+        <path d="M56.1597 4.02815H62.7928V7.06237H56.1597V13.8573C56.1599 15.146 56.9383 15.7096 58.6033 15.7096H62.7928V18.798H56.6965C53.3126 18.798 51.7815 17.2943 51.7814 14.4211V7.06237H46.5174V4.02815H51.7814V0.805979H56.1597V4.02815Z" fill="currentColor"/>
+        <path d="M103.554 4.6193V1.48397H102.315V0.825283H105.661V1.48397H104.441V4.6193H103.554ZM106.039 4.6193V0.825283H107.242L107.998 3.4688L108.753 0.825283H109.956V4.6193H109.174L109.192 1.73866L108.366 4.6193H107.611L106.794 1.73866L106.812 4.6193H106.039Z" fill="currentColor"/>
+      </svg>
+    </a>
+    <p class="clock t-mono t-mono--medium" aria-label="Local times">
+      <span class="clock__city">ATX <time data-tz="America/Chicago">00:00</time></span><span class="clock__sep" aria-hidden="true"> | </span><span class="clock__city">SF <time data-tz="America/Los_Angeles">00:00</time></span>
+    </p>
+  </header>
 
-    <!-- Vercel Analytics -->
-    <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
-    <script defer src="/_vercel/insights/script.js"></script>
+  <!-- Sticky Footer (fixed): PS Mark + "© Plates 2026" -->
+  <div class="sticky-footer">
+    <!-- Easter egg: click/tap cycles the color theme (dark → light → pink). js/main.js -->
+    <button class="ps-mark" type="button">
+      <svg width="60" height="56" viewBox="0 0 60 56" fill="none" xmlns="http://www.w3.org/2000/svg" class="ps-mark__svg" aria-hidden="true" focusable="false">
+        <ellipse cx="28.573" cy="14.4595" rx="27.6735" ry="13.56" stroke="currentColor" stroke-width="1.79878"/>
+        <ellipse cx="28.573" cy="41.441" rx="27.6735" ry="13.4217" stroke="currentColor" stroke-width="1.79878"/>
+        <path d="M21.4802 22.0838V9.25875H24.7866V11.1729C25.9525 9.8156 27.9363 8.99772 30.2507 8.99772C34.2531 8.99772 37.0896 11.1903 37.0896 14.0616C37.0896 16.9329 34.2357 19.1603 30.2507 19.1603C27.9363 19.1603 25.9525 18.3424 24.7866 16.9851V22.0838H21.4802ZM29.3458 17.0373C31.9561 17.0373 33.8006 15.7322 33.8006 14.079C33.8006 12.4085 31.9561 11.1033 29.3458 11.1033C26.6833 11.1033 24.7866 12.4085 24.7866 14.0616C24.7866 15.7322 26.6833 17.0373 29.3458 17.0373Z" fill="currentColor"/>
+        <path d="M29.0868 46.554C25.1888 46.554 22.422 45.1966 21.6041 42.8822H24.8582C25.3803 43.9437 26.8942 44.5702 29.0694 44.5702C31.5057 44.5702 32.5498 44.0655 32.5498 43.4042C32.5498 41.2116 21.7085 44.1351 21.7085 39.6977C21.7085 37.6095 24.1273 36.2869 28.0775 36.2869C31.9407 36.2869 34.8294 37.5399 35.7169 39.9065H32.515C31.8537 38.845 30.4267 38.3055 28.0949 38.3055C25.9545 38.3055 24.9626 38.758 24.9626 39.3845C24.9626 41.5597 35.8039 38.6188 35.8039 43.091C35.8039 45.1444 33.2284 46.554 29.0868 46.554Z" fill="currentColor"/>
+        <path d="M56.2978 30.4049C54.1867 30.4049 52.7041 29.3664 52.7041 27.8838C52.7041 26.4013 54.1867 25.3628 56.2978 25.3628C58.4157 25.3628 59.8914 26.4013 59.8914 27.8838C59.8914 29.3664 58.4157 30.4049 56.2978 30.4049ZM56.2978 29.9676C58.1151 29.9676 59.3654 29.0999 59.3654 27.8838C59.3654 26.6677 58.1151 25.8069 56.2978 25.8069C54.4873 25.8069 53.237 26.6677 53.237 27.8838C53.237 29.0999 54.4873 29.9676 56.2978 29.9676ZM56.2909 29.3322C54.9109 29.3322 54.0364 28.649 54.0364 27.8838C54.0364 27.1186 54.9109 26.4354 56.2909 26.4354C57.4934 26.4354 58.3884 26.9615 58.6002 27.6857H57.6778C57.5139 27.3168 56.94 27.0366 56.3319 27.0366C55.5394 27.0366 54.9723 27.3987 54.9723 27.8838C54.9723 28.3757 55.5394 28.7378 56.3319 28.7378C56.94 28.7378 57.5139 28.4509 57.6778 28.082H58.6002C58.3884 28.8061 57.4934 29.3322 56.2909 29.3322Z" fill="currentColor"/>
+      </svg>
+      <span class="visually-hidden">Plates Studio. Change color theme</span>
+    </button>
+    <p class="copyright t-mono">© Plates <span data-year>2026</span></p>
+  </div>
+  <p class="visually-hidden" role="status" aria-live="polite" data-theme-status></p>
 
-    <script>
-      function getText(event, el) {
+  <main id="main" class="policy-page">
 
-        event.preventDefault(); // <-- Ensure this always runs, even on iOS
-
-        // Define the custom string you want to copy
-        var customText = "hello@plates.studio";
-
-        // Copy the custom text to the clipboard
-        navigator.clipboard.writeText(customText);
-
-        // Save original text
-        var originalText = el.innerText;
-        
-        // Change the text of the clicked element
-        el.innerText = "(Cheers)";
-
-        // After 2 seconds, revert the text
-        setTimeout(function() {
-        el.innerText = originalText;
-        }, 1000);
-      }
-    </script>
-  </head>
-
-
-  <body class="info-page">
-    <div id="custom-cursor"></div>
-    <header>
-      <div class="nav-container">
-        <div class="logo logo-invisible">
-          <img src="assets/plates-logo.svg" alt="Plates Studio Logo">
-        </div>
-        <div class="nav-right">
-          <a href="/" class="nav-link">(Close)</a>
-        </div>
+    <section class="policy-intro" aria-labelledby="policy-title">
+      <div class="xl-text">
+        <h1 id="policy-title" class="t-display" data-reveal data-goo="reveal" data-goo-radius="4.8" data-goo-feather="0.7">Privacy Policy</h1>
       </div>
-    </header>
+      <p class="t-body m-text" data-reveal-lines>Hello, and thank you for visiting the studio site operated by Plates. We value your privacy and aim to be transparent about how data is handled. This page explains how we collect, use, and protect your personal information when you visit our website, plates.studio (the “Website”).</p>
+    </section>
 
-    <main class="info-content">
-      <div class="info-description">
-        <h1>Privacy Policy</h1>
-        <p>Hello, and thank you for visiting the studio site operated by Plates. We value your privacy and aim to be transparent about how data is handled. This page explains how we collect, use, and protect your personal information when you visit our website, plates.studio (the “Website”).</p> 
-        <h2>What we collect:</h2>
-        <p>We do not collect personal information unless you explicitly provide it. However, we do use analytics tools to understand general usage patterns.</p>
-        <h2>Cookies</h2>
-        <p>We use a cookie banner (via Cookiebot) to manage your preferences. No tracking cookies are set unless you consent.</p>
-        <ul>
-          <li>Vercel Analytics: Cookie-free, used for general traffic monitoring.</li>
-          <li>Google Analytics: Only activated after consent. Uses cookies to collect anonymous usage data.</li>
-        </ul>
-    <h2>How Your Data Is Used</h2>
-    <p>Analytics data is used solely to understand site traffic and improve the Website experience. We do not sell or share your data.</p>
-    <h2>We use no additional third party services.</h2>
-        <p>For further questions:
-          <br/>
-          <a href="mailto:hellp@plates.studio">hello@plates.studio </a><span class="nav-link" onclick="getText(event, this)">(Copy)</span>
-        </p>
-        <p>Follow us:
-          <br/>
-        <a href="https://www.linkedin.com/company/plates-studio" target="_blank">LinkedIn</a>, <a href="https://www.instagram.com/platescreative/" target="_blank">Instagram</a></p>
+    <!-- Same three-column grid as the project info rows on the home page:
+         mono number | heading (project title style, melt) | body copy -->
+    <div class="policy__sections">
+
+      <section class="policy__row" data-reveal-group aria-labelledby="p-collect">
+        <p class="policy__num t-mono" aria-hidden="true">01</p>
+        <h2 id="p-collect" class="policy__heading t-heading" data-goo="melt" data-goo-radius="1.8" data-goo-feather="0.8">What we collect</h2>
+        <div class="policy__body t-body" data-reveal-lines>
+          <p>We do not collect personal information unless you explicitly provide it. However, we do use analytics tools to understand general usage patterns.</p>
+        </div>
+      </section>
+
+      <section class="policy__row" data-reveal-group aria-labelledby="p-cookies">
+        <p class="policy__num t-mono" aria-hidden="true">02</p>
+        <h2 id="p-cookies" class="policy__heading t-heading" data-goo="melt" data-goo-radius="1.8" data-goo-feather="0.8">Cookies</h2>
+        <div class="policy__body t-body" data-reveal-lines>
+          <p>We use a cookie banner (via Cookiebot) to manage your preferences. No tracking cookies are set unless you consent.</p>
+          <ul class="policy__list">
+            <li><strong>Vercel Analytics:</strong> Cookie-free, used for general traffic monitoring.</li>
+            <li><strong>Google Analytics:</strong> Only activated after consent. Uses cookies to collect anonymous usage data.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="policy__row" data-reveal-group aria-labelledby="p-use">
+        <p class="policy__num t-mono" aria-hidden="true">03</p>
+        <h2 id="p-use" class="policy__heading t-heading" data-goo="melt" data-goo-radius="1.8" data-goo-feather="0.8">How your data is used</h2>
+        <div class="policy__body t-body" data-reveal-lines>
+          <p>Analytics data is used solely to understand site traffic and improve the Website experience. We do not sell or share your data.</p>
+        </div>
+      </section>
+
+      <section class="policy__row" data-reveal-group aria-labelledby="p-third">
+        <p class="policy__num t-mono" aria-hidden="true">04</p>
+        <h2 id="p-third" class="policy__heading t-heading" data-goo="melt" data-goo-radius="1.8" data-goo-feather="0.8">Third parties</h2>
+        <div class="policy__body t-body" data-reveal-lines>
+          <p>We use no additional third party services.</p>
+        </div>
+      </section>
+
+      <section class="policy__row" data-reveal-group aria-labelledby="p-contact">
+        <p class="policy__num t-mono" aria-hidden="true">05</p>
+        <h2 id="p-contact" class="policy__heading t-heading" data-goo="melt" data-goo-radius="1.8" data-goo-feather="0.8">Questions</h2>
+        <div class="policy__body t-body" data-reveal-lines>
+          <p>For further questions, reach us at <a href="mailto:hello@plates.studio">hello@plates.studio</a>.</p>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- Goo Divider (plain rule for now; goo experiment to come) -->
+  <hr class="goo-divider" data-reveal>
+
+  <!-- Footer -->
+  <footer class="footer" data-reveal-group>
+
+    <div class="contact t-small t-small--tight">
+      <p>Inquiries:</p>
+      <p><a href="mailto:hello@plates.studio">hello@plates.studio</a></p>
+    </div>
+
+    <form class="email t-small t-small--tight" action="#" method="post" novalidate>
+      <label class="email__copy" for="email-input">Join the newsletter for early access, event invitations, and exclusive updates.</label>
+      <div class="form-field">
+        <input class="form-field__input" id="email-input" type="email" name="email" autocomplete="email" placeholder="your@email.com" required>
+        <button class="form-field__submit" type="submit">Submit <span class="arrow" aria-hidden="true">-&gt;</span></button>
       </div>
-    </main>
+      <p class="email__status t-mono" role="status" aria-live="polite"></p>
+    </form>
 
-        <!-- Cursor Script -->
-    <script>
-      const cursor = document.getElementById('custom-cursor');
+    <nav class="links t-small t-small--tight" aria-label="Footer">
+      <ul class="group group--social">
+        <li><a href="https://www.instagram.com/platescreative/" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.linkedin.com/company/plates-studio" target="_blank" rel="noopener">LinkedIn</a></li>
+      </ul>
+      <ul class="group group--privacy">
+        <li><a href="/privacy" aria-current="page">Privacy</a></li>
+      </ul>
+    </nav>
 
-      document.addEventListener('mousemove', (e) => {
-        cursor.style.top = e.clientY + 'px';
-        cursor.style.left = e.clientX + 'px';
-      });
+  </footer>
 
-      document.addEventListener('touchmove', (e) => {
-        if (e.touches.length > 0) {
-        cursor.style.top = e.touches[0].clientY + 'px';
-        cursor.style.left = e.touches[0].clientX + 'px';
-        }
-      });
-    </script>
-<footer class="site-footer">
-
-    <div class="footer-logo">
-    <img src="/assets/plates-footer.svg" alt="Plates Studio Logo">
-  </div>
-  
-  <div class="footer-left">
-    <span id="time-atx">ATX --:--</span>
-    <span class="divider">|</span>
-    <span id="time-sf">SF --:--</span>
-  </div>
-
-  <div class="footer-right">
-    <a href="/privacy" class="nav-link">Privacy</a>
-    <span class="divider">|</span>
-    <span>© Plates 2025</span>
-  </div>
-
-  <script src="time.js"></script>
-</footer>
-    <script src="suppress-links.js"></script>
-
-<!-- COOKIE BANNER -->
-    <div id="cookiebanner" lang="en" dir="ltr" ng-non-bindable>
-      <div id="c-left">
-        <p class="c-header">We use cookies.</p>
-    </div>
-    <div id="c-right">
-      <a href="javascript:void(0)" onclick="onAcceptCookies()" class="c-button">(Cool)</a>
-    </div>
-    <div style="clear:both"></div>
-    </div>
-
-<!-- Load the external script -->
-    <script src="cookie-consent.js"></script>
-
-  </body>
+</body>
 </html>
