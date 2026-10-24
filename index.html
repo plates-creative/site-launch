@@ -101,7 +101,13 @@
       </div>
     </section>
 
-    <!-- Projects ("Frame 20" → Project Item × 6) -->
+    <!-- Projects ("Frame 20" → Project Item × 6)
+         Each slot (thumb--16x9 / thumb--4x5 / thumb--3x4) takes an image OR a video.
+         Image: <img src="/assets/work/name.jpg" alt="…" loading="lazy" decoding="async">
+         Video: <video src="/assets/work/name.mp4" poster="/assets/work/name.jpg"
+                       muted loop playsinline preload="metadata"></video>
+         Videos play silently on a loop while on screen, with no controls
+         (js/main.js). Export at the slot's aspect ratio: MP4 / H.264, no audio. -->
     <section class="projects" aria-label="Selected work">
 
       <article class="project-item">

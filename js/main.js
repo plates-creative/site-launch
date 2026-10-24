@@ -1,5 +1,5 @@
 /* Plates Studio — site scripts
-   Clocks, thumbnail height lock, theme easter egg (PS mark),
+   Clocks, thumbnail height lock, video thumbnails, theme easter egg (PS mark),
    scroll reveal, footer year, email form placeholder.
    The wireframe globe is js/globe.js; the goo effect is js/goo-text.js. */
 
@@ -60,6 +60,53 @@
 
   const ro = new ResizeObserver((entries) => entries.forEach((e) => measure(e.target)));
   rows.forEach((row) => { measure(row); ro.observe(row); });
+})();
+
+/* ---------- Video thumbnails ----------
+   Any <video> in a thumbnail slot is treated as a silent, looping visual:
+   no controls, no sound, no picture-in-picture. It plays only while it's on
+   (or near) the screen and pauses when scrolled away, so several videos on
+   the page don't fight for the phone's battery or bandwidth.
+   If the browser blocks autoplay (e.g. iPhone Low Power Mode) or the visitor
+   asks for reduced motion, the poster frame simply stays up.
+   Markup: <video src="…mp4" poster="…jpg" muted loop playsinline preload="metadata"></video> */
+(function videoThumbs() {
+  const videos = [...document.querySelectorAll('.thumb video')];
+  if (!videos.length) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+
+  videos.forEach((v) => {
+    v.muted = true;
+    v.defaultMuted = true;
+    v.loop = true;
+    v.playsInline = true;
+    v.controls = false;
+    v.autoplay = false;               // playback is driven by visibility below
+    v.disablePictureInPicture = true;
+    v.disableRemotePlayback = true;
+    ['muted', 'playsinline', 'loop', 'disablepictureinpicture', 'disableremoteplayback']
+      .forEach((a) => v.setAttribute(a, ''));
+    v.removeAttribute('controls');
+    v.setAttribute('tabindex', '-1');
+    if (!v.hasAttribute('aria-label')) v.setAttribute('aria-hidden', 'true');
+  });
+
+  const visible = new Set();
+  const play = (v) => {
+    if (reduce.matches) return;
+    const p = v.play();
+    if (p && p.catch) p.catch(() => {});   // autoplay refused: keep the poster
+  };
+  const update = () => videos.forEach((v) => (visible.has(v) && !document.hidden ? play(v) : v.pause()));
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => (e.isIntersecting ? visible.add(e.target) : visible.delete(e.target)));
+    update();
+  }, { rootMargin: '200px 0px' });
+  videos.forEach((v) => io.observe(v));
+
+  document.addEventListener('visibilitychange', update);
+  reduce.addEventListener?.('change', update);
 })();
 
 /* ---------- Theme easter egg (PS mark) ----------

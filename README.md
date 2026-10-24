@@ -15,4 +15,6 @@ Preview locally: `npx serve .` in this folder (Adobe Fonts kit dyf7qmw needs `lo
 
 Scroll reveal (fade only): `data-reveal`, `data-reveal-group` (children in sequence), `data-reveal-lines` (line by line). Timing lives in the "Scroll reveal" block of `css/styles.css`.
 
+Project media: each thumbnail slot takes an `<img>` or a `<video>` (see the comment above the projects in `index.html`). Videos are silent loops with no controls that play while on screen and fall back to their `poster` frame when autoplay isn't allowed or reduced motion is on. Export them at the slot's aspect ratio as MP4 (H.264) with no audio track; short loops can live in `assets/`, long or heavy films are better on a video host.
+
 FPO: project images are hot-linked from the Framer build; Keena and Witzkaan Events have placeholder copy and grey image slots.
