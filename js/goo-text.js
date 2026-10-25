@@ -42,9 +42,16 @@
  *       <p data-goo-radius="6.8" data-goo-feather="1">Description…</p>
  *     </div>
  *
- * FALLS BACK TO PLAIN TEXT (no effect) when: WebGL is unavailable, the
- * device has no hover (touch), forced-colors / high-contrast mode is on,
- * or the user prefers reduced motion. Nothing is hidden until the
+ * TOUCH SCREENS (Plates edit): there's no cursor, so "reveal" elements
+ * play once as an intro instead: blobby type resolves left to right
+ * (Sarah's "First contact" sweep) as the element scrolls into view, then
+ * the canvas is removed and the plain text remains. "melt" elements stay
+ * plain text on touch.
+ *   data-goo-intro="1.8"       intro length in seconds; "off" disables it
+ *
+ * FALLS BACK TO PLAIN TEXT (no effect) when: WebGL is unavailable,
+ * forced-colors / high-contrast mode is on, or the user prefers reduced
+ * motion. Nothing is hidden until the
  * effect has successfully drawn its first frame.
  *
  * JS API (optional): GooText.init(el, opts) -> { refresh(), destroy() }
@@ -85,7 +92,7 @@
 
   function mq(q) { return !!(global.matchMedia && global.matchMedia(q).matches); }
   function effectAllowed(o) {
-    if (mq("(hover: none)")) return false;
+    if (mq("(hover: none)") && !o.intro) return false;   // touch: intro only
     if (mq("(forced-colors: active)")) return false;
     if (o.respectReducedMotion && mq("(prefers-reduced-motion: reduce)")) return false;
     return true;
@@ -104,6 +111,9 @@
     if (d.gooColor) o.color = d.gooColor;
     if (user) for (k in user) if (user[k] !== undefined) o[k] = user[k];
     o.mode = (o.mode === "melt" || o.mode === "disturb") ? "melt" : "reveal";
+    // Plates edit: touch screens get a one-time intro on "reveal" elements
+    o.intro = mq("(hover: none)") && o.mode === "reveal" && d.gooIntro !== "off";
+    o.introDuration = (d.gooIntro && !isNaN(parseFloat(d.gooIntro))) ? parseFloat(d.gooIntro) : 1.8;
     return o;
   }
 
@@ -150,7 +160,7 @@
       "precision highp float;varying vec2 v;" +
       decl + ";uniform sampler2D uParams;" +
       "uniform vec2 uRes,uPtr;" +
-      "uniform float uPresence,uEdge,uRadMax,uSpreadMax,uMaxLevel;" +
+      "uniform float uPresence,uEdge,uRadMax,uSpreadMax,uMaxLevel,uSweep,uFront;" +
       "uniform int uMode;uniform vec4 uColor;" +
       lvl +
       // blur radius in px -> fractional pyramid level, blended between the two nearest
@@ -167,6 +177,9 @@
       " float g=smoothstep(rad*(1.0-fea),rad*(1.0+fea),d);" +
       " float nearP=(1.0-g)*uPresence;" +
       " float f=(uMode==0)?(1.0-nearP):nearP;" +
+      // Plates edit: intro sweep (touch). uSweep 0..1 resolves the type left to
+      // right with a soft front; < 0 means no intro (pointer-driven as usual).
+      " if(uSweep>-0.5){float loc=clamp((uSweep*(1.0+uFront)-v.x)/uFront,0.0,1.0);f*=1.0-loc;}" +
       " float sBlur=spr*f;" +
       " float field=varBlur(sBlur,v);" +
       (deriv
@@ -356,7 +369,8 @@
     var W = 0, H = 0, dpr = 1, cssW = 0, cssH = 0, margin = 0;
     var spreadPx = 0, radPx = 0, nLevels = 1, color = [0, 0, 0, 1];
     var ready = false, destroyed = false, rasterQueued = false;
-    var st = { tx: 0, ty: 0, cx: 0, cy: 0, p: 0, pt: 0, moving: false };
+    var st = { tx: 0, ty: 0, cx: 0, cy: 0, p: 0, pt: 0, moving: false,
+               sweep: o.intro ? 0 : -1, introGo: false, introT: 0 };
 
     var tc = document.createElement("canvas");
     var tctx = tc.getContext("2d");
@@ -552,7 +566,15 @@
 
       buildPyramid();
       render();
-      if (!ready) { ready = true; host.classList.add("goo-on"); }
+      if (!ready) { ready = true; host.classList.add("goo-on"); if (st.introGo) startIntro(); }
+    }
+
+    // Plates edit: touch intro. Starts when the element scrolls into view (same
+    // point as the scroll reveal fade) and once the first frame is drawn.
+    function startIntro() {
+      if (!o.intro || !ready || st.introT > 0 || st.moving) return;
+      st.moving = true;
+      wake();
     }
 
     function buildPyramid() {
@@ -606,6 +628,8 @@
       gl.uniform2f(u.uRes, W, H);
       gl.uniform2f(u.uPtr, st.cx, st.cy);
       gl.uniform1f(u.uPresence, st.p);
+      gl.uniform1f(u.uSweep, st.sweep);
+      gl.uniform1f(u.uFront, 0.6);
       gl.uniform1f(u.uEdge, o.edge);
       gl.uniform1f(u.uMaxLevel, nLevels);
       gl.uniform1i(u.uMode, o.mode === "melt" ? 1 : 0);
@@ -625,7 +649,7 @@
       options: o,
       precision: function () { return texType === gl.UNSIGNED_BYTE ? "8-bit" : "half-float"; },
       track: function (cx, cy, present) {
-        if (!ready) return;
+        if (!ready || o.intro) return;
         var r = canvas.getBoundingClientRect();
         var x = cx - r.left, y = cy - r.top;
         // Plates edit: wake the effect as soon as the outer (feathered) edge of
@@ -651,6 +675,18 @@
         // Plates edit: the shared loop steps every instance each frame; one
         // that is already at rest has nothing new to draw, so skip it.
         if (!st.moving) return false;
+        if (o.intro) {
+          st.introT += dt;
+          var t = Math.min(1, st.introT / o.introDuration);
+          st.sweep = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;   // ease in-out
+          render();
+          if (t >= 1) {
+            // fully resolved = identical to the plain text: hand back to it
+            st.moving = false;
+            setTimeout(function () { inst.destroy(); }, 60);
+          }
+          return st.moving;
+        }
         var k = 1 - Math.pow(1 - o.follow, dt * 60);
         var kp = 1 - Math.pow(1 - o.fade, dt * 60);
         st.cx += (st.tx - st.cx) * k;
@@ -675,6 +711,7 @@
       },
       destroy: function () {
         destroyed = true;
+        io && io.disconnect();
         ro && ro.disconnect();
         mo && mo.disconnect();
         var i = instances.indexOf(inst);
@@ -696,6 +733,14 @@
       for (var i = 0; i < list.length; i++) if (list[i].target !== canvas) { queueRaster(); return; }
     }) : null;
     if (mo) mo.observe(host, { childList: true, characterData: true, subtree: true });
+
+    // Plates edit: touch intro trigger
+    var io = (o.intro && global.IntersectionObserver) ? new IntersectionObserver(function (en) {
+      if (!en[0].isIntersecting) return;
+      io.disconnect(); st.introGo = true; startIntro();
+    }, { rootMargin: "0px 0px -12% 0px" }) : null;
+    if (io) io.observe(host);
+    else if (o.intro) st.introGo = true;
 
     canvas.addEventListener("webglcontextlost", function (e) {
       e.preventDefault(); host.classList.remove("goo-on"); ready = false;

@@ -1,6 +1,7 @@
 /* Plates Studio — site scripts
    Clocks, thumbnail height lock, video thumbnails, theme easter egg (PS mark),
-   scroll reveal, footer year, email form placeholder.
+   scroll reveal, footer year, email form placeholder, cursor dot, globe extras
+   (dot size + automatic dots), mobile hero scene.
    The wireframe globe is js/globe.js; the goo effect is js/goo-text.js. */
 
 /* ---------- Live clocks (ATX / SF) ---------- */
@@ -18,11 +19,19 @@
     return formatters.get(tz);
   };
 
+  // HH, a blinking colon (CSS), MM. The blink is lined up with real seconds.
+  els.forEach((el) => {
+    el.innerHTML = '<span data-h>00</span><span class="clock__colon">:</span><span data-m>00</span>';
+  });
+  document.documentElement.style.setProperty('--blink-offset', (-(Date.now() % 1000) / 1000) + 's');
+
   function tick() {
     const now = new Date();
     els.forEach((el) => {
-      const tz = el.dataset.tz;
-      el.textContent = fmt(tz).format(now);
+      const parts = fmt(el.dataset.tz).formatToParts(now);
+      const get = (type) => (parts.find((p) => p.type === type) || {}).value || '00';
+      el.querySelector('[data-h]').textContent = get('hour');
+      el.querySelector('[data-m]').textContent = get('minute');
       el.dateTime = now.toISOString();
     });
     // Re-run at the top of the next minute
@@ -178,6 +187,96 @@
     if (status) status.textContent = `${t.label} color theme`;
     followGoo();
   });
+})();
+
+/* ---------- Cursor dot ----------
+   Mouse/trackpad only: a 14px dot that follows the pointer with a difference
+   blend, so it inverts whatever it passes over. Colour per theme comes from
+   --cursor-color in styles.css. The system cursor is hidden only once the dot
+   is actually showing. */
+(function cursorDot() {
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  const dot = document.createElement('div');
+  dot.className = 'cursor-dot';
+  dot.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(dot);
+  const root = document.documentElement;
+  addEventListener('pointermove', (e) => {
+    if (e.pointerType === 'touch') return;
+    dot.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+    if (!dot.classList.contains('is-on')) { dot.classList.add('is-on'); root.classList.add('has-cursor-dot'); }
+  }, { passive: true });
+  document.addEventListener('mouseout', (e) => { if (!e.relatedTarget) dot.classList.remove('is-on'); });
+})();
+
+/* ---------- Globe extras ----------
+   1. Dot size: 14px on desktop; 50% larger than before on mobile.
+   2. A dot lands on a random spot on the front of the globe every 3 seconds
+      while it's on screen, so it's clear the globe can be added to.
+   Runs after globe.js has set the globe up. */
+addEventListener('DOMContentLoaded', function globeExtras() {
+  const el = document.querySelector('[data-globe]');
+  const g = el && el.__globe;
+  if (!g) return;
+
+  const mobile = matchMedia('(max-width: 809px)');
+  const size = () => {
+    el.setAttribute('data-globe-dot-size', mobile.matches ? '20.2' : '14');   // 20.2 ≈ 6.9px on a 402 screen
+    g.refresh();
+  };
+  size();
+  mobile.addEventListener?.('change', size);
+
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  let visible = false;
+  new IntersectionObserver((en) => { visible = en[0].isIntersecting; }).observe(el);
+  setInterval(() => {
+    if (!visible || document.hidden || reduce.matches || !g.outline) return;
+    // random point inside the globe's outline (kept off the very edge), dropped
+    // exactly like a click so it pins to the globe and spins with it
+    const r = g.outline.getBoundingClientRect();
+    const a = Math.random() * Math.PI * 2, d = Math.sqrt(Math.random()) * 0.9;
+    g.onClick({
+      clientX: r.left + r.width / 2 + Math.cos(a) * d * r.width / 2,
+      clientY: r.top + r.height / 2 + Math.sin(a) * d * r.height / 2,
+      target: el
+    });
+  }, 3000);
+});
+
+/* ---------- Mobile hero scene ----------
+   On phones the XL line and the descriptor stay centred on screen while you
+   scroll: the XL line fades out, then the descriptor fades in and back out.
+   The amount of scrolling is --hero-travel in styles.css. */
+(function heroScene() {
+  const hero = document.querySelector('.hero');
+  if (!hero) return;
+  const line = hero.querySelector('.hero-text');
+  const desc = hero.querySelector('.descriptor-line p');
+  const root = document.documentElement;
+  const mobile = matchMedia('(max-width: 809px)');
+  const ramp = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+  let queued = false;
+
+  function update() {
+    queued = false;
+    if (!root.classList.contains('hero-scene')) return;
+    const r = hero.getBoundingClientRect();
+    const travel = Math.max(1, r.height - innerHeight);
+    const s = Math.min(1, Math.max(0, -r.top / travel));      // 0 → 1 through the scene
+    line.style.opacity = (1 - ramp(0.10, 0.40, s)).toFixed(3);
+    desc.style.opacity = (ramp(0.40, 0.60, s) * (1 - ramp(0.82, 1.0, s))).toFixed(3);
+  }
+  const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+
+  function setMode() {
+    if (mobile.matches) { root.classList.add('hero-scene'); update(); }
+    else { root.classList.remove('hero-scene'); line.style.opacity = ''; desc.style.opacity = ''; }
+  }
+  setMode();
+  mobile.addEventListener?.('change', setMode);
+  addEventListener('scroll', queue, { passive: true });
+  addEventListener('resize', queue);
 })();
 
 /* ---------- Scroll reveal ----------
