@@ -370,21 +370,26 @@ addEventListener('DOMContentLoaded', function globeExtras() {
     return 1;
   }
 
-  const pending = new Set();          // observed, not yet revealed (see fallback below)
-  const io = new IntersectionObserver((entries) => {
-    const hits = entries.filter((e) => e.isIntersecting)
-      .sort((a, b) => (a.target.compareDocumentPosition(b.target) & Node.DOCUMENT_POSITION_FOLLOWING) ? -1 : 1);
-    let t = 0;
-    hits.forEach(({ target }) => {
-      io.unobserve(target);
-      pending.delete(target);
-      const items = target.hasAttribute('data-reveal-group') ? [...target.children] : [target];
-      items.forEach((item) => {
-        const steps = reveal(item, t);
-        // the next item starts as this one's last line begins
-        t += item.classList.contains('rl-split') ? steps * lineStagger : stagger;
-      });
+  // Reveal a target (or each child of a group) in sequence, starting at
+  // delay t. Returns the delay at which the next item would start.
+  const pending = new Set();          // observed, not yet revealed
+  function revealTarget(target, t) {
+    io.unobserve(target);
+    pending.delete(target);
+    const items = target.hasAttribute('data-reveal-group') ? [...target.children] : [target];
+    items.forEach((item) => {
+      const steps = reveal(item, t);
+      // the next item starts as this one's last line begins
+      t += item.classList.contains('rl-split') ? steps * lineStagger : stagger;
     });
+    return t;
+  }
+  const inOrder = (a, b) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING) ? -1 : 1;
+
+  const io = new IntersectionObserver((entries) => {
+    let t = 0;
+    entries.filter((e) => e.isIntersecting).map((e) => e.target).sort(inOrder)
+      .forEach((target) => { t = revealTarget(target, t); });
   }, { rootMargin: '0px 0px -12% 0px' });
 
   // keep line groupings right if the window is resized before text is revealed
@@ -396,23 +401,21 @@ addEventListener('DOMContentLoaded', function globeExtras() {
     }, 150);
   });
 
-  // Fallback: anything scrolled past without ever being seen (End key, a fast
-  // fling, an anchor jump) never triggers the observer, so it would stay
-  // hidden above the viewport. Check for those once scrolling settles.
+  // Fallbacks, checked once scrolling settles:
+  // 1. anything scrolled past without ever being seen (End key, a fast fling,
+  //    an anchor jump) never triggers the observer and would stay hidden;
+  // 2. anything at the very end of the page (the footer) may never get 12% up
+  //    the screen on a tall window, because the page can't scroll any further.
   let settleTimer = 0;
-  addEventListener('scroll', () => {
-    clearTimeout(settleTimer);
-    settleTimer = setTimeout(() => {
-      pending.forEach((t) => {
-        if (t.getBoundingClientRect().top < innerHeight * 0.88) {
-          pending.delete(t);
-          io.unobserve(t);
-          const items = t.hasAttribute('data-reveal-group') ? [...t.children] : [t];
-          items.forEach((item) => reveal(item, 0));
-        }
-      });
-    }, 120);
-  }, { passive: true });
+  function settle() {
+    const atBottom = scrollY + innerHeight >= document.documentElement.scrollHeight - 2;
+    let t = 0;
+    [...pending].sort(inOrder).forEach((target) => {
+      const top = target.getBoundingClientRect().top;
+      if (top < innerHeight * 0.88 || (atBottom && top < innerHeight)) t = revealTarget(target, t);
+    });
+  }
+  addEventListener('scroll', () => { clearTimeout(settleTimer); settleTimer = setTimeout(settle, 120); }, { passive: true });
 
   function start() {
     document.querySelectorAll('[data-reveal-lines]').forEach(split);
@@ -421,6 +424,7 @@ addEventListener('DOMContentLoaded', function globeExtras() {
       pending.add(t);
       io.observe(t);
     });
+    settle();   // e.g. a short page, or a reload that lands at the bottom
   }
   const fontsReady = document.fonts && document.fonts.ready
     ? Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 1200))])
