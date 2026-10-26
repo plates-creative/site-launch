@@ -5,13 +5,15 @@
      Mobile:  WIP 10/22 - Mobile  (402)
    One layout breakpoint: 809px (mobile below).
 
+   Breakpoints: ≤1023px (narrow desktop / tablet portrait), ≤809px (mobile).
+
    Spacing note: every type style uses `text-box: trim-both cap alphabetic`,
    the CSS twin of Figma's "Vertical trim: Cap height to baseline". That is
    what lets the Figma gaps below be used as-is. (Chrome 133+, Safari 18.2+.
    Firefox ignores it and gets slightly looser spacing.)
 
-   Behaviour carried over from the previous build: goo (js/goo-text.js),
-   scroll reveal, thumbnail hover, PS-mark theme easter egg.
+   Order: themes → tokens → base → type styles → page sections in order →
+   privacy page → scroll reveal → breakpoints.
    ========================================================= */
 
 /* ---------- Color themes ----------
@@ -47,12 +49,12 @@
     --chrome-logo var(--theme-duration) var(--theme-ease);
 }
 :root[data-theme="light"] {
-  --submit-hover: var(--clean-slate);  /* black on light */
   --bg: var(--neutral-001);
   --fg: var(--clean-slate);
   --fg-strong: var(--clean-slate);
   --placeholder: #cecece;
   --cta-color: var(--plates-pink);
+  --submit-hover: var(--clean-slate);  /* black on light */
   --chrome-fg: #000000;     /* = #dbdbdb differenced over #dbdbdb */
   --chrome-logo: #1d1c18;   /* = #f8f7f3 differenced over #dbdbdb */
 }
@@ -64,7 +66,6 @@
   --cta-color: var(--clean-slate);
   --hover-color: var(--neutral-001);   /* pink on pink would vanish */
   --globe-dot: var(--neutral-001);
-  --cursor: var(--cursor-grey);
   --cursor-fallback: var(--cursor-grey-svg);
   --cursor-color: var(--neutral-001);
   --submit-active: var(--neutral-001);
@@ -97,9 +98,6 @@
   --cursor-color: var(--plates-pink);
   --cursor-pink-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Ccircle cx='7' cy='7' r='7' fill='%23ff3eb5'/%3E%3C/svg%3E");
   --cursor-grey-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Ccircle cx='7' cy='7' r='7' fill='%23dbdbdb'/%3E%3C/svg%3E");
-  --cursor-pink: image-set(url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAB0ElEQVR42q2VMU9UQRSFvzOzzyUEJDTETjorE+wN1GIsdLOv4GeQQGdlx/4PirdBCqPWu7GXxMoOO0MDymaT59s3x2IXJQFdXTjVFDPfPXPvnTviktwuorp57Y1iAS23cMqhfoR9DwDpK8SPKBT49EC9fHBx5oKhq7D3bYivCPEBAKkCT/YrQsjG61R/hvqlek+6l6EyiHYR1M1rr7/dI1vcoS6hLtMkpECTwDbGAMRmIDahOu+o/3TX7SLSzZN+OXv8Zo/m8g4/vo3AASnwN9kJlLiz1KA87ejDs123iygAr797Trb4mup7BW78djRNNmhEdjejOn+h/uahvFEskOY/EZv3SaVhirOr0ERoirr8Qhg+bJAWWjTmVhkN09RrXisF6jLRmF9lFFoBpS1sj+szq2Rso7QVMGu4EnK4AS/gSpi1gLQy7rN/LcS1ROEapJXZXf1BAfsExUkLzCobRbBPAuIIZcZKs/OUUGbEUcBhH0ngG+TQQhIO+4EwOGA0PCY2BZ7BpROxKUbDY8LgIKiXD1DYJs4JVP9fLm1QTZwTCtvq5YPgdhHV3zykPOuQLWVY9fjhT2UlrJpsKaM866i/eeh2EW9/fN36gL3tL+AnAQQdq7Q1gyIAAAAASUVORK5CYII=") 1x, url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAEN0lEQVR42tWZz2tUVxTHP+fcNz8aQ1KhkuKuYCzF7kwpFMeYgsUKklaYgCh04S7xPygyivQvsHaXRaGrGbAVxZYKmmSkUKq4qZQawZ00pqCRMJ157917ungT06hB22Lm5eze4t77ed/7PW/OOSO8RBgmVBsqjQkPYNVfiyzer2D2Ifj3MHYC24C+7pIWsIhwB9wviFxl2/amNN6Ns/V1R6MaBLEXnS0vhKvW3ROwvT8OI/YZ2GHgHbQEeAgezAO2uq04UAc4CB2A30DOY/K1zH00//Te/xrQQKjWVRoT3j74bjuFvs+B40TlEr6THWriwQRBQJ7aywzDQAwxh5bAlSBtd4BpktYX8tMn9zM1J4Ksvt2a0HWvtFYTaUx4q1w+SnHLLVx5EktKxI9TQhwylXCI6LNwACKIKIIDgRAH4scplpRw5UmKW25Z5fJRaUx4ajUxTF5KQcNkxRu294cvicpT+DaENEXEvYwtXmxp82gU4cqQts/J3IETT5/9XMAnb7H74mv0F78h6v+UeMkjto5K/4vTMAkUBx3p8rcsx8e4eeivDGoVUtbAjc449s0Err1/nuLgOJ1HMUKRVxlGTOn1IvHSBcZ+PszMPmV2n1+BXPXg6IyT2bGUqyNnKQxsDFwmUZHOo5jCwDhXR87K7FjK6IxbkyRWrTuZHUttz6UjFAYmSZaSDYH7J2SylFAYmLQ9l47I7Fhq1boDEKOmcMrY8/0bOP0dZBBL183wVxgBiQBbwoe3uf7xn3BKlOquLHPUn8H1bSUkoQdwmSAhCbi+rag/I4hlbIBVLryFFO+AKVkmC72J7MOOBCzeKc3xe12louMU+iMshB7CZW60ECj0RxAdzzy4+0aBvj9u48rDhE6vrnetF7Wk+PY8rTd3KX0LFTTaQWhbDuC6XmwbGu2gb6GiSNiPlgSTQF7CJKAlQcJ+xXQE82QVSU5CEMyD6YgCw91aLj+AWAYIwwo2lD1IjgClC2hDimh5nVqx1yqCaFnJeSgW2uQoP9aUqhbaCrKAuKyAzM/1WsYkCwrMdx9yBChdQOYVCTcQR9aB5SY/MkAJNxTTK4SOZX1HbgRUQscwvaK0hpqE9C5aFiAPP3cBLQshvUtrqKlycyQBqeNKYBZykB8BVwKkLjdHku61ptMkyymiSm+/2oaokiynkE4DqFXrTprj9yCdJupXzHwP1fNE/QrptDTH71m17pTGbTNMCO4kvvUQLWiPvBjQguJbDwnupGFC47apcDpQbahcP7iIT6dwZc1GVhseHldWfDol1w8uUm2ocDqsThZGr0UyO5Za5eI5ilsniZfiDeuNjZjiYJH44VfSPDS1wrIpRh+bZ3iU1/GbPqcdMMPEajWVuQMnSFrHEPeAwkCU9a2W/scsD921QmEgQtwDktYxmTtwwmo1fR7cphgBb94h+jPJ06O/If4GFJpw4uksG9IAAAAASUVORK5CYII=") 2x);
-  --cursor-grey: image-set(url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAACH0lEQVR42q2VsU7cQBCG5x8vlm1tYd1JUbpQ2ErjSORREpQreAwk6FKlg/egcER4lCDlGu4oSBchcdrCkhfH3j8FvgghocCFv9ktdr6df2a0C7mnuq6j2Ww2zOdzm+f5bt/3s2EY3ocQXouIqOqvKIq+G2Nq59xpVVXNOmbNwEPYcrn8FMfxF2PMW5LSdZ0Mw935KIokjmMBIH3fX3Rd97ksy6/3oRARkFQAw3K5PMrz/KBtW2nbNgAQEQHGDUmulzRNNU1Tcc4dl2V5SDICEMwatlgsjqbT6cHNzU1PUlVV5YFGMACI9z7c3t6G6XR6sFgsBMAdVETk8vLyQ57n35xzv0MIZp3Rv8S7m/s8z7eccx+LojjDfD63cRz/SJLkjfeeAFSeIZIhSRJ47392XfdOkyTZtdZut237bNhYBm3bltba7SRJdpXk3pg6ZUOpKkftKcmdrutAUjcFktSRsaMAXvV9L09txCO2MTJebZzVo/ZJXhtj1kO7qWWOjGsFcB7HMQGE/7AcRsa5AjgBgBDCxjUMIWDUiXrvT5umuUrTFCTDBnZDmqZomubKe3+qVVU1qrqfZRlUdXhOLcf5HcbY/aqqGiUZFUVxtlqtjieTyRaA4SmZkgwAhslksrVarY6LojhbPw4v+nypiBDAUNd1VJbloXNuRvLCWqtZlqkx5m+zjDHIskyttUrywjk3K8vysK7rCMAgIsRLfwF/APBcfKhcBgDMAAAAAElFTkSuQmCC") 1x, url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAEU0lEQVR42tWZTWgbRxTH/+/NrLS7kHUkuw0WhNAYWzK9pseCHZpzcA6BfkAPOaanXnsMvfaSNjcfCm0COaT0nFILemyuxbaME0zAIbVsZMXsrnZn5vWQVZoIlzgftTYPdBD7MT+9j3lv/iIcwUSEADAR2eJ7ZWtr62MA551zHznn5gC8ByAsHokB7DBzh5n/BPD7mTNn/iCirHheAXBEJC9bm44Ap4ZgDx8+nLXWfumcu0RE877vw1oLYwyMMRB5uh4RQWsNrTWUUkjTFCKyysx3lFI/nj59emP03a8DSCLCRGRXV1cbYRh+A+BKGIbVNE2RJAkA2OIdREQ08sMEwPCjgiCA7/uI43gAYDmO42/n5+e3C0hX3Hc0wCKkRERuc3Pzc8/zvvN9//1+vw/nnCnCzXgFExEHwDGzjqIIaZr+nef51zMzMz+LCAOQw0JOh8ENb7x///73YRheTZIEeZ4bIlJHSYuXs4r1PE8HQYA4jn84e/bsV6NrHwpYeA7b29vBYDD4aWJiYml3d9eKCDPzm4K9YM45ISI3OTmp9vf3f6lWq180Go2kyOFnkPw8XLvdVgAoSZKbtVptaW9vLyMi9bbhAICZiYjU3t5eVqvVlpIkuQmA2u22GjrqBcB2u60WFxdNp9O5Xq/XL3a73QxABf+/Vbrdblav1y92Op3ri4uLpnDUvyEelvv6+vqnJ0+evPnkyZNcRDwcoxFRfuLECa/X633WbDZvDZloWEGPHj2aSpJkXSk1kWUZXrVK8eaV4yqVCqy1+0EQNKenp7sAiIvtRA4ODq5FUVTLsswdN1zhQc6yzEVRVDs4OLhWFMrTzXVtbe2DSqXSERF2ztFb2Epe25HMLETksiyba7VaDxgAtNZXoijS1lo3RjgAIGuti6JIa62vAACLiGetvVy0Lsb4jZMkgbX2soh4tLa2dr5arf6W5zlG++m4TETE8zwMBoNPmIgu+L5PABzKY873fSKiC8zM56y1GHPuHZaLYOZzDGDWGFM6wIJplkXklDGmNPlX7IlUDMCnmJn94SRcJhMRMLPPKLmxcy4tUXSfDzOccykT0WOt9fAMUZbwitYaRPSYAWxorfFfh5ZxMRZMG+ycu6eUKh2gUgrOuXssInfTNJWS9OFntZGmqYjIXRIRr9Pp/BWG4WySJGOZBUcH1yAIOI7jjbm5uQ+ZiHKl1O0gCFCSfuyCIIBS6jYR5QwAxpjlfr9vlFI85lwUpRT3+31jjFkezoOq1Wo9MMYsR1HEImLHGF4bRREbY5ZbrdYDEVHlPzQVwg03Go0dY8zVIAiYmY/di8xsgyBgY8zVRqOxU+g/jou2YldWVnSz2bzV6/Vu1Ot1D0B2jHxZvV73er3ejWazeWtlZUUPZTkalT4WFhbc5ubmncnJyeNSF7KpqanK7u7urzMzM5fa7TYvLCzYoT5TevHo3ZLf3gkB8/lrpZWARxYqrYg+GvKx/A3xDxpECu+g/5ijAAAAAElFTkSuQmCC") 2x);
-  --cursor: var(--cursor-pink);
   --cursor-fallback: var(--cursor-pink-svg);
 
   /* Font stacks */
@@ -165,12 +163,9 @@ main { overflow-x: clip; }
    A 14px dot replaces the system cursor (mouse/trackpad only).
    js/main.js draws it as an element with a difference blend, so it inverts
    whatever is underneath, and hides the system cursor (.has-cursor-dot).
-   Until then, or without JS, a native 14px dot is used instead. */
+   Until the mouse first moves, or without JS, a native 14px dot is used. */
 @media (hover: hover) and (pointer: fine) {
   html, html * { cursor: var(--cursor-fallback) 7 7, auto !important; }
-  @supports (cursor: image-set(url("data:,") 1x) 7 7, auto) {
-    html, html * { cursor: var(--cursor) 7 7, auto !important; }
-  }
   html.has-cursor-dot, html.has-cursor-dot * { cursor: none !important; }
 }
 .cursor-dot {
@@ -238,7 +233,7 @@ main { overflow-x: clip; }
 
 /* ---------- Type styles ----------
    Display   Owners XXWide Medium  60 / 100% / −2%   (mobile 38)   XL text
-   Heading   Owners Wide Bold      32 / 100% / −2%   (mobile 28)   project titles, CTA link
+   Heading   Owners Wide Bold      32 / 100% / −2%   (mobile 28; project titles 24)   project titles, CTA link
    Body      Owners Text Light     22 / 120% / −2%                 descriptions, About copy
    Small     Owners Text Light     18 / 120% / −2%                 descriptor line
    Small/Tight                     18 / 110% / −2%                 footer
@@ -671,7 +666,6 @@ main { overflow-x: clip; }
 
 .email__status:empty { display: none; }
 
-
 /* ---------- Privacy page ----------
    Not in the WIP 10/22 Figma: uses the same type styles, gutters and
    project-info grid as the home page. */
@@ -903,8 +897,6 @@ main { overflow-x: clip; }
     gap: var(--gap);
   }
   .capabilities { flex: none; white-space: nowrap; }
-  .capabilities li { display: block; }
-  .capabilities li::after { content: none !important; }
   .project-title {
     flex: 1 1 0;
     min-width: 0;
@@ -916,11 +908,9 @@ main { overflow-x: clip; }
   /* Thumbnails become a sideways swipe row */
   .thumbnail-stack {
     height: auto;             /* no hover on touch, so no height lock */
-    gap: var(--gap);
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
     scroll-padding-inline: var(--gutter);
     scrollbar-width: none;
   }
@@ -976,6 +966,3 @@ main { overflow-x: clip; }
   .policy__body { padding-top: 6px; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  * { scroll-behavior: auto !important; }
-}

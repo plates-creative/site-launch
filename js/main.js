@@ -84,19 +84,17 @@
   if (!videos.length) return;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
 
+  // These properties also set the matching HTML attributes, which is what
+  // iOS checks before it allows silent autoplay.
   videos.forEach((v) => {
-    v.muted = true;
-    v.defaultMuted = true;
+    v.muted = v.defaultMuted = true;
     v.loop = true;
     v.playsInline = true;
     v.controls = false;
     v.autoplay = false;               // playback is driven by visibility below
     v.disablePictureInPicture = true;
     v.disableRemotePlayback = true;
-    ['muted', 'playsinline', 'loop', 'disablepictureinpicture', 'disableremoteplayback']
-      .forEach((a) => v.setAttribute(a, ''));
-    v.removeAttribute('controls');
-    v.setAttribute('tabindex', '-1');
+    v.tabIndex = -1;
     if (!v.hasAttribute('aria-label')) v.setAttribute('aria-hidden', 'true');
   });
 
@@ -372,6 +370,7 @@ addEventListener('DOMContentLoaded', function globeExtras() {
     return 1;
   }
 
+  const pending = new Set();          // observed, not yet revealed (see fallback below)
   const io = new IntersectionObserver((entries) => {
     const hits = entries.filter((e) => e.isIntersecting)
       .sort((a, b) => (a.target.compareDocumentPosition(b.target) & Node.DOCUMENT_POSITION_FOLLOWING) ? -1 : 1);
@@ -400,7 +399,6 @@ addEventListener('DOMContentLoaded', function globeExtras() {
   // Fallback: anything scrolled past without ever being seen (End key, a fast
   // fling, an anchor jump) never triggers the observer, so it would stay
   // hidden above the viewport. Check for those once scrolling settles.
-  const pending = new Set();
   let settleTimer = 0;
   addEventListener('scroll', () => {
     clearTimeout(settleTimer);
